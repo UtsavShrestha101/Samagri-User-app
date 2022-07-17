@@ -25,6 +25,23 @@ class ShoppingHomeScreen extends StatefulWidget {
 class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
     with SingleTickerProviderStateMixin {
   TextEditingController _search_controller = TextEditingController();
+  String category = "All";
+  final items = [
+    "Grocery",
+    "Electronic",
+    "Beverage",
+    "Personal care",
+    "Fashain and apparel",
+    "Baby care",
+    "Bakery and dairy",
+    "Eggs and meat",
+    "Household items",
+    "Kitchen and pet food",
+    "Vegitable and fruits",
+    "Beauty",
+  ];
+  int tag = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,11 +72,57 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
             number: 1,
           ),
           OurSizedBox(),
+          SizedBox(
+            height: ScreenUtil().setSp(30),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemCount: items.length + 1,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil().setSp(2),
+                    vertical: ScreenUtil().setSp(2),
+                  ),
+                  child: ChoiceChip(
+                    selectedColor: logoColor.withOpacity(0.4),
+                    label: index == 0
+                        ? Text(
+                            "All",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(15),
+                            ),
+                          )
+                        : Text(
+                            items[index - 1],
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(15),
+                            ),
+                          ),
+                    selected: tag == index,
+                    onSelected: (bool selected) {
+                      print(index);
+                      setState(() {
+                        tag = index;
+                        if (index == 0) {
+                          category = "All";
+                        } else {
+                          category = items[index - 1];
+                        }
+                      });
+                      print(items[index - 1]);
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+          OurSizedBox(),
           const OurCarousel(),
           const OurSizedBox(),
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
-                .collection("Products")
+                .collection(category)
                 .orderBy("timestamp", descending: true)
                 .snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -87,14 +150,66 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
                     },
                   );
                 } else {
-                  return Container();
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Image.asset(
+                          "assets/images/logo.png",
+                          fit: BoxFit.contain,
+                          height: ScreenUtil().setSp(100),
+                          width: ScreenUtil().setSp(100),
+                        ),
+                        OurSizedBox(),
+                        Text(
+                          "We're sorry",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: logoColor,
+                            fontSize: ScreenUtil().setSp(17.5),
+                          ),
+                        ),
+                        OurSizedBox(),
+                        Text(
+                          "We cannot find any matches",
+                          style: TextStyle(
+                            color: Colors.black45,
+                            fontSize: ScreenUtil().setSp(15),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
                 }
               } else if (!snapshot.hasData) {
                 return Center(
-                  child: Image.asset(
-                    "assets/images/empty.png",
-                    height: ScreenUtil().setSp(200),
-                    width: ScreenUtil().setSp(200),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Image.asset(
+                        "assets/images/logo.png",
+                        fit: BoxFit.contain,
+                        height: ScreenUtil().setSp(100),
+                        width: ScreenUtil().setSp(100),
+                      ),
+                      OurSizedBox(),
+                      Text(
+                        "We're sorry",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: logoColor,
+                          fontSize: ScreenUtil().setSp(17.5),
+                        ),
+                      ),
+                      OurSizedBox(),
+                      Text(
+                        "We cannot find any matches",
+                        style: TextStyle(
+                          color: Colors.black45,
+                          fontSize: ScreenUtil().setSp(15),
+                        ),
+                      ),
+                    ],
                   ),
                 );
               }
@@ -111,169 +226,3 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
     );
   }
 }
-
-// class _ProductListWidget extends StatefulWidget {
-//   final String name, image, shopName;
-//   final double star;
-//   final int price;
-//   final BuildContext buildContext;
-
-//   const _ProductListWidget(
-//       {Key? key,
-//       required this.name,
-//       required this.image,
-//       required this.shopName,
-//       required this.star,
-//       required this.price,
-//       required this.buildContext})
-//       : super(key: key);
-
-//   @override
-//   __ProductListWidgetState createState() => __ProductListWidgetState();
-// }
-
-// class __ProductListWidgetState extends State<_ProductListWidget> {
-//   late ThemeData theme;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     theme = Theme.of(context);
-//     String key = Generator.randomString(10);
-//     return InkWell(
-//       onTap: () {
-//         Navigator.push(
-//             widget.buildContext,
-//             MaterialPageRoute(
-//                 builder: (context) => ShoppingProductScreen(
-//                       heroTag: key,
-//                       image: widget.image,
-//                     )));
-//       },
-//       child: FxContainer(
-//         padding: EdgeInsets.all(20),
-//         child: Row(
-//           children: <Widget>[
-//             Hero(
-//               tag: key,
-//               child: ClipRRect(
-//                 borderRadius: BorderRadius.all(Radius.circular(8)),
-//                 child: Image.asset(
-//                   widget.image,
-//                   height: 90,
-//                   fit: BoxFit.fill,
-//                 ),
-//               ),
-//             ),
-//             FxSpacing.width(20),
-//             Expanded(
-//               child: Container(
-//                 height: 90,
-//                 child: Column(
-//                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: <Widget>[
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                       children: <Widget>[
-//                         FxText.sh1(widget.name,
-//                             fontWeight: 600, letterSpacing: 0),
-//                         Icon(
-//                           MdiIcons.heart,
-//                           color: theme.colorScheme.onBackground.withAlpha(80),
-//                           size: 22,
-//                         )
-//                       ],
-//                     ),
-//                     Row(
-//                       children: <Widget>[
-//                         FxStarRating(
-//                             rating: widget.star,
-//                             size: 20,
-//                             inactiveColor: theme.colorScheme.onBackground),
-//                         Container(
-//                           margin: EdgeInsets.only(left: 4),
-//                           child: FxText.b1(widget.star.toString(),
-//                               fontWeight: 600),
-//                         ),
-//                       ],
-//                     ),
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                       children: <Widget>[
-//                         Row(
-//                           children: <Widget>[
-//                             Icon(
-//                               MdiIcons.storeOutline,
-//                               color:
-//                                   theme.colorScheme.onBackground.withAlpha(200),
-//                               size: 20,
-//                             ),
-//                             Container(
-//                               margin: EdgeInsets.only(left: 4),
-//                               child: FxText.b2(widget.shopName,
-//                                   color: theme.colorScheme.onBackground
-//                                       .withAlpha(200),
-//                                   fontWeight: 500),
-//                             )
-//                           ],
-//                         ),
-//                         FxText.b2("\$ " + widget.price.toString(),
-//                             fontWeight: 700)
-//                       ],
-//                     )
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class _CategoryWidget extends StatelessWidget {
-//   final IconData iconData;
-//   final String actionText;
-//   final bool isSelected;
-
-//   const _CategoryWidget(
-//       {Key? key,
-//       required this.iconData,
-//       required this.actionText,
-//       this.isSelected = false})
-//       : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     ThemeData theme = Theme.of(context);
-//     return Container(
-//       margin: EdgeInsets.only(top: 12, bottom: 12),
-//       child: Column(
-//         children: <Widget>[
-//           ClipOval(
-//             child: Material(
-//               color: isSelected
-//                   ? theme.colorScheme.primary
-//                   : theme.colorScheme.primary.withAlpha(20),
-//               child: SizedBox(
-//                   width: 52,
-//                   height: 52,
-//                   child: Icon(
-//                     iconData,
-//                     color: isSelected
-//                         ? theme.colorScheme.onPrimary
-//                         : theme.colorScheme.primary,
-//                   )),
-//             ),
-//           ),
-//           Padding(
-//             padding: EdgeInsets.only(top: 8),
-//             child:
-//                 FxText.caption(actionText, fontWeight: 600, letterSpacing: 0),
-//           )
-//         ],
-//       ),
-//     );
-  // }
-// }

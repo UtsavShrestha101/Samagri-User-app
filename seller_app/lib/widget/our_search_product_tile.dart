@@ -38,15 +38,15 @@ class _OurSearchProductListTileState extends State<OurSearchProductListTile> {
           widget.productModel.uid,
           widget.productModel.name,
         );
-        // Navigator.push(
-        //   widget.buildContext,
-        //   MaterialPageRoute(
-        //     builder: (context) => ShoppingProductScreen(
-        //       heroTag: key, productModel: widget.productModel,
-        //       // image: widget.image,
-        //     ),
-        //   ),
-        // );
+        Navigator.push(
+          widget.buildContext,
+          MaterialPageRoute(
+            builder: (context) => ShoppingProductScreen(
+              heroTag: key, productModel: widget.productModel,
+              // image: widget.image,
+            ),
+          ),
+        );
       },
       child: FxContainer(
         margin: EdgeInsets.symmetric(
@@ -124,7 +124,7 @@ class _OurSearchProductListTileState extends State<OurSearchProductListTile> {
                                 },
                                 child: Icon(
                                   MdiIcons.heartOutline,
-                                  color: Colors.white,
+                                  color: Colors.red,
                                   size: ScreenUtil().setSp(20),
                                 ),
                               ),
@@ -168,11 +168,11 @@ class _OurSearchProductListTileState extends State<OurSearchProductListTile> {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            Icon(
-                              MdiIcons.storeOutline,
-                              color: darklogoColor,
-                              size: 20,
-                            ),
+                            // Icon(
+                            //   MdiIcons.storeOutline,
+                            //   color: darklogoColor,
+                            //   size: 20,
+                            // ),
                             // Container(
                             //   margin: EdgeInsets.only(left: 4),
                             //   child: FxText.b2(

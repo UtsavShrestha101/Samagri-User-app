@@ -22,6 +22,7 @@ class ProductDetailFirestore {
     String desc,
     int quantity,
     double price,
+    String categoryItem,
   ) async {
     List<String> searchList = [];
     for (int i = 0; i <= name.length; i++) {
@@ -31,7 +32,23 @@ class ProductDetailFirestore {
     }
     String uid = const Uuid().v4();
     try {
-      await FirebaseFirestore.instance.collection("Products").doc(uid).set({
+      await FirebaseFirestore.instance.collection("All").doc(uid).set({
+        "uid": uid,
+        "name": name,
+        "desc": desc,
+        "price": price,
+        "rating": 0.0,
+        "url": pickedImagessUrl,
+        "addedOn": DateFormat('yyy-MM-dd').format(
+          DateTime.now(),
+        ),
+        "ratingUID": [],
+        "ratingNo": 0,
+        "timestamp": Timestamp.now(),
+        "favorite": [],
+        "searchfrom": searchList,
+      });
+      await FirebaseFirestore.instance.collection(categoryItem).doc(uid).set({
         "uid": uid,
         "name": name,
         "desc": desc,

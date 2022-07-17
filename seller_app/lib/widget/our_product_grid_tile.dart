@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutx/flutx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:myapp/models/product_model.dart';
+import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_sized_box.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import '../screens/dashboard_screen/shopping_product_screen.dart';
@@ -129,6 +130,7 @@ class _ProductGridTileState extends State<ProductGridTile> {
                     widget.productModel.name,
                     fontWeight: 700,
                     letterSpacing: 0,
+                    color: logoColor,
                     fontSize: ScreenUtil().setSp(17.5),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -192,3 +194,5 @@ class _ProductGridTileState extends State<ProductGridTile> {
     );
   }
 }
+
+

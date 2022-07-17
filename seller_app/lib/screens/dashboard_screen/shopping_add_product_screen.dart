@@ -56,6 +56,39 @@ class _ShopAddProductScreenState extends State<ShopAddProductScreen> {
     });
   }
 
+//  VEGETABLE&FRUITS
+//  BEAUTY
+
+  final item = [
+    "Grocery",
+    "Electronic",
+    "Beverage",
+    "Personal care",
+    "Fashain and apparel",
+    "Baby care",
+    "Bakery and dairy",
+    "Eggs and meat",
+    "Household items",
+    "Kitchen and pet food",
+    "Vegitable and fruits",
+    "Beauty",
+  ];
+  String? categoryItem;
+  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
+        value: item,
+        child: Center(
+          child: Text(
+            item,
+            style: TextStyle(
+              color: logoColor,
+              fontSize: ScreenUtil().setSp(
+                17.5,
+              ),
+            ),
+          ),
+        ),
+      );
+
   int quantityValue = 1;
 
   @override
@@ -101,6 +134,7 @@ class _ShopAddProductScreenState extends State<ShopAddProductScreen> {
                 ),
                 child: SingleChildScrollView(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       images.isEmpty
                           ? GestureDetector(
@@ -207,13 +241,62 @@ class _ShopAddProductScreenState extends State<ShopAddProductScreen> {
                         length: 1,
                       ),
                       OurSizedBox(),
+                      Text(
+                        "Travelling for:",
+                        style: TextStyle(
+                          color: darklogoColor,
+                          fontSize: ScreenUtil().setSp(17.5),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      OurSizedBox(),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              color: Colors.grey[500]!,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              ScreenUtil().setSp(15),
+                            )),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: ScreenUtil().setSp(5),
+                          vertical: ScreenUtil().setSp(5),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            isDense: true,
+                            borderRadius: BorderRadius.circular(
+                              15,
+                            ),
+                            isExpanded: true,
+                            hint: Center(
+                              child: Text(
+                                "Category",
+                                style: TextStyle(
+                                  color: logoColor,
+                                  fontSize: ScreenUtil().setSp(
+                                    17.5,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            value: categoryItem,
+                            onChanged: (value) => setState(() {
+                              this.categoryItem = value;
+                            }),
+                            items: item.map(buildMenuItem).toList(),
+                          ),
+                        ),
+                      ),
+                      OurSizedBox(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             "Stock Quantity:",
                             style: TextStyle(
-                              fontSize: ScreenUtil().setSp(20),
+                              fontSize: ScreenUtil().setSp(17.5),
                               color: logoColor,
                               fontWeight: FontWeight.w500,
                             ),
@@ -277,6 +360,7 @@ class _ShopAddProductScreenState extends State<ShopAddProductScreen> {
                               double.parse(
                                 _product_price_controller.text.trim(),
                               ),
+                              categoryItem!,
                             );
                             print("Utsav");
                             print(

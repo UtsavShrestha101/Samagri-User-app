@@ -20,6 +20,7 @@ class AddProduct {
     String desc,
     int quantity,
     double price,
+    String category,
   ) async {
     int n = 1;
     FirebaseStorage firebaseStorage = FirebaseStorage.instance;
@@ -47,8 +48,14 @@ class AddProduct {
             print(pickedImagess.length);
             print("Sending data");
             print(dataUrl);
-            ProductDetailFirestore()
-                .AddProductToCart(dataUrl, name, desc, quantity, price);
+            ProductDetailFirestore().AddProductToCart(
+              dataUrl,
+              name,
+              desc,
+              quantity,
+              price,
+              category,
+            );
             // return dataUrl;
           } else {
             print(n);

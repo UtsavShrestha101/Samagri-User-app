@@ -223,7 +223,7 @@ class _ShoppingSearchProductScreenState
                           )
                         : StreamBuilder(
                             stream: FirebaseFirestore.instance
-                                .collection("Products")
+                                .collection("All")
                                 .where("searchfrom",
                                     arrayContains:
                                         Get.find<SearchTextController>()

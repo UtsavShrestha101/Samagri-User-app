@@ -76,7 +76,7 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                 Expanded(
                   child: StreamBuilder(
                     stream: FirebaseFirestore.instance
-                        .collection("Products")
+                        .collection("All")
                         .doc(widget.productModel.uid)
                         .collection("Reviews")
                         .orderBy(
@@ -98,7 +98,7 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                                         FirebaseAuth
                                             .instance.currentUser!.uid) {
                                       await FirebaseFirestore.instance
-                                          .collection("Products")
+                                          .collection("All")
                                           .doc(widget.productModel.uid)
                                           .collection("Reviews")
                                           .doc(reviewModel.uid)
@@ -321,7 +321,7 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
               child: Container(
                 child: StreamBuilder(
                   stream: FirebaseFirestore.instance
-                      .collection("Products")
+                      .collection("All")
                       .where("uid", isEqualTo: widget.productModel.uid)
                       .snapshots(),
                   builder: (BuildContext context,
