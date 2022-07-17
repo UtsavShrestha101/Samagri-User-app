@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -185,6 +186,7 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                     children: [
                       Expanded(
                         child: CustomTextField(
+                          letterlength: 10000,
                           icon: Icons.reviews,
                           controller: _review_Controller,
                           validator: (value) {},
@@ -316,10 +318,6 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
           progressIndicator: OurSpinner(),
           child: Scaffold(
             body: Container(
-              // margin: EdgeInsets.symmetric(
-              //   horizontal: ScreenUtil().setSp(10),
-              //   vertical: ScreenUtil().setSp(10),
-              // ),
               child: StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection("Products")
@@ -336,87 +334,42 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                         ProductModel.fromMap(snapshot.data!.docs[0]);
                     return Column(
                       children: [
-                        // Row(
-                        //   children: [
-                        //     InkWell(
-                        //       onTap: () {
-                        //         Navigator.of(context).pop();
-                        //       },
-                        //       child: Icon(
-                        //         MdiIcons.chevronLeft,
-                        //         size: ScreenUtil().setSp(35),
-                        //         color: darklogoColor,
-                        //       ),
-                        //     ),
-                        //     Expanded(
-                        //       child: Align(
-                        //         alignment: Alignment.center,
-                        //         child: Text(
-                        //           productModel.name,
-                        //           style: TextStyle(
-                        //             color: darklogoColor,
-                        //             fontSize: ScreenUtil().setSp(22.5),
-                        //             fontWeight: FontWeight.w500,
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     productModel.favorite.contains(
-                        //             FirebaseAuth.instance.currentUser!.uid)
-                        //         ? InkWell(
-                        //             onTap: () async {
-                        //               await UserDetailFirestore()
-                        //                   .removeFavorite(widget.productModel);
-                        //               print("Favourite Removed");
-                        //             },
-                        //             child: Icon(
-                        //               MdiIcons.heart,
-                        //               color: Colors.red,
-                        //               size: ScreenUtil().setSp(30),
-                        //             ),
-                        //           )
-                        //         : InkWell(
-                        //             onTap: () async {
-                        //               await UserDetailFirestore()
-                        //                   .addFavorite(widget.productModel);
-                        //               print("Favourite Added");
-                        //             },
-                        //             child: Icon(
-                        //               MdiIcons.heartOutline,
-                        //               color: darklogoColor,
-                        //               size: ScreenUtil().setSp(30),
-                        //             ),
-                        //           ),
-                        //   ],
-                        // ),
-                        // OurSizedBox(),
-                        // OurSizedBox(),
-                        // OurSizedBox(),
                         Stack(
                           children: [
                             Hero(
                               tag: widget.heroTag,
-                              child: ClipRRect(
-                                // borderRadius: BorderRadius.all(
-                                //   Radius.circular(
-                                //     ScreenUtil().setSp(15),
-                                //   ),
-                                // ),
-                                child: CachedNetworkImage(
-                                  // width: MediaQuery.of(context).size.width * 0.65,
-                                  width: double.infinity,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.4,
-
-                                  fit: BoxFit.fill,
-                                  imageUrl: widget.productModel.url,
-                                  placeholder: (context, url) => Image.asset(
-                                    "assets/images/placeholder.png",
-                                    width: MediaQuery.of(context).size.width *
-                                        0.65,
-                                    fit: BoxFit.cover,
-                                    // width: ScreenUtil().setSp(150),
-                                  ),
+                              child: CarouselSlider(
+                                items: widget.productModel.url
+                                    .map(
+                                      (e) => Builder(
+                                        builder: (context) =>
+                                            CachedNetworkImage(
+                                          height: ScreenUtil().setSp(160),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          fit: BoxFit.cover,
+                                          imageUrl: e,
+                                          placeholder: (context, url) =>
+                                              Image.asset(
+                                            "assets/images/placeholder.png",
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            fit: BoxFit.cover,
+                                            // width: ScreenUtil().setSp(150),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                                options: CarouselOptions(
+                                  autoPlay: true,
+                                  autoPlayInterval: const Duration(seconds: 3),
+                                  autoPlayAnimationDuration:
+                                      const Duration(milliseconds: 1000),
+                                  autoPlayCurve: Curves.fastOutSlowIn,
+                                  viewportFraction: 1,
+                                  height: ScreenUtil().setSp(200),
                                 ),
                               ),
                             ),
@@ -582,7 +535,7 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                             ),
                           ],
                         ),
-                        OurSizedBox(),
+                         OurSizedBox(),
                         Center(
                           child: Container(
                             child: Column(

@@ -108,7 +108,7 @@ class UserDetailFirestore {
             {"uid": productModel.uid, "timestamp": Timestamp.now()},
           ).then((value) => NotificationService().simpleBigPictureNotification(
                     "Item added to favourite list",
-                    productModel.url,
+                    productModel.url[0],
                   ));
           // );
 
@@ -140,7 +140,7 @@ class UserDetailFirestore {
             .delete()
             .then((value) => NotificationService().simpleBigPictureNotification(
                   "Item removed from favourite list",
-                  productModel.url,
+                  productModel.url[0],
                 ));
         OurToast().showErrorToast("Removed from favotite list");
       });

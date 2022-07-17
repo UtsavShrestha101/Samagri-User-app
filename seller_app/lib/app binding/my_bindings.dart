@@ -6,6 +6,7 @@ import 'package:myapp/controller/quantity_controller.dart';
 import '../controller/address_choose_controller.dart';
 import '../controller/dashboard_controller.dart';
 import '../controller/delivery_time_controller.dart';
+import '../controller/product_names_list_controller.dart';
 import '../controller/search_text_controller.dart';
 
 class MyBinding implements Bindings {
@@ -30,8 +31,13 @@ class MyBinding implements Bindings {
     Get.lazyPut(
       () => DeliveryTimeController(),
     );
+
     Get.lazyPut(
       () => OTPController(),
     );
+    Get.lazyPut(
+      () => ProductListName(),
+    );
+    // ProductListName
   }
 }

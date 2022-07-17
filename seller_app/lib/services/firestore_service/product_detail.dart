@@ -1,15 +1,63 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:myapp/models/cart_product_model.dart';
 import 'package:myapp/services/notification_service/notification_service.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../controller/dashboard_controller.dart';
+import '../../controller/login_controller.dart';
 import '../../models/firebase_user_model.dart';
 import '../../models/product_model.dart';
 import '../../widget/our_flutter_toast.dart';
 
 class ProductDetailFirestore {
+  AddProductToCart(
+    List<String> pickedImagessUrl,
+    String name,
+    String desc,
+    int quantity,
+    double price,
+  ) async {
+    List<String> searchList = [];
+    for (int i = 0; i <= name.length; i++) {
+      searchList.add(
+        name.substring(0, i).toLowerCase(),
+      );
+    }
+    String uid = const Uuid().v4();
+    try {
+      await FirebaseFirestore.instance.collection("Products").doc(uid).set({
+        "uid": uid,
+        "name": name,
+        "desc": desc,
+        "price": price,
+        "rating": 0.0,
+        "url": pickedImagessUrl,
+        "addedOn": DateFormat('yyy-MM-dd').format(
+          DateTime.now(),
+        ),
+        "ratingUID": [],
+        "ratingNo": 0,
+        "timestamp": Timestamp.now(),
+        "favorite": [],
+        "searchfrom": searchList,
+      }).then((value) {
+        Get.find<DashboardController>().changeIndexs(0);
+        OurToast().showSuccessToast("Product added");
+      });
+      Get.find<LoginController>().toggle(false);
+    } catch (e) {
+      Get.find<LoginController>().toggle(false);
+
+      OurToast().showErrorToast(e.toString());
+    }
+  }
+
   deleteItemFromCart(CartProductModel cartProductModel) async {
     try {
       var data = await FirebaseFirestore.instance
@@ -82,7 +130,7 @@ class ProductDetailFirestore {
           "addedOn": Timestamp.now(),
           "quantity": quantity,
         }).then((value) => NotificationService().simpleBigPictureNotification(
-                "Item added to cart", product.url));
+                "Item added to cart", product.url[0]));
 
         OurToast().showSuccessToast("Product Added to cart");
       });
@@ -200,7 +248,7 @@ class ProductDetailFirestore {
               .then(
                 (value) => NotificationService().simpleBigPictureNotification(
                   "Item removed from cart",
-                  product.url,
+                  product.url[0],
                 ),
               );
         } catch (e) {
@@ -217,7 +265,6 @@ class ProductDetailFirestore {
   }
 
   increaseProductCount(CartProductModel cartProductModel) async {
-
     double totalPrice = 0.0;
     await FirebaseFirestore.instance
         .collection("Carts")

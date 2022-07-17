@@ -59,16 +59,11 @@ class _ProductGridTileState extends State<ProductGridTile> {
                         ScreenUtil().setSp(10),
                       ),
                     ),
-                    // child: Image.asset(
-                    //   widget.image,
-                    //   width: MediaQuery.of(context).size.width,
-                    // fit: BoxFit.cover,
-                    // ),
                     child: CachedNetworkImage(
-                      // height: ScreenUtil().setSp(150),
+                      height: ScreenUtil().setSp(160),
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover,
-                      imageUrl: widget.productModel.url,
+                      imageUrl: widget.productModel.url[0],
                       placeholder: (context, url) => Image.asset(
                         "assets/images/placeholder.png",
                         width: MediaQuery.of(context).size.width,
@@ -110,7 +105,6 @@ class _ProductGridTileState extends State<ProductGridTile> {
 // Vibrate
 // Vibration duration is a constant 500ms because
 // it cannot be set to a specific duration on iOS.
-                            
                           },
                           child: Icon(
                             MdiIcons.heartOutline,

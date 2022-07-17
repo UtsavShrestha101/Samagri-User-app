@@ -82,6 +82,7 @@ class _ShoppingLoginScreenState extends State<ShoppingLoginScreen> {
                         OurSizedBox(),
                         OurSizedBox(),
                         CustomTextField(
+                          letterlength: 10,
                             controller: _phone_number_controller,
                             validator: (value) {},
                             title: "Enter your phone no.",

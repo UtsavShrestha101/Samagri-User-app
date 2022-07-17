@@ -15,12 +15,18 @@ class CustomTextField extends StatefulWidget {
   final IconData? icon;
   final TextInputType type;
   final String title;
+  final int? height;
+  final int? width;
   final int? length;
   final int number;
+  final int letterlength;
   final String? initialValue;
 
   const CustomTextField({
     Key? key,
+    this.width,
+    this.height,
+    required this.letterlength,
     required this.controller,
     required this.validator,
     this.icon,
@@ -45,12 +51,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(
-        horizontal: ScreenUtil().setSp(22.5),
+        horizontal: ScreenUtil().setSp(widget.width ?? 22.5),
       ),
-      height: ScreenUtil().setSp(40),
+      height: ScreenUtil().setSp(widget.height ?? 40),
       child: TextFormField(
         inputFormatters: [
-          LengthLimitingTextInputFormatter(10),
+          LengthLimitingTextInputFormatter(widget.letterlength),
         ],
         scrollPadding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,

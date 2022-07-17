@@ -7,7 +7,7 @@ class ProductModel {
   final double price;
   final int rating;
   final String addedOn;
-  final String url;
+  final List url;
   final Timestamp timestamp;
   final List ratingUID;
   final int ratingNo;

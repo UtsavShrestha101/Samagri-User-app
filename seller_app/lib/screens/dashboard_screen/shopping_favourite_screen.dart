@@ -87,7 +87,7 @@ class _ShoppingFavouriteScreenState extends State<ShoppingFavouriteScreen> {
                                       margin: EdgeInsets.only(top: 20),
                                       child: OurProductListTile(
                                         name: productModel.name,
-                                        image: productModel.url,
+                                        image: productModel.url[0],
                                         shopName: 'Agus Bakery',
                                         buildContext: context,
                                         star: productModel.rating.toDouble(),

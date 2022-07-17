@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:myapp/screens/dashboard_screen/shopping_add_product_screen.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_my_cart_screen.dart';
 import '../../controller/dashboard_controller.dart';
 import '../../models/firebase_user_model.dart';
@@ -25,7 +26,7 @@ class _ShoppingFullAppPageState extends State<ShoppingFullApp>
   List widgets = [
     const ShoppingHomeScreen(),
     const ShoppingSearchScreen(),
-    const ShoppingSaleScreen(),
+    const ShopAddProductScreen(),
     const ShoppingMyCartScreen(),
     ShoppingProfileScreen()
   ];
@@ -157,7 +158,6 @@ class _ShoppingFullAppPageState extends State<ShoppingFullApp>
                         },
                       ),
                     ),
-                   
                     label: 'Add'),
                 BottomNavigationBarItem(
                     icon: Icon(
