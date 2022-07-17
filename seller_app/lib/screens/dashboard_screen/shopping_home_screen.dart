@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutx/flutx.dart';
 import 'package:get/get.dart';
+import 'package:myapp/screens/dashboard_screen/shopping_search_product_screen.dart';
+import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_product_grid_loading_widget.dart';
 import 'package:myapp/widget/our_sized_box.dart';
 import 'package:myapp/widget/our_spinner.dart';
+import 'package:myapp/widget/our_text_field.dart';
+import 'package:page_transition/page_transition.dart';
 import '../../controller/search_text_controller.dart';
 import '../../models/product_model.dart';
 import '../../widget/our_carousel_slider.dart';
@@ -20,6 +24,7 @@ class ShoppingHomeScreen extends StatefulWidget {
 
 class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
     with SingleTickerProviderStateMixin {
+  TextEditingController _search_controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,108 +32,79 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
         padding: EdgeInsets.fromLTRB(
             20, FxSpacing.safeAreaTop(context) + 20, 20, 20),
         children: <Widget>[
+          CustomTextField(
+            width: 5,
+            height: 40,
+            letterlength: 1000,
+            readonly: true,
+            ontap: () {
+              Get.find<SearchTextController>().clearController();
+
+              Navigator.push(
+                context,
+                PageTransition(
+                  child: ShoppingSearchProductScreen(),
+                  type: PageTransitionType.leftToRight,
+                ),
+              );
+            },
+            controller: _search_controller,
+            validator: (value) {},
+            title: "Search Product",
+            type: TextInputType.name,
+            number: 1,
+          ),
+          OurSizedBox(),
           const OurCarousel(),
           const OurSizedBox(),
-          Obx(
-            () => Get.find<SearchTextController>().searchText.trim().isEmpty
-                ? StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection("Products")
-                        .orderBy("timestamp", descending: true)
-                        .snapshots(),
-                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return OurProductGridLoadingScreen();
-                      } else if (snapshot.hasData) {
-                        if (snapshot.data!.docs.length > 0) {
-                          return GridView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: snapshot.data!.docs.length,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: ScreenUtil().setSp(5),
-                                    mainAxisSpacing: ScreenUtil().setSp(5),
-                                    childAspectRatio: 0.59),
-                            itemBuilder: (context, index) {
-                              ProductModel productModel = ProductModel.fromMap(
-                                  snapshot.data!.docs[index]);
-                              return ProductGridTile(
-                                productModel: productModel,
-                                rootContext: context,
-                              );
-                            },
-                          );
-                        } else {
-                          return Container();
-                        }
-                      } else if (!snapshot.hasData) {
-                        return Center(
-                          child: Image.asset(
-                            "assets/images/empty.png",
-                            height: ScreenUtil().setSp(200),
-                            width: ScreenUtil().setSp(200),
-                          ),
-                        );
-                      }
-                      return Center(
-                        child: OurSpinner(),
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection("Products")
+                .orderBy("timestamp", descending: true)
+                .snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return OurProductGridLoadingScreen();
+              } else if (snapshot.hasData) {
+                if (snapshot.data!.docs.length > 0) {
+                  return GridView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: snapshot.data!.docs.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: ScreenUtil().setSp(5),
+                        mainAxisSpacing: ScreenUtil().setSp(5),
+                        childAspectRatio: 0.59),
+                    itemBuilder: (context, index) {
+                      ProductModel productModel =
+                          ProductModel.fromMap(snapshot.data!.docs[index]);
+                      return ProductGridTile(
+                        productModel: productModel,
+                        rootContext: context,
                       );
-
-                      // return CircularProgressIndicator();
-                      // rethrow
                     },
-                  )
-                : StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection("Products")
-                        .where("searchfrom",
-                            arrayContains: Get.find<SearchTextController>()
-                                .search_controller
-                                .value
-                                .text
-                                .toLowerCase())
-                        .snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasData) {
-                        if (snapshot.data!.docs.length > 0) {
-                          return GridView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: snapshot.data!.docs.length,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: ScreenUtil().setSp(5),
-                                    mainAxisSpacing: ScreenUtil().setSp(5),
-                                    childAspectRatio: 0.6),
-                            itemBuilder: (context, index) {
-                              ProductModel productModel = ProductModel.fromMap(
-                                  snapshot.data!.docs[index]);
-                              return ProductGridTile(
-                                productModel: productModel,
-                                rootContext: context,
-                              );
-                            },
-                          );
-                        } else {
-                          return Center(
-                            child: Image.asset(
-                              "assets/images/empty.png",
-                              height: ScreenUtil().setSp(200),
-                              width: ScreenUtil().setSp(200),
-                            ),
-                          );
-                        }
-                      } else {
-                        return Center(child: OurSpinner());
-                      }
-                    },
+                  );
+                } else {
+                  return Container();
+                }
+              } else if (!snapshot.hasData) {
+                return Center(
+                  child: Image.asset(
+                    "assets/images/empty.png",
+                    height: ScreenUtil().setSp(200),
+                    width: ScreenUtil().setSp(200),
                   ),
+                );
+              }
+              return Center(
+                child: OurSpinner(),
+              );
+
+              // return CircularProgressIndicator();
+              // rethrow
+            },
           )
         ],
       ),

@@ -317,320 +317,329 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
           inAsyncCall: Get.find<LoginController>().processing.value,
           progressIndicator: OurSpinner(),
           child: Scaffold(
-            body: Container(
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("Products")
-                    .where("uid", isEqualTo: widget.productModel.uid)
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: OurSpinner(),
-                    );
-                  } else if (snapshot.hasData) {
-                    ProductModel productModel =
-                        ProductModel.fromMap(snapshot.data!.docs[0]);
-                    return Column(
-                      children: [
-                        Stack(
-                          children: [
-                            Hero(
-                              tag: widget.heroTag,
-                              child: CarouselSlider(
-                                items: widget.productModel.url
-                                    .map(
-                                      (e) => Builder(
-                                        builder: (context) =>
-                                            CachedNetworkImage(
-                                          height: ScreenUtil().setSp(160),
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          fit: BoxFit.cover,
-                                          imageUrl: e,
-                                          placeholder: (context, url) =>
-                                              Image.asset(
-                                            "assets/images/placeholder.png",
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
+            body: SafeArea(
+              child: Container(
+                child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("Products")
+                      .where("uid", isEqualTo: widget.productModel.uid)
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: OurSpinner(),
+                      );
+                    } else if (snapshot.hasData) {
+                      ProductModel productModel =
+                          ProductModel.fromMap(snapshot.data!.docs[0]);
+                      return Column(
+                        children: [
+                          Stack(
+                            children: [
+                              Hero(
+                                tag: widget.heroTag,
+                                child: CarouselSlider(
+                                  items: widget.productModel.url
+                                      .map(
+                                        (e) => Builder(
+                                          builder: (context) =>
+                                              CachedNetworkImage(
+                                            height: ScreenUtil().setSp(220),
+                                            // width:
+                                            //     MediaQuery.of(context).size.width,
                                             fit: BoxFit.cover,
-                                            // width: ScreenUtil().setSp(150),
+                                            imageUrl: e,
+                                            placeholder: (context, url) =>
+                                                Image.asset(
+                                              "assets/images/placeholder.png",
+                                              height: ScreenUtil().setSp(220),
+                                              // width: MediaQuery.of(context)
+                                              //     .size
+                                              //     .width,
+                                              fit: BoxFit.cover,
+                                              // width: ScreenUtil().setSp(150),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    )
-                                    .toList(),
-                                options: CarouselOptions(
-                                  autoPlay: true,
-                                  autoPlayInterval: const Duration(seconds: 3),
-                                  autoPlayAnimationDuration:
-                                      const Duration(milliseconds: 1000),
-                                  autoPlayCurve: Curves.fastOutSlowIn,
-                                  viewportFraction: 1,
-                                  height: ScreenUtil().setSp(200),
+                                      )
+                                      .toList(),
+                                  options: CarouselOptions(
+                                    autoPlay: true,
+                                    autoPlayInterval:
+                                        const Duration(seconds: 3),
+                                    autoPlayAnimationDuration:
+                                        const Duration(milliseconds: 1000),
+                                    autoPlayCurve: Curves.fastOutSlowIn,
+                                    viewportFraction: 1,
+                                    height: ScreenUtil().setSp(200),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Positioned(
-                              top: ScreenUtil().setSp(25),
-                              left: 0,
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
+                              Positioned(
+                                top: ScreenUtil().setSp(7.5),
+                                left: 0,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: ScreenUtil().setSp(2.5),
+                                      vertical: ScreenUtil().setSp(2),
+                                    ),
+                                    margin: EdgeInsets.symmetric(
+                                      horizontal: ScreenUtil().setSp(2.5),
+                                      vertical: ScreenUtil().setSp(2),
+                                    ),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white.withOpacity(0.4),
+                                        shape: BoxShape.circle),
+                                    child: Icon(
+                                      MdiIcons.chevronLeft,
+                                      size: ScreenUtil().setSp(35),
+                                      color: darklogoColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: ScreenUtil().setSp(7.5),
+                                right: 0,
                                 child: Container(
+                                  // width: ScreenUtil().setSp(fontSize),
                                   padding: EdgeInsets.symmetric(
-                                    horizontal: ScreenUtil().setSp(2.5),
-                                    vertical: ScreenUtil().setSp(2),
+                                    horizontal: ScreenUtil().setSp(7.5),
+                                    vertical: ScreenUtil().setSp(5),
                                   ),
                                   margin: EdgeInsets.symmetric(
-                                    horizontal: ScreenUtil().setSp(2.5),
-                                    vertical: ScreenUtil().setSp(2),
+                                    horizontal: ScreenUtil().setSp(5),
+                                    vertical: ScreenUtil().setSp(5),
                                   ),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.4),
-                                      shape: BoxShape.circle),
-                                  child: Icon(
-                                    MdiIcons.chevronLeft,
-                                    size: ScreenUtil().setSp(35),
-                                    color: darklogoColor,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              top: ScreenUtil().setSp(25),
-                              right: 0,
-                              child: Container(
-                                // width: ScreenUtil().setSp(fontSize),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: ScreenUtil().setSp(7.5),
-                                  vertical: ScreenUtil().setSp(5),
-                                ),
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: ScreenUtil().setSp(5),
-                                  vertical: ScreenUtil().setSp(5),
-                                ),
 
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                    ScreenUtil().setSp(35),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                      ScreenUtil().setSp(35),
+                                    ),
+                                    // color: Colors.amber,
+                                    color: Colors.white.withOpacity(0.4),
                                   ),
-                                  // color: Colors.amber,
-                                  color: Colors.white.withOpacity(0.4),
-                                ),
-                                // decoration: BoxDecoration(
-                                //     shape: BoxShape.circle),
-                                child: Expanded(
-                                  child: Row(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          Get.find<DashboardController>()
-                                              .changeIndexs(3);
-                                          Navigator.pop(context);
-                                          // print("Show cart screen");
-                                        },
-                                        child: StreamBuilder<
-                                            DocumentSnapshot<
-                                                Map<String, dynamic>>>(
-                                          stream: FirebaseFirestore.instance
-                                              .collection("Users")
-                                              .doc(FirebaseAuth
-                                                  .instance.currentUser!.uid)
-                                              .snapshots(),
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<
-                                                      DocumentSnapshot<
-                                                          Map<String, dynamic>>>
-                                                  snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Icon(
-                                                MdiIcons.cartOutline,
-                                                color: darklogoColor,
-                                                size: ScreenUtil().setSp(22.5),
-                                              );
-                                            } else if (snapshot.hasData) {
-                                              if (snapshot.data!.exists) {
-                                                FirebaseUserModel
-                                                    firebaseUserModel =
-                                                    FirebaseUserModel.fromMap(
-                                                        snapshot.data!.data()!);
-                                                return Badge(
-                                                  badgeColor: darklogoColor,
-                                                  position:
-                                                      BadgePosition.topEnd(),
-                                                  badgeContent: Text(
-                                                    firebaseUserModel.cartItemNo
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(15),
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Colors.white),
-                                                  ),
-                                                  child: Icon(
+                                  // decoration: BoxDecoration(
+                                  //     shape: BoxShape.circle),
+                                  child: Expanded(
+                                    child: Row(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            Get.find<DashboardController>()
+                                                .changeIndexs(3);
+                                            Navigator.pop(context);
+                                            // print("Show cart screen");
+                                          },
+                                          child: StreamBuilder<
+                                              DocumentSnapshot<
+                                                  Map<String, dynamic>>>(
+                                            stream: FirebaseFirestore.instance
+                                                .collection("Users")
+                                                .doc(FirebaseAuth
+                                                    .instance.currentUser!.uid)
+                                                .snapshots(),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<
+                                                        DocumentSnapshot<
+                                                            Map<String,
+                                                                dynamic>>>
+                                                    snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return Icon(
+                                                  MdiIcons.cartOutline,
+                                                  color: darklogoColor,
+                                                  size:
+                                                      ScreenUtil().setSp(22.5),
+                                                );
+                                              } else if (snapshot.hasData) {
+                                                if (snapshot.data!.exists) {
+                                                  FirebaseUserModel
+                                                      firebaseUserModel =
+                                                      FirebaseUserModel.fromMap(
+                                                          snapshot.data!
+                                                              .data()!);
+                                                  return Badge(
+                                                    badgeColor: darklogoColor,
+                                                    position:
+                                                        BadgePosition.topEnd(),
+                                                    badgeContent: Text(
+                                                      firebaseUserModel
+                                                          .cartItemNo
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(15),
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.white),
+                                                    ),
+                                                    child: Icon(
+                                                      MdiIcons.cartOutline,
+                                                      color: darklogoColor,
+                                                      size: ScreenUtil()
+                                                          .setSp(25),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return Icon(
                                                     MdiIcons.cartOutline,
                                                     color: darklogoColor,
                                                     size:
                                                         ScreenUtil().setSp(25),
-                                                  ),
-                                                );
-                                              } else {
-                                                return Icon(
-                                                  MdiIcons.cartOutline,
-                                                  color: darklogoColor,
-                                                  size: ScreenUtil().setSp(25),
-                                                );
+                                                  );
+                                                }
                                               }
-                                            }
-                                            return Icon(
-                                              MdiIcons.cart,
-                                              color: darklogoColor,
-                                              size: ScreenUtil().setSp(25),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: ScreenUtil().setSp(20),
-                                      ),
-                                      productModel.favorite.contains(
-                                              FirebaseAuth
-                                                  .instance.currentUser!.uid)
-                                          ? InkWell(
-                                              onTap: () async {
-                                                await UserDetailFirestore()
-                                                    .removeFavorite(
-                                                        widget.productModel);
-                                                print("Favourite Removed");
-                                              },
-                                              child: Icon(
-                                                MdiIcons.heart,
-                                                color: Colors.red,
-                                                size: ScreenUtil().setSp(30),
-                                              ),
-                                            )
-                                          : InkWell(
-                                              onTap: () async {
-                                                await UserDetailFirestore()
-                                                    .addFavorite(
-                                                        widget.productModel);
-                                                print("Favourite Added");
-                                              },
-                                              child: Icon(
-                                                MdiIcons.heartOutline,
+                                              return Icon(
+                                                MdiIcons.cart,
                                                 color: darklogoColor,
-                                                size: ScreenUtil().setSp(30),
+                                                size: ScreenUtil().setSp(25),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: ScreenUtil().setSp(20),
+                                        ),
+                                        productModel.favorite.contains(
+                                                FirebaseAuth
+                                                    .instance.currentUser!.uid)
+                                            ? InkWell(
+                                                onTap: () async {
+                                                  await UserDetailFirestore()
+                                                      .removeFavorite(
+                                                          widget.productModel);
+                                                  print("Favourite Removed");
+                                                },
+                                                child: Icon(
+                                                  MdiIcons.heart,
+                                                  color: Colors.red,
+                                                  size: ScreenUtil().setSp(30),
+                                                ),
+                                              )
+                                            : InkWell(
+                                                onTap: () async {
+                                                  await UserDetailFirestore()
+                                                      .addFavorite(
+                                                          widget.productModel);
+                                                  print("Favourite Added");
+                                                },
+                                                child: Icon(
+                                                  MdiIcons.heartOutline,
+                                                  color: darklogoColor,
+                                                  size: ScreenUtil().setSp(30),
+                                                ),
                                               ),
-                                            ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                         OurSizedBox(),
-                        Center(
-                          child: Container(
-                            child: Column(
-                              children: <Widget>[
-                                FxText.b2(
-                                  productModel.name,
-                                  fontWeight: 600,
-                                  fontSize: ScreenUtil().setSp(20),
-                                ),
-                                OurSizedBox(),
-                                FxText.h4(
-                                  "Rs. ${productModel.price}",
-                                  fontWeight: 500,
-                                  letterSpacing: 0,
-                                  fontSize: ScreenUtil().setSp(18.5),
-                                ),
-                                OurSizedBox(),
-                                FxText.h4(
-                                  "${productModel.desc}",
-                                  fontWeight: 500,
-                                  letterSpacing: 0,
-                                  fontSize: ScreenUtil().setSp(18.5),
-                                ),
-                                OurSizedBox(),
-                                GestureDetector(
-                                  onTap: () async {
-                                    if (productModel.ratingUID.contains(
-                                        FirebaseAuth
-                                            .instance.currentUser!.uid)) {
-                                      var a = await FirebaseFirestore.instance
-                                          .collection("Rating")
-                                          .doc(productModel.uid)
-                                          .collection("Ratings")
-                                          .doc(FirebaseAuth
-                                              .instance.currentUser!.uid)
-                                          .get();
-
-                                      var rate = a.data()!["rating"];
-                                      _showMyDialog(rate, true);
-                                    } else {
-                                      _showMyDialog(0.0, false);
-                                    }
-                                  },
-                                  child: RatingStars(
-                                    value: productModel.rating.toDouble(),
-                                    starBuilder: (index, color) => Icon(
-                                      Icons.star,
-                                      color: color,
-                                      size: ScreenUtil().setSp(25),
-                                    ),
-                                    starCount: 5,
-                                    starSize: ScreenUtil().setSp(25),
-                                    valueLabelColor: const Color(0xff9b9b9b),
-                                    valueLabelTextStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w400,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: ScreenUtil().setSp(15),
-                                    ),
-                                    valueLabelRadius: ScreenUtil().setSp(20),
-                                    maxValue: 5,
-                                    starSpacing: 1,
-                                    maxValueVisibility: true,
-                                    valueLabelVisibility: true,
-                                    animationDuration:
-                                        const Duration(milliseconds: 1000),
-                                    valueLabelPadding: EdgeInsets.symmetric(
-                                      vertical: ScreenUtil().setSp(7.5),
-                                      horizontal: ScreenUtil().setSp(7.5),
-                                    ),
-                                    valueLabelMargin: EdgeInsets.only(
-                                      right: ScreenUtil().setSp(5),
-                                    ),
-                                    starOffColor: Colors.white,
-                                    starColor: Colors.yellow,
+                            ],
+                          ),
+                          OurSizedBox(),
+                          Center(
+                            child: Container(
+                              child: Column(
+                                children: <Widget>[
+                                  FxText.b2(
+                                    productModel.name,
+                                    fontWeight: 600,
+                                    fontSize: ScreenUtil().setSp(20),
                                   ),
-                                ),
-                              ],
+                                  OurSizedBox(),
+                                  FxText.h4(
+                                    "Rs. ${productModel.price}",
+                                    fontWeight: 500,
+                                    letterSpacing: 0,
+                                    fontSize: ScreenUtil().setSp(18.5),
+                                  ),
+                                  OurSizedBox(),
+                                  FxText.h4(
+                                    "${productModel.desc}",
+                                    fontWeight: 500,
+                                    letterSpacing: 0,
+                                    fontSize: ScreenUtil().setSp(18.5),
+                                  ),
+                                  OurSizedBox(),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      if (productModel.ratingUID.contains(
+                                          FirebaseAuth
+                                              .instance.currentUser!.uid)) {
+                                        var a = await FirebaseFirestore.instance
+                                            .collection("Rating")
+                                            .doc(productModel.uid)
+                                            .collection("Ratings")
+                                            .doc(FirebaseAuth
+                                                .instance.currentUser!.uid)
+                                            .get();
+
+                                        var rate = a.data()!["rating"];
+                                        _showMyDialog(rate, true);
+                                      } else {
+                                        _showMyDialog(0.0, false);
+                                      }
+                                    },
+                                    child: RatingStars(
+                                      value: productModel.rating.toDouble(),
+                                      starBuilder: (index, color) => Icon(
+                                        Icons.star,
+                                        color: color,
+                                        size: ScreenUtil().setSp(25),
+                                      ),
+                                      starCount: 5,
+                                      starSize: ScreenUtil().setSp(25),
+                                      valueLabelColor: const Color(0xff9b9b9b),
+                                      valueLabelTextStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: ScreenUtil().setSp(15),
+                                      ),
+                                      valueLabelRadius: ScreenUtil().setSp(20),
+                                      maxValue: 5,
+                                      starSpacing: 1,
+                                      maxValueVisibility: true,
+                                      valueLabelVisibility: true,
+                                      animationDuration:
+                                          const Duration(milliseconds: 1000),
+                                      valueLabelPadding: EdgeInsets.symmetric(
+                                        vertical: ScreenUtil().setSp(7.5),
+                                        horizontal: ScreenUtil().setSp(7.5),
+                                      ),
+                                      valueLabelMargin: EdgeInsets.only(
+                                        right: ScreenUtil().setSp(5),
+                                      ),
+                                      starOffColor: Colors.white,
+                                      starColor: Colors.yellow,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        OurSizedBox(),
-                        OurElevatedButton(
-                          title: "Give Review",
-                          function: () {
-                            GiveRatingSheet(context);
-                          },
-                        ),
-                      ],
+                          OurSizedBox(),
+                          OurElevatedButton(
+                            title: "Give Review",
+                            function: () {
+                              GiveRatingSheet(context);
+                            },
+                          ),
+                        ],
+                      );
+                    }
+                    return Center(
+                      child: OurSpinner(),
                     );
-                  }
-                  return Center(
-                    child: OurSpinner(),
-                  );
-                },
+                  },
+                ),
               ),
             ),
             bottomNavigationBar: Container(

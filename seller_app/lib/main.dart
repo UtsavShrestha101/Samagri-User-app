@@ -15,6 +15,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await Hive.initFlutter();
   await Hive.openBox<int>(DatabaseHelper.outerlayerDB);
+  await Hive.openBox<String>("product_history");
   runApp(MyApp());
 }
 

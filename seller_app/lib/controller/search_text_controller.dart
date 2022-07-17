@@ -7,6 +7,7 @@ class SearchTextController extends GetxController {
 
   void changeValue(String value) {
     searchText.value = value;
+    search_controller.value.text = value;
   }
 
   void clearController() {

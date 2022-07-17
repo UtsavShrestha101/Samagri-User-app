@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../utils/color.dart';
 
 class CustomTextField extends StatefulWidget {
+  final Widget? suffexWidget;
   final TextEditingController controller;
   final FocusNode? start;
   final FocusNode? end;
@@ -21,10 +22,13 @@ class CustomTextField extends StatefulWidget {
   final int number;
   final int letterlength;
   final String? initialValue;
+  final bool? autofocus;
 
   const CustomTextField({
     Key? key,
     this.width,
+    this.autofocus,
+    this.suffexWidget,
     this.height,
     required this.letterlength,
     required this.controller,
@@ -75,50 +79,49 @@ class _CustomTextFieldState extends State<CustomTextField> {
           }
         },
         onChanged: (String value) {
-          // widget.onchange!(value) ?? () {};
+          widget.onchange!(value) ?? () {};
         },
         validator: (String? value) => widget.validator(value!),
         style: TextStyle(
           fontSize: ScreenUtil().setSp(15),
           color: logoColor,
         ),
+        autofocus: widget.autofocus ?? false,
         keyboardType: widget.type,
         maxLines: widget.length,
         onTap: widget.ontap ?? () {},
         readOnly: widget.readonly ?? false,
         decoration: InputDecoration(
-          border: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
+            border: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
 
-          // focusedBorder: InputBorder.none,
-          fillColor: Colors.white,
-          filled: true,
-          contentPadding: EdgeInsets.symmetric(
-            vertical: ScreenUtil().setSp(10),
-            horizontal: ScreenUtil().setSp(2),
-          ),
-
-          isDense: true,
-          hintText: widget.title,
-
-          hintStyle: TextStyle(
-            color: logoColor,
-            fontSize: ScreenUtil().setSp(
-              17.5,
+            // focusedBorder: InputBorder.none,
+            fillColor: Colors.white,
+            filled: true,
+            contentPadding: EdgeInsets.symmetric(
+              vertical: ScreenUtil().setSp(10),
+              horizontal: ScreenUtil().setSp(2),
             ),
-          ),
-          prefixIcon: Icon(
-            widget.icon,
-            size: ScreenUtil().setSp(20),
-            color: logoColor,
-          ),
-          errorStyle: TextStyle(
-            fontSize: ScreenUtil().setSp(
-              13.5,
+            isDense: true,
+            hintText: widget.title,
+            hintStyle: TextStyle(
+              color: logoColor,
+              fontSize: ScreenUtil().setSp(
+                17.5,
+              ),
             ),
-          ),
-        ),
+            prefixIcon: Icon(
+              widget.icon,
+              size: ScreenUtil().setSp(20),
+              color: logoColor,
+            ),
+            errorStyle: TextStyle(
+              fontSize: ScreenUtil().setSp(
+                13.5,
+              ),
+            ),
+            suffixIcon: widget.suffexWidget ?? null),
         // maxLength: 10,
       ),
     );
