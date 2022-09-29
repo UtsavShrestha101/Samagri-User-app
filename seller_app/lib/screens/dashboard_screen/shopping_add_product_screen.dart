@@ -70,7 +70,7 @@ class _ShopAddProductScreenState extends State<ShopAddProductScreen> {
     "Eggs and meat",
     "Household items",
     "Kitchen and pet food",
-    "Vegitable and fruits",
+    "Vegetable and fruits",
     "Beauty",
   ];
   String? categoryItem;
@@ -129,8 +129,10 @@ class _ShopAddProductScreenState extends State<ShopAddProductScreen> {
           child: Scaffold(
             body: SafeArea(
               child: Container(
-                padding: EdgeInsets.all(
-                  ScreenUtil().setSp(20),
+                padding: EdgeInsets.only(
+                  top: ScreenUtil().setSp(20),
+                  left: ScreenUtil().setSp(20),
+                  right: ScreenUtil().setSp(20),
                 ),
                 child: SingleChildScrollView(
                   child: Column(

@@ -46,12 +46,15 @@ class _SplashScreenState extends State<SplashScreen> {
               width: ScreenUtil().setSp(200),
             ),
             OurSizedBox(),
-            Text(
-              "Samagri",
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(35),
-                fontWeight: FontWeight.w600,
-                color: logoColor,
+            Hero(
+              tag: "Samagri",
+              child: Text(
+                "Samagri",
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(35),
+                  fontWeight: FontWeight.w600,
+                  color: logoColor,
+                ),
               ),
             ),
             const OurSizedBox(),

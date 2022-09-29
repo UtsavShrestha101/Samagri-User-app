@@ -26,146 +26,176 @@ class _ShoppingSearchScreenState extends State<ShoppingSearchScreen>
     return (width / 2 - 24) / ((width / 2 - 24) + 74);
   }
 
+  late AnimationController animationController;
+  late Animation<double> fadeAnimation;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    animationController.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1000),
+    );
+    fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: Curves.easeIn,
+      ),
+    );
+    animationController.forward();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        key: _scaffoldKey,
-        endDrawer: _EndDrawer(
-          scaffoldKey: _scaffoldKey,
-        ),
-        body: ListView(
-          padding: FxSpacing.fromLTRB(
-              20, FxSpacing.safeAreaTop(context) + 20, 20, 0),
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextFormField(
-                    style: FxTextStyle.sh2(letterSpacing: 0, fontWeight: 500),
-                    decoration: InputDecoration(
-                      hintText: "Search",
-                      hintStyle:
-                          FxTextStyle.sh2(letterSpacing: 0, fontWeight: 500),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
-                          ),
-                          borderSide: BorderSide.none),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
-                          ),
-                          borderSide: BorderSide.none),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
-                          ),
-                          borderSide: BorderSide.none),
-                      filled: true,
-                      prefixIcon: Icon(
-                        MdiIcons.magnify,
-                        size: 22,
+    return FadeTransition(
+      opacity: fadeAnimation,
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          key: _scaffoldKey,
+          endDrawer: _EndDrawer(
+            scaffoldKey: _scaffoldKey,
+          ),
+          body: ListView(
+            padding: FxSpacing.fromLTRB(
+                20, FxSpacing.safeAreaTop(context) + 20, 20, 0),
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextFormField(
+                      style: FxTextStyle.sh2(letterSpacing: 0, fontWeight: 500),
+                      decoration: InputDecoration(
+                        hintText: "Search",
+                        hintStyle:
+                            FxTextStyle.sh2(letterSpacing: 0, fontWeight: 500),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4),
+                            ),
+                            borderSide: BorderSide.none),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4),
+                            ),
+                            borderSide: BorderSide.none),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4),
+                            ),
+                            borderSide: BorderSide.none),
+                        filled: true,
+                        prefixIcon: Icon(
+                          MdiIcons.magnify,
+                          size: 22,
+                        ),
+                        isDense: true,
+                        contentPadding: EdgeInsets.only(right: 16),
                       ),
-                      isDense: true,
-                      contentPadding: EdgeInsets.only(right: 16),
+                      textCapitalization: TextCapitalization.sentences,
                     ),
-                    textCapitalization: TextCapitalization.sentences,
                   ),
-                ),
-                FxSpacing.width(20),
-                FxContainer.bordered(
-                  onTap: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext buildContext) {
-                          return SortBottomSheet();
-                        });
-                  },
-                  padding: EdgeInsets.all(12),
-                  child: Icon(
-                    MdiIcons.swapVertical,
-                    size: 22,
+                  FxSpacing.width(20),
+                  FxContainer.bordered(
+                    onTap: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext buildContext) {
+                            return SortBottomSheet();
+                          });
+                    },
+                    padding: EdgeInsets.all(12),
+                    child: Icon(
+                      MdiIcons.swapVertical,
+                      size: 22,
+                    ),
                   ),
-                ),
-                FxSpacing.width(20),
-                FxContainer.bordered(
-                  onTap: () {
-                    _scaffoldKey.currentState!.openEndDrawer();
-                  },
-                  padding: EdgeInsets.all(12),
-                  child: Icon(
-                    MdiIcons.tune,
-                    size: 22,
+                  FxSpacing.width(20),
+                  FxContainer.bordered(
+                    onTap: () {
+                      _scaffoldKey.currentState!.openEndDrawer();
+                    },
+                    padding: EdgeInsets.all(12),
+                    child: Icon(
+                      MdiIcons.tune,
+                      size: 22,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Container(
-              padding: FxSpacing.y(20),
-              child: FxText.b2("Result for \"Cosmetics\"", fontWeight: 600),
-            ),
-            Container(
-              child: GridView.count(
-                  padding: FxSpacing.zero,
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  crossAxisCount: 2,
-                  childAspectRatio:
-                      findAspectRatio(MediaQuery.of(context).size.width),
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20,
-                  children: <Widget>[
-                    _ProductListWidget(
-                        name: "Yellow cake",
-                        image: 'assets/images/product-1.jpg',
-                        shopName: 'Agus Bakery',
+                ],
+              ),
+              Container(
+                padding: FxSpacing.y(20),
+                child: FxText.b2("Result for \"Cosmetics\"", fontWeight: 600),
+              ),
+              Container(
+                child: GridView.count(
+                    padding: FxSpacing.zero,
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    crossAxisCount: 2,
+                    childAspectRatio:
+                        findAspectRatio(MediaQuery.of(context).size.width),
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 20,
+                    children: <Widget>[
+                      _ProductListWidget(
+                          name: "Yellow cake",
+                          image: 'assets/images/product-1.jpg',
+                          shopName: 'Agus Bakery',
+                          star: 4,
+                          price: 15000,
+                          rootContext: context),
+                      _ProductListWidget(
+                          name: "Cosmic bang",
+                          image: 'assets/images/product-7.jpg',
+                          shopName: 'Den cosmics',
+                          star: 4.5,
+                          price: 12000,
+                          rootContext: context),
+                      _ProductListWidget(
+                        name: "Sweet Gems",
+                        image: 'assets/images/product-5.jpg',
+                        shopName: 'El Primo',
+                        star: 3,
+                        price: 14700,
+                        rootContext: context,
+                      ),
+                      _ProductListWidget(
+                        name: "Lipsticks",
+                        image: 'assets/images/product-3.jpg',
+                        shopName: 'Bee Lipstore',
                         star: 4,
-                        price: 15000,
-                        rootContext: context),
-                    _ProductListWidget(
-                        name: "Cosmic bang",
-                        image: 'assets/images/product-7.jpg',
-                        shopName: 'Den cosmics',
-                        star: 4.5,
-                        price: 12000,
-                        rootContext: context),
-                    _ProductListWidget(
-                      name: "Sweet Gems",
-                      image: 'assets/images/product-5.jpg',
-                      shopName: 'El Primo',
-                      star: 3,
-                      price: 14700,
-                      rootContext: context,
-                    ),
-                    _ProductListWidget(
-                      name: "Lipsticks",
-                      image: 'assets/images/product-3.jpg',
-                      shopName: 'Bee Lipstore',
-                      star: 4,
-                      price: 14785,
-                      rootContext: context,
-                    ),
-                    _ProductListWidget(
-                      name: "Colorful sandal",
-                      image: 'assets/images/product-8.jpg',
-                      shopName: 'Lee Shop',
-                      star: 3.8,
-                      price: 14780,
-                      rootContext: context,
-                    ),
-                    _ProductListWidget(
-                      name: "Toffees",
-                      image: 'assets/images/product-2.jpg',
-                      shopName: 'Toffee Bakery',
-                      star: 5,
-                      price: 12500,
-                      rootContext: context,
-                    ),
-                  ]),
-            ),
-          ],
-        ));
+                        price: 14785,
+                        rootContext: context,
+                      ),
+                      _ProductListWidget(
+                        name: "Colorful sandal",
+                        image: 'assets/images/product-8.jpg',
+                        shopName: 'Lee Shop',
+                        star: 3.8,
+                        price: 14780,
+                        rootContext: context,
+                      ),
+                      _ProductListWidget(
+                        name: "Toffees",
+                        image: 'assets/images/product-2.jpg',
+                        shopName: 'Toffee Bakery',
+                        star: 5,
+                        price: 12500,
+                        rootContext: context,
+                      ),
+                    ]),
+              ),
+            ],
+          )),
+    );
   }
 }
 

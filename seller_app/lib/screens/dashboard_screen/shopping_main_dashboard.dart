@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:myapp/screens/dashboard_screen/shopping_add_list_screen.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_add_product_screen.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_my_cart_screen.dart';
 import '../../controller/dashboard_controller.dart';
@@ -26,7 +27,8 @@ class _ShoppingFullAppPageState extends State<ShoppingFullApp>
   List widgets = [
     const ShoppingHomeScreen(),
     const ShoppingSearchScreen(),
-    const ShopAddProductScreen(),
+    // const ShopAddProductScreen(),
+    const ShoppingAddListScreen(),
     const ShoppingMyCartScreen(),
     ShoppingProfileScreen()
   ];

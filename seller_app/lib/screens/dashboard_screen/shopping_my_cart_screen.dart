@@ -7,7 +7,6 @@ import 'package:flutx/flutx.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_map_location_picker_flutter/google_map_location_picker_flutter.dart';
-import 'package:google_maps_pick_place/google_maps_pick_place.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_address_choosing_screen.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_cart_screen.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_delivery_address_screen.dart';

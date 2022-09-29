@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:myapp/screens/onboarding_screen/onboarding_screen.dart';
-
 import '../../db/db_helper.dart';
-// import '../authentication_screens/login_screen.dart';
 import '../authentication_screens/shopping_login_screen.dart';
 import '../dashboard_screen/shopping_main_dashboard.dart';
 

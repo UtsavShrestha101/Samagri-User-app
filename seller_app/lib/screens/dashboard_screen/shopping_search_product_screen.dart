@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -25,16 +26,10 @@ class ShoppingSearchProductScreen extends StatefulWidget {
 }
 
 class _ShoppingSearchProductScreenState
-    extends State<ShoppingSearchProductScreen> {
+    extends State<ShoppingSearchProductScreen>
+    with SingleTickerProviderStateMixin {
   String searchText = "";
   TextEditingController _search_controller = TextEditingController();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // Get.find<SearchTextController>().clearController();
-  }
 
   int tag = -11;
   @override
@@ -56,30 +51,32 @@ class _ShoppingSearchProductScreenState
                 children: [
                   Row(
                     children: [
-                      IconButton(
-                        onPressed: () {
+                      InkWell(
+                        onTap: (() {
+                          Get.find<SearchTextController>().clearController();
                           Navigator.pop(context);
-                        },
-                        icon: Icon(
+                        }),
+                        child: Icon(
                           Icons.arrow_back,
-                          size: ScreenUtil().setSp(30),
-                          color: darklogoColor,
+                          color: logoColor,
+                          size: ScreenUtil().setSp(25),
                         ),
                       ),
-                      Obx(
-                        () => Expanded(
-                          child: CustomTextField(
-                            width: 5,
-                            height: 40,
-                            autofocus: true,
-                            letterlength: 1000,
-                            // initialValue: Get.find<SearchTextController>()
-                            //     .searchText
-                            //     .value,
-                            controller: Get.find<SearchTextController>()
-                                .search_controller
-                                .value,
-                            onchange: (value) {
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: ScreenUtil().setSp(22.5),
+                          ),
+                          height: ScreenUtil().setSp(40),
+                          child: TextFormField(
+                            scrollPadding: EdgeInsets.only(
+                              left: ScreenUtil().setSp(15),
+                              bottom: MediaQuery.of(context).viewInsets.bottom,
+                            ),
+                            cursorColor: Colors.white,
+                            controller: _search_controller,
+                            onChanged: (String value) {
+                              //  onchange: (value) {
                               print("Hello ");
                               print(value);
                               Get.find<SearchTextController>()
@@ -89,21 +86,52 @@ class _ShoppingSearchProductScreenState
                                   .value
                                   .text);
                             },
-                            validator: (value) {},
-                            title: "Search Product",
-                            type: TextInputType.name,
-                            number: 1,
-                            length: 1,
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(15),
+                              color: logoColor,
+                            ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+
+                              // focusedBorder: InputBorder.none,
+                              fillColor: Colors.white,
+                              filled: true,
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: ScreenUtil().setSp(10),
+                                horizontal: ScreenUtil().setSp(2),
+                              ),
+                              isDense: true,
+                              hintText: "Explore",
+                              hintStyle: TextStyle(
+                                color: logoColor,
+                                fontSize: ScreenUtil().setSp(
+                                  17.5,
+                                ),
+                              ),
+
+                              errorStyle: TextStyle(
+                                fontSize: ScreenUtil().setSp(
+                                  13.5,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _search_controller.clear();
+                          });
+                          // Get.find<SearchTextController>()
+
                           Get.find<SearchTextController>().clearController();
                         },
-                        icon: Icon(
+                        child: Icon(
                           Icons.delete,
-                          size: ScreenUtil().setSp(30),
+                          size: ScreenUtil().setSp(25),
                           color: darklogoColor,
                         ),
                       ),
@@ -255,18 +283,27 @@ class _ShoppingSearchProductScreenState
                                       });
                                 }
                               } else {
-                                return Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Image.asset(
+                                return Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.225,
+                                    ),
+                                    Center(
+                                      child: Image.asset(
                                         "assets/images/logo.png",
                                         fit: BoxFit.contain,
                                         height: ScreenUtil().setSp(100),
                                         width: ScreenUtil().setSp(100),
                                       ),
-                                      OurSizedBox(),
-                                      Text(
+                                    ),
+                                    OurSizedBox(),
+                                    Center(
+                                      child: Text(
                                         "We are sorry",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w400,
@@ -274,42 +311,55 @@ class _ShoppingSearchProductScreenState
                                           fontSize: ScreenUtil().setSp(17.5),
                                         ),
                                       ),
-                                      OurSizedBox(),
-                                      Text(
+                                    ),
+                                    OurSizedBox(),
+                                    Center(
+                                      child: Text(
                                         "We cannot find any matches for your search term",
                                         style: TextStyle(
                                           color: Colors.black45,
                                           fontSize: ScreenUtil().setSp(15),
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 );
                               }
                               return Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Image.asset(
-                                    "assets/images/logo.png",
-                                    fit: BoxFit.contain,
-                                    height: ScreenUtil().setSp(100),
-                                    width: ScreenUtil().setSp(100),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.225,
                                   ),
-                                  OurSizedBox(),
-                                  Text(
-                                    "We are sorry",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      color: logoColor,
-                                      fontSize: ScreenUtil().setSp(17.5),
+                                  Center(
+                                    child: Image.asset(
+                                      "assets/images/logo.png",
+                                      fit: BoxFit.contain,
+                                      height: ScreenUtil().setSp(100),
+                                      width: ScreenUtil().setSp(100),
                                     ),
                                   ),
                                   OurSizedBox(),
-                                  Text(
-                                    "We cannot find any matches for your search term",
-                                    style: TextStyle(
-                                      color: Colors.black45,
-                                      fontSize: ScreenUtil().setSp(15),
+                                  Center(
+                                    child: Text(
+                                      "We are sorry",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        color: logoColor,
+                                        fontSize: ScreenUtil().setSp(17.5),
+                                      ),
+                                    ),
+                                  ),
+                                  OurSizedBox(),
+                                  Center(
+                                    child: Text(
+                                      "We cannot find any matches for your search term",
+                                      style: TextStyle(
+                                        color: Colors.black45,
+                                        fontSize: ScreenUtil().setSp(15),
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -325,3 +375,66 @@ class _ShoppingSearchProductScreenState
     );
   }
 }
+
+
+// Container(
+//       margin: EdgeInsets.symmetric(
+//         horizontal: ScreenUtil().setSp( 22.5),
+//       ),
+//       height: ScreenUtil().setSp( 40),
+//       child: TextFormField(
+//         // inputFormatters: [
+//         //   LengthLimitingTextInputFormatter(widget.letterlength),
+//         // ],
+//         scrollPadding: EdgeInsets.only(
+//           bottom: MediaQuery.of(context).viewInsets.bottom,
+//         ),
+//         cursorColor: Colors.white,
+//         controller: _search_controller,
+        
+//         onChanged: (String value) {
+//           // widget.onchange!(value) ;
+//         },
+//         // validator: (String? value) => widget.validator(value!),
+//         style: TextStyle(
+//           fontSize: ScreenUtil().setSp(15),
+//           color: logoColor,
+//         ),
+//         // autofocus: widget.autofocus ?? false,
+//         keyboardType: TextInputType.name,
+//         // maxLines: widget.length,
+//         // onTap: widget.ontap ?? () {},
+//         // readOnly: widget.readonly ?? false,
+//         decoration: InputDecoration(
+//             border: InputBorder.none,
+//             enabledBorder: InputBorder.none,
+//             focusedBorder: InputBorder.none,
+
+//             // focusedBorder: InputBorder.none,
+//             fillColor: Colors.white,
+//             filled: true,
+//             contentPadding: EdgeInsets.symmetric(
+//               vertical: ScreenUtil().setSp(10),
+//               horizontal: ScreenUtil().setSp(2),
+//             ),
+//             isDense: true,
+//             hintText: "Keyboard",
+//             hintStyle: TextStyle(
+//               color: logoColor,
+//               fontSize: ScreenUtil().setSp(
+//                 17.5,
+//               ),
+//             ),
+//             // prefixIcon: Icon(
+//             //   widget.icon,
+//             //   size: ScreenUtil().setSp(20),
+//             //   color: logoColor,
+//             // ),
+//             errorStyle: TextStyle(
+//               fontSize: ScreenUtil().setSp(
+//                 13.5,
+//               ),
+//             ),
+//             // suffixIcon: widget.suffexWidget ?? null),
+//         // maxLength: 10,
+//       ),
