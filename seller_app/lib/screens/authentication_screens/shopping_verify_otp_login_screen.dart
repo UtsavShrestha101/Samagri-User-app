@@ -44,6 +44,7 @@ class _VerifyOPTLoginScreenState extends State<VerifyOPTLoginScreen> {
 
   @override
   void initState() {
+    _pinPutController.dispose();
     // TODO: implement initState
     super.initState();
     Get.find<OTPController>().clearOTP;
@@ -59,6 +60,7 @@ class _VerifyOPTLoginScreenState extends State<VerifyOPTLoginScreen> {
 
   @override
   void dispose() {
+    _pinPutController.dispose();
     SmsAutoFill().unregisterListener();
     print("unregisterListener");
     super.dispose();

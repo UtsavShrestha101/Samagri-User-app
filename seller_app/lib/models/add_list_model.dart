@@ -8,7 +8,7 @@ class AddListModel extends HiveObject {
   final String date;
 
   @HiveField(1)
-  final List itemList;
+  final List<String> itemList;
 
   AddListModel(this.date, this.itemList);
 }

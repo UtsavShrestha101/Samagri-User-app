@@ -58,6 +58,7 @@ class _VerifyOPTSignUpScreenState extends State<VerifyOPTSignUpScreen> {
     // await SmsAutoFill().unregisterListener();
     // listenForCode();
     await SmsAutoFill().listenForCode;
+    _pinPutController.dispose();
     print("OTP listen Called");
   }
 

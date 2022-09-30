@@ -18,7 +18,7 @@ class AddListModelAdapter extends TypeAdapter<AddListModel> {
     };
     return AddListModel(
       fields[0] as String,
-      (fields[1] as List).cast<dynamic>(),
+      (fields[1] as List).cast<String>(),
     );
   }
 

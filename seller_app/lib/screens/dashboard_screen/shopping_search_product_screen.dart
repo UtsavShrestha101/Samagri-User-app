@@ -1,21 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:myapp/controller/search_text_controller.dart';
 import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_sized_box.dart';
 import 'package:myapp/widget/our_spinner.dart';
-
 import '../../models/product_model.dart';
-import '../../widget/our_product_grid_loading_widget.dart';
 import '../../widget/our_search_product_tile.dart';
-import '../../widget/our_text_field.dart';
 
 class ShoppingSearchProductScreen extends StatefulWidget {
   const ShoppingSearchProductScreen({Key? key}) : super(key: key);
@@ -30,6 +23,12 @@ class _ShoppingSearchProductScreenState
     with SingleTickerProviderStateMixin {
   String searchText = "";
   TextEditingController _search_controller = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _search_controller.clear();
+  }
 
   int tag = -11;
   @override
@@ -76,15 +75,8 @@ class _ShoppingSearchProductScreenState
                             cursorColor: Colors.white,
                             controller: _search_controller,
                             onChanged: (String value) {
-                              //  onchange: (value) {
-                              print("Hello ");
-                              print(value);
                               Get.find<SearchTextController>()
                                   .changeValue(value);
-                              print(Get.find<SearchTextController>()
-                                  .search_controller
-                                  .value
-                                  .text);
                             },
                             style: TextStyle(
                               fontSize: ScreenUtil().setSp(15),
@@ -94,8 +86,6 @@ class _ShoppingSearchProductScreenState
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
-
-                              // focusedBorder: InputBorder.none,
                               fillColor: Colors.white,
                               filled: true,
                               contentPadding: EdgeInsets.symmetric(
@@ -110,7 +100,6 @@ class _ShoppingSearchProductScreenState
                                   17.5,
                                 ),
                               ),
-
                               errorStyle: TextStyle(
                                 fontSize: ScreenUtil().setSp(
                                   13.5,
@@ -125,8 +114,6 @@ class _ShoppingSearchProductScreenState
                           setState(() {
                             _search_controller.clear();
                           });
-                          // Get.find<SearchTextController>()
-
                           Get.find<SearchTextController>().clearController();
                         },
                         child: Icon(
@@ -263,10 +250,7 @@ class _ShoppingSearchProductScreenState
                                 .snapshots(),
                             builder:
                                 (BuildContext context, AsyncSnapshot snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return OurSpinner();
-                              } else if (snapshot.hasData) {
+                              if (snapshot.hasData) {
                                 if (snapshot.data!.docs.length > 0) {
                                   return ListView.builder(
                                       shrinkWrap: true,

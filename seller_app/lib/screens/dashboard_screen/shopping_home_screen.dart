@@ -82,7 +82,7 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
     // TODO: implement initState
 
     super.initState();
-    // showIntroData();
+    showIntroData();
     Get.find<CategoryTagController>().initialize();
     animationController = AnimationController(
       duration: Duration(milliseconds: 900),
