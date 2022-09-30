@@ -95,7 +95,8 @@ class _ShoppingFullAppPageState extends State<ShoppingFullApp>
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
-                    MdiIcons.tagOutline,
+                    // Icons.list_alt_outlined,
+                    MdiIcons.checkAll,
                     color: darklogoColor,
                     size: ScreenUtil().setSp(22.5),
                   ),

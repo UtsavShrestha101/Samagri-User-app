@@ -64,7 +64,6 @@ class _ShoppingListSearchState extends State<ShoppingListSearch>
     // TODO: implement dispose
     super.dispose();
     animationController.dispose();
-    
   }
 
   @override
