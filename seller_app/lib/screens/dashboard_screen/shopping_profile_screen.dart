@@ -122,7 +122,7 @@ class _ShoppingProfileScreenState extends State<ShoppingProfileScreen> {
                               pinColor: Colors.blue,
                               addressPlaceHolder: "Loading",
                               addressTitle: "Address",
-                              apiKey: "AIzaSyCj5y6leoSyCt1eZaqaWyrsBhToOiLuGSo",
+                              apiKey: "AIzaSyBlMkiLJ-G7YNmFabacXbMwfI2dectJSfs",
                               appBarTitle: "Select delivery address",
                               confirmButtonColor: logoColor,
                               confirmButtonText: "Done",

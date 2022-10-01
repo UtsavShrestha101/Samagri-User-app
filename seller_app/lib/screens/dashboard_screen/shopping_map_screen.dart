@@ -140,7 +140,7 @@ class ShopMapScreenState extends State<ShopMapScreen> {
                 GoogleMap(
                   mapType: MapType.normal,
                   initialCameraPosition: _kGooglePlex!,
-                  myLocationButtonEnabled: false,
+                  myLocationButtonEnabled: true,
                   rotateGesturesEnabled: true,
                   scrollGesturesEnabled: true,
                   tiltGesturesEnabled: true,
@@ -452,12 +452,13 @@ class ShopMapScreenState extends State<ShopMapScreen> {
                   ),
                 ),
                 Center(
-                    child: Padding(
-                  padding: EdgeInsets.only(
-                    bottom: ScreenUtil().setSp(40),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: ScreenUtil().setSp(40),
+                    ),
+                    child: widget.pinWidget,
                   ),
-                  child: widget.pinWidget,
-                ))
+                ),
               ],
             ),
           ),

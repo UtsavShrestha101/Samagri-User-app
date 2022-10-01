@@ -4,11 +4,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_add_list_screen.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_add_product_screen.dart';
+import 'package:myapp/screens/dashboard_screen/shopping_explore_shop.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_my_cart_screen.dart';
+import 'package:myapp/services/current_location/get_current_location.dart';
 import '../../controller/dashboard_controller.dart';
 import '../../models/firebase_user_model.dart';
 import '../../utils/color.dart';
@@ -24,33 +29,76 @@ class ShoppingFullApp extends StatefulWidget {
 
 class _ShoppingFullAppPageState extends State<ShoppingFullApp>
     with SingleTickerProviderStateMixin {
-  List widgets = [
-    const ShoppingHomeScreen(),
-    const ShoppingSearchScreen(),
-    // const ShopAddProductScreen(),
-    const ShoppingAddListScreen(),
-    const ShoppingMyCartScreen(),
-    ShoppingProfileScreen()
-  ];
+  late Position position;
+  getlocation() async {
+    print("Inside location");
+    position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    if (position != null) {
+      print(position);
+      print("UTSAV SHRESTHA");
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // getlocation();
+  }
+
   Widget build(BuildContext context) {
+    List widgets = [
+      const ShoppingHomeScreen(),
+      // const ShoppingSearchScreen(),
+      ShopExploreScreen(
+        pinWidget: Icon(
+          Icons.location_pin,
+          color: Colors.red,
+          size: ScreenUtil().setSp(50),
+        ),
+        pinColor: Colors.blue,
+        addressPlaceHolder: "Loading",
+        addressTitle: "Address",
+        apiKey: "AIzaSyBlMkiLJ-G7YNmFabacXbMwfI2dectJSfs",
+        appBarTitle: "Select delivery address",
+        confirmButtonColor: logoColor,
+        confirmButtonText: "Done",
+        confirmButtonTextColor: Colors.white,
+        country: "NP",
+        language: "en",
+        searchHint: "Search",
+        // initialLocation: LatLng(
+        //   position.latitude,
+        //   position.longitude,
+        //   // 12.34,
+        //   // 23.45
+        // ),
+      ),
+      // const ShopAddProductScreen(),
+      const ShoppingAddListScreen(),
+      const ShoppingMyCartScreen(),
+      ShoppingProfileScreen()
+    ];
     return Obx(() => GestureDetector(
-          onHorizontalDragEnd: (dragDetail) {
-            if (dragDetail.velocity.pixelsPerSecond.dx < 1) {
-              if (Get.find<DashboardController>().indexs.value < 4) {
-                print(Get.find<DashboardController>().indexs.value);
-                print("Right swipe");
-                Get.find<DashboardController>().changeIndexs(
-                    Get.find<DashboardController>().indexs.value + 1);
-              }
-            } else {
-              if (Get.find<DashboardController>().indexs.value > 0) {
-                print(Get.find<DashboardController>().indexs.value);
-                print("Left swipe");
-                Get.find<DashboardController>().changeIndexs(
-                    Get.find<DashboardController>().indexs.value - 1);
-              }
-            }
-          },
+          // onHorizontalDragEnd: (dragDetail) {
+          //   if (dragDetail.velocity.pixelsPerSecond.dx < 1) {
+          //     if (Get.find<DashboardController>().indexs.value < 4) {
+          //       print(Get.find<DashboardController>().indexs.value);
+          //       print("Right swipe");
+          //       Get.find<DashboardController>().changeIndexs(
+          //           Get.find<DashboardController>().indexs.value + 1);
+          //     }
+          //   } else {
+          //     if (Get.find<DashboardController>().indexs.value > 0) {
+          //       print(Get.find<DashboardController>().indexs.value);
+          //       print("Left swipe");
+          //       Get.find<DashboardController>().changeIndexs(
+          //           Get.find<DashboardController>().indexs.value - 1);
+          //     }
+          //   }
+          // },
           child: Scaffold(
             bottomNavigationBar: SnakeNavigationBar.color(
               height: ScreenUtil().setSp(50),

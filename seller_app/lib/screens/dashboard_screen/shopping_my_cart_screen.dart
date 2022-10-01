@@ -185,7 +185,7 @@ class _ShoppingMyCartScreenState extends State<ShoppingMyCartScreen> {
                                   //     addressPlaceHolder: "Loading",
                                   //     addressTitle: "Address",
                                   //     apiKey:
-                                  //         "AIzaSyCj5y6leoSyCt1eZaqaWyrsBhToOiLuGSo",
+                                  //         "AIzaSyBlMkiLJ-G7YNmFabacXbMwfI2dectJSfs",
                                   //     appBarTitle: "Select delivery address",
                                   //     confirmButtonColor: logoColor,
                                   //     confirmButtonText: "Done",

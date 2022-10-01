@@ -22,6 +22,7 @@ import 'package:myapp/widget/our_sized_box.dart';
 import 'package:myapp/widget/our_spinner.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../models/category_model.dart';
+import '../../models/lat_long_controller.dart';
 import '../../models/product_model.dart';
 import '../../widget/our_carousel_slider.dart';
 import '../../widget/our_product_grid_tile.dart';
@@ -68,9 +69,9 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
   @override
   void dispose() {
     // TODO: implement dispose
-    super.dispose();
     animationController.dispose();
-    logoanimationController.dispose();
+    // logoanimationController.dispose();
+    super.dispose();
   }
 
   void _scrollListener() {
@@ -109,12 +110,24 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
   Future<void> showIntroData() async {
     await Future.delayed(
       Duration(
-        seconds: 2,
+        seconds: 1,
       ),
-    ).then((value) {
-      Intro.of(context).start();
+    ).then((value) async {
+      if (Hive.box<int>(DatabaseHelper.introHelperDB)
+              .get("state", defaultValue: 0) ==
+          0) {
+        print(Hive.box<int>(DatabaseHelper.introHelperDB).get("state"));
+        await Future.delayed(Duration(seconds: 3)).then((value) {
+          Intro.of(context).start();
 
-      print("Hello Utsav");
+          print("Hello Utsav");
+        });
+        print("First Time");
+        await Hive.box<int>(DatabaseHelper.introHelperDB).put("state", 1);
+      } else {
+        print(Hive.box<int>(DatabaseHelper.introHelperDB).get("state"));
+        print("Already done");
+      }
     });
     Position? position = await GetCurrentLocation().getCurrentLocation();
     if (position != null) {
@@ -123,6 +136,8 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
         position.latitude,
         position.longitude,
       );
+      Get.find<LatLongController>()
+          .changeLocation(position.latitude, position.longitude);
       Placemark pMark = placeMarks![1];
       print(pMark);
       String completeAddress =

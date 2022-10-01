@@ -3,6 +3,7 @@ import 'package:myapp/controller/add_item_controller.dart';
 import 'package:myapp/controller/login_controller.dart';
 import 'package:myapp/controller/otp_controller.dart';
 import 'package:myapp/controller/quantity_controller.dart';
+import 'package:myapp/models/lat_long_controller.dart';
 
 import '../controller/address_choose_controller.dart';
 import '../controller/category_tag_controller.dart';
@@ -49,6 +50,9 @@ class MyBinding implements Bindings {
     );
     Get.lazyPut(
       () => ShoppingListSearchController(),
+    );
+    Get.lazyPut(
+      () => LatLongController(),
     );
     // ShoppingListSearchController
     // ProductListName
