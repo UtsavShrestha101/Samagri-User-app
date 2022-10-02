@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -13,10 +14,11 @@ import 'package:myapp/services/add_latitude_longitude/add_latitude_longitude.dar
 import 'package:myapp/services/firestore_service/location_detail.dart';
 import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_elevated_button.dart';
+import 'package:myapp/widget/our_sized_box.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:custom_info_window/custom_info_window.dart';
 import '../../controller/login_controller.dart';
 import '../../models/address_result_model.dart';
 import '../../widget/our_spinner.dart';
@@ -57,6 +59,8 @@ class ShopExploreScreen extends StatefulWidget {
 }
 
 class ShopExploreScreenState extends State<ShopExploreScreen> {
+  CustomInfoWindowController customInfoWindowController =
+      CustomInfoWindowController();
   final Completer<GoogleMapController> _controller = Completer();
   bool loading = false;
   String _currentAddress = "";
@@ -65,6 +69,12 @@ class ShopExploreScreenState extends State<ShopExploreScreen> {
   CameraPosition? _kGooglePlex;
   Set<Marker> markers = new Set(); //markers for google map
   static const LatLng showLocation = const LatLng(27.7089427, 85.3086209);
+
+  @override
+  void dispose() {
+    customInfoWindowController.dispose();
+    super.dispose();
+  }
 
   getAddress(LatLng? location) async {
     try {
@@ -125,7 +135,8 @@ class ShopExploreScreenState extends State<ShopExploreScreen> {
   }
 
   getmarkers() async {
-    List<Marker>? locationData = await AddLatLongFirebase().getAllLocation();
+    List<Marker>? locationData =
+        await AddLatLongFirebase().getAllLocation(customInfoWindowController);
     setState(() {
       markers = locationData!.toSet();
       markers.add(
@@ -135,9 +146,53 @@ class ShopExploreScreenState extends State<ShopExploreScreen> {
             ),
             position: LatLng(Get.find<LatLongController>().lat.value,
                 Get.find<LatLongController>().long.value),
-            infoWindow: InfoWindow(
-              title: "Current Location",
-            )),
+            // infoWindow: InfoWindow(
+            //   title: "Current Location",
+            // ),
+            onTap: () {
+              customInfoWindowController.addInfoWindow!(
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.65,
+                  // width: 400,
+                  height: ScreenUtil().setSp(1000),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Image.asset(
+                          "assets/images/banners/banner_1.jpg",
+                          width: MediaQuery.of(context).size.width * 0.65,
+                          height: ScreenUtil().setSp(100),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      OurSizedBox(),
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: ScreenUtil().setSp(2.5),
+                        ),
+                        child: Text(
+                          "Utsav Shrestha Utsav Shrestha Utsav Shrestha Utsav Shrestha",
+                          style: TextStyle(
+                            fontSize: ScreenUtil().setSp(17.5),
+                            color: logoColor,
+                            fontWeight: FontWeight.w400,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      OurSizedBox(),
+                    ],
+                  ),
+                ),
+                LatLng(Get.find<LatLongController>().lat.value,
+                    Get.find<LatLongController>().long.value),
+              );
+            }),
       );
     });
   }
@@ -166,13 +221,24 @@ class ShopExploreScreenState extends State<ShopExploreScreen> {
                     loading = true;
                   });
                 },
+                onTap: (position) {
+                  customInfoWindowController.hideInfoWindow!();
+                },
                 onCameraMove: (p) {
                   _latLng = LatLng(p.target.latitude, p.target.longitude);
+                  customInfoWindowController.onCameraMove!();
                 },
                 onCameraIdle: () async {},
                 onMapCreated: (GoogleMapController controller) {
                   _controller.complete(controller);
+                  customInfoWindowController.googleMapController = controller;
                 },
+              ),
+              CustomInfoWindow(
+                controller: customInfoWindowController,
+                height: ScreenUtil().setSp(200),
+                width: MediaQuery.of(context).size.width * 0.65,
+                offset: ScreenUtil().setSp(50),
               ),
               // Center(
               //   child: Padding(

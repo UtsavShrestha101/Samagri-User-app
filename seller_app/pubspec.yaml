@@ -94,6 +94,7 @@ dependencies:
   sliver_tools: ^0.2.8
   sticky_headers: ^0.2.0 
   scroll_to_id: ^1.5.1
+  custom_info_window: ^1.0.1
  
   
   

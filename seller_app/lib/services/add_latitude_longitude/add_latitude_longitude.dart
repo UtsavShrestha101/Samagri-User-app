@@ -1,10 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:myapp/widget/our_flutter_toast.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:ui' as ui;
+
+import '../../models/lat_long_controller.dart';
+import '../../utils/color.dart';
+import '../../widget/our_sized_box.dart';
 
 class AddLatLongFirebase {
   addLatLong(double latitude, double longitude) async {
@@ -37,7 +45,8 @@ class AddLatLongFirebase {
         .asUint8List();
   }
 
-  Future<List<Marker>?> getAllLocation() async {
+  Future<List<Marker>?> getAllLocation(
+      CustomInfoWindowController controller) async {
     print("Inside Get All Location");
     List<Marker> markers = [];
     try {
@@ -51,18 +60,83 @@ class AddLatLongFirebase {
         element.data();
         markers.add(
           Marker(
-            markerId: MarkerId(element.data()["uid"]),
-            position: LatLng(
-              element.data()["latitude"],
-              element.data()["longitude"],
-            ),
-            infoWindow: InfoWindow(
-              //popup info
-              title: 'Our Second Location',
-              // snippet: 'My Custom Subtitle',
-            ),
-            icon: BitmapDescriptor.fromBytes(markerIcon),
-          ),
+              markerId: MarkerId(element.data()["uid"]),
+              position: LatLng(
+                element.data()["latitude"],
+                element.data()["longitude"],
+              ),
+              icon: BitmapDescriptor.fromBytes(markerIcon),
+              onTap: () {
+                controller.addInfoWindow!(
+                  Container(
+                    // width: MediaQuery.of(context).size.width * 0.65,
+                    // width: 400,
+                    height: ScreenUtil().setSp(1000),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Image.asset(
+                            "assets/images/banners/banner_1.jpg",
+                            width: double.infinity,
+                            // width: MediaQuery.of(context).size.width * 0.65,
+                            height: ScreenUtil().setSp(100),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        OurSizedBox(),
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: ScreenUtil().setSp(2.5),
+                          ),
+                          child: Text(
+                            element.data()["uid"],
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(17.5),
+                              color: logoColor,
+                              fontWeight: FontWeight.w400,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                        Divider(
+                          color: darklogoColor,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Icon(
+                                Icons.directions,
+                                size: ScreenUtil().setSp(25),
+                                color: logoColor,
+                              ),
+                            ),
+                            SizedBox(
+                              width: ScreenUtil().setSp(5),
+                            ),
+                            Expanded(
+                              child: Icon(
+                                Icons.person,
+                                size: ScreenUtil().setSp(25),
+                                color: logoColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        OurSizedBox(),
+                      ],
+                    ),
+                  ),
+                  LatLng(
+                    element.data()["latitude"],
+                    element.data()["longitude"],
+                  ),
+                );
+              }),
         );
       });
       return markers;
