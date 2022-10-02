@@ -58,7 +58,8 @@ class ShopExploreScreen extends StatefulWidget {
   State<ShopExploreScreen> createState() => ShopExploreScreenState();
 }
 
-class ShopExploreScreenState extends State<ShopExploreScreen> {
+class ShopExploreScreenState extends State<ShopExploreScreen>
+    with TickerProviderStateMixin {
   CustomInfoWindowController customInfoWindowController =
       CustomInfoWindowController();
   final Completer<GoogleMapController> _controller = Completer();
@@ -70,42 +71,21 @@ class ShopExploreScreenState extends State<ShopExploreScreen> {
   Set<Marker> markers = new Set(); //markers for google map
   static const LatLng showLocation = const LatLng(27.7089427, 85.3086209);
 
+  late AnimationController animationControllerListPage;
+  late Animation<double> logoAnimationList;
+  late Animation<double> fadeAnimation;
+  late AnimationController animationController;
+  late Uint8List markerbitmap;
   @override
   void dispose() {
+    animationController.dispose();
+    animationControllerListPage.dispose();
+
     customInfoWindowController.dispose();
     super.dispose();
   }
 
-  getAddress(LatLng? location) async {
-    try {
-      final endpoint =
-          'https://maps.googleapis.com/maps/api/geocode/json?latlng=${location?.latitude},${location?.longitude}'
-          '&key=${widget.apiKey}&language=${widget.language}';
-
-      final response = jsonDecode((await http.get(
-        Uri.parse(endpoint),
-      ))
-          .body);
-      getAddressModel getaddress = getAddressModel.fromJson(response);
-      setState(() {
-        _currentAddress =
-            "${getaddress.results![0].addressComponents![1].longName!}, ${getaddress.results![0].addressComponents![2].longName!}, ${getaddress.results![0].addressComponents![3].longName!}, ${getaddress.results![0].addressComponents![4].longName!}, ${getaddress.results![0].addressComponents![5].longName!}";
-        _shortName =
-            response['results'][0]['address_components'][1]['long_name'];
-      });
-    } catch (e) {
-      print(e);
-    }
-
-    setState(() {
-      loading = false;
-    });
-  }
-
-  late Uint8List markerbitmap;
-
   // Latitude: 27.7122836, Longitude: 85.3686384
-
   @override
   void initState() {
     super.initState();
@@ -118,20 +98,30 @@ class ShopExploreScreenState extends State<ShopExploreScreen> {
       zoom: 15,
     );
     getmarkers();
-    // Future.delayed(Duration(seconds: 3), () {
-    //   Get.find<LoginController>().toggle(false);
-    // });
-    // setState(() {});
-  }
 
-  Future<Uint8List> getBytesFromAsset(String path, int width) async {
-    ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: width);
-    ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
-        .buffer
-        .asUint8List();
+    animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1000),
+    );
+    animationControllerListPage = AnimationController(
+      duration: Duration(milliseconds: 900),
+      vsync: this,
+    );
+
+    logoAnimationList = Tween<double>(begin: -0.1, end: 0.1).animate(
+      CurvedAnimation(
+        parent: animationControllerListPage,
+        curve: Curves.linear,
+      ),
+    );
+    animationControllerListPage.repeat(reverse: true);
+    fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: Curves.easeIn,
+      ),
+    );
+    animationController.forward();
   }
 
   getmarkers() async {
@@ -204,12 +194,130 @@ class ShopExploreScreenState extends State<ShopExploreScreen> {
         inAsyncCall: Get.find<LoginController>().processing.value,
         progressIndicator: OurSpinner(),
         child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RotationTransition(
+                  turns: logoAnimationList,
+                  child: Image.asset(
+                    "assets/images/logo.png",
+                    height: ScreenUtil().setSp(23.5),
+                    width: ScreenUtil().setSp(23.5),
+                  ),
+                ),
+                SizedBox(
+                  width: ScreenUtil().setSp(7.5),
+                ),
+                Text(
+                  "Explore Shops",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: ScreenUtil().setSp(25),
+                    color: darklogoColor,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              PopupMenuButton(
+                icon: Icon(
+                  Icons.more_vert,
+                  color: darklogoColor,
+                  size: ScreenUtil().setSp(27.5),
+                ),
+                // color: darklogoColor,
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    onTap: () {
+                      _controller.future.then((value) {
+                        DefaultAssetBundle.of(context)
+                            .loadString("assets/mapTheme/normal_theme.json")
+                            .then((string1) {
+                          value.setMapStyle(string1);
+                        });
+                      });
+                    },
+                    child: Text(
+                      "Normal Theme",
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(17.5),
+                        color: logoColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    onTap: () {
+                      _controller.future.then((value) {
+                        DefaultAssetBundle.of(context)
+                            .loadString("assets/mapTheme/retro_theme.json")
+                            .then((string1) {
+                          value.setMapStyle(string1);
+                        });
+                      });
+                    },
+                    child: Text(
+                      "Retro Theme",
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(17.5),
+                        color: logoColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    onTap: () {
+                      _controller.future.then((value) {
+                        DefaultAssetBundle.of(context)
+                            .loadString("assets/mapTheme/aubergine_theme.json")
+                            .then((string1) {
+                          value.setMapStyle(string1);
+                        });
+                      });
+                    },
+                    child: Text(
+                      "Aubergine Theme",
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(17.5),
+                        color: logoColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    onTap: () {
+                      _controller.future.then((value) {
+                        DefaultAssetBundle.of(context)
+                            .loadString("assets/mapTheme/night_theme.json")
+                            .then((string1) {
+                          value.setMapStyle(string1);
+                        });
+                      });
+                    },
+                    child: Text(
+                      "Night Theme",
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(17.5),
+                        color: logoColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
           body: Stack(
             children: [
               GoogleMap(
-                mapType: MapType.normal,
+                // mapType: MapType.normal,
                 initialCameraPosition: _kGooglePlex!,
                 markers: markers,
+                zoomControlsEnabled: false,
                 myLocationButtonEnabled: true,
                 rotateGesturesEnabled: true,
                 scrollGesturesEnabled: true,
@@ -269,37 +377,4 @@ class ShopExploreScreenState extends State<ShopExploreScreen> {
       ),
     );
   }
-
-  // getPlace(placeId) async {
-  //   String baseURL = 'https://maps.googleapis.com/maps/api/place/details/json';
-  //   String request =
-  //       '$baseURL?place_id=$placeId&key=${widget.apiKey}&language=${widget.language}';
-  //   try {
-  //     var response = await http.get(Uri.parse(request));
-
-  //     if (response.statusCode == 200) {
-  //       var res = json.decode(response.body);
-  //       print("===================");
-  //       print("===================");
-  //       print("===================");
-  //       print("===================");
-  //       print("===================");
-  //       print(request);
-  //       print(res);
-  //       print("===================");
-  //       print("===================");
-  //       print("===================");
-  //       print("===================");
-  //       print("===================");
-
-  //       return res['result']['geometry']['location'];
-  //     } else {
-  //       throw Exception('Failed to load predictions');
-  //     }
-  //   } catch (e) {
-  //     print("++++++++++++++");
-  //     print(e);
-  //     print("++++++++++++++");
-  //   }
-  // }
 }
