@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:ui' as ui;
 import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:myapp/controller/explore_shop_controller.dart';
 import 'package:myapp/models/get_address_model.dart';
 import 'package:myapp/models/lat_long_controller.dart';
 import 'package:myapp/services/add_latitude_longitude/add_latitude_longitude.dart';
@@ -15,6 +16,7 @@ import 'package:myapp/services/firestore_service/location_detail.dart';
 import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_elevated_button.dart';
 import 'package:myapp/widget/our_sized_box.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -89,14 +91,16 @@ class ShopExploreScreenState extends State<ShopExploreScreen>
   @override
   void initState() {
     super.initState();
+    Get.find<ExploreShopController>().initialize();
     // Get.find<LoginController>().toggle(true);
     _latLng = LatLng(Get.find<LatLongController>().lat.value,
         Get.find<LatLongController>().long.value);
-    _kGooglePlex = CameraPosition(
-      target: LatLng(Get.find<LatLongController>().lat.value,
-          Get.find<LatLongController>().long.value),
-      zoom: 15,
-    );
+    // _kGooglePlex = CameraPosition(
+    //   target: LatLng(Get.find<LatLongController>().lat.value,
+    //       Get.find<LatLongController>().long.value),
+    //   zoom: 17,
+    // );
+
     getmarkers();
 
     animationController = AnimationController(
@@ -186,6 +190,8 @@ class ShopExploreScreenState extends State<ShopExploreScreen>
       );
     });
   }
+
+  double _value = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -313,34 +319,45 @@ class ShopExploreScreenState extends State<ShopExploreScreen>
           ),
           body: Stack(
             children: [
-              GoogleMap(
-                // mapType: MapType.normal,
-                initialCameraPosition: _kGooglePlex!,
-                markers: markers,
-                zoomControlsEnabled: false,
-                myLocationButtonEnabled: true,
-                rotateGesturesEnabled: true,
-                scrollGesturesEnabled: true,
-                tiltGesturesEnabled: true,
-                zoomGesturesEnabled: false,
-                myLocationEnabled: true,
-                onCameraMoveStarted: () {
-                  setState(() {
-                    loading = true;
-                  });
-                },
-                onTap: (position) {
-                  customInfoWindowController.hideInfoWindow!();
-                },
-                onCameraMove: (p) {
-                  _latLng = LatLng(p.target.latitude, p.target.longitude);
-                  customInfoWindowController.onCameraMove!();
-                },
-                onCameraIdle: () async {},
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                  customInfoWindowController.googleMapController = controller;
-                },
+              Obx(
+                () => GoogleMap(
+                  // mapType: MapType.normal,
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(Get.find<LatLongController>().lat.value,
+                        Get.find<LatLongController>().long.value),
+                    zoom: Get.find<ExploreShopController>()
+                        .zoomLevel
+                        .value
+                        .toDouble(),
+                  ),
+                  markers: markers,
+                  zoomControlsEnabled: false,
+                  myLocationButtonEnabled: true,
+                  rotateGesturesEnabled: true,
+                  scrollGesturesEnabled: true,
+                  tiltGesturesEnabled: true,
+                  zoomGesturesEnabled: false,
+                  myLocationEnabled: true,
+                  onCameraMoveStarted: () {
+                    setState(() {
+                      loading = true;
+                    });
+                  },
+                  onTap: (position) {
+                    customInfoWindowController.hideInfoWindow!();
+                  },
+                  onCameraMove: (p) {
+                    _latLng = LatLng(p.target.latitude, p.target.longitude);
+                    // print(_latLng);
+                    // print("Camera changed");
+                    customInfoWindowController.onCameraMove!();
+                  },
+                  onCameraIdle: () async {},
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                    customInfoWindowController.googleMapController = controller;
+                  },
+                ),
               ),
               CustomInfoWindow(
                 controller: customInfoWindowController,
@@ -348,14 +365,60 @@ class ShopExploreScreenState extends State<ShopExploreScreen>
                 width: MediaQuery.of(context).size.width * 0.65,
                 offset: ScreenUtil().setSp(50),
               ),
-              // Center(
-              //   child: Padding(
-              //     padding: EdgeInsets.only(
-              //       bottom: ScreenUtil().setSp(40),
-              //     ),
-              //     child: widget.pinWidget,
-              //   ),
-              // ),
+              Positioned(
+                top: MediaQuery.of(context).size.width * 0.45,
+                // bottom: 0,
+                left: ScreenUtil().setSp(0),
+                child: Container(
+                  height: ScreenUtil().setSp(150),
+                  child: SfSlider.vertical(
+                    activeColor: darklogoColor.withOpacity(0.5),
+                    inactiveColor: logoColor.withOpacity(0.25),
+                    min: 0.0,
+                    max: 40.0,
+                    value: _value,
+                    interval: 10,
+                    stepSize: 10,
+                    // showTicks: true,
+                    // showLabels: true,
+                    // enableTooltip: true,
+                    minorTicksPerInterval: 0,
+                    onChanged: (dynamic value) {
+                      // 13 14 15 16 17
+                      // 40 30 20 10 00
+                      if (value == 0.0) {
+                        Get.find<ExploreShopController>().changeZoomLevel(17);
+                      } else if (value == 10.0) {
+                        Get.find<ExploreShopController>().changeZoomLevel(16);
+                      } else if (value == 20.0) {
+                        Get.find<ExploreShopController>().changeZoomLevel(15);
+                      } else if (value == 30.0) {
+                        Get.find<ExploreShopController>().changeZoomLevel(14);
+                      } else if (value == 40.0) {
+                        Get.find<ExploreShopController>().changeZoomLevel(13);
+                      }
+                      _controller.future.then((value) {
+                        value.animateCamera(
+                          CameraUpdate.newCameraPosition(
+                            CameraPosition(
+                              target: _latLng!,
+                              zoom: Get.find<ExploreShopController>()
+                                  .zoomLevel
+                                  .value
+                                  .toDouble(),
+                            ),
+                          ),
+                        );
+                      });
+                      // print(_value);
+                      setState(() {
+                        _value = value;
+                      });
+                    },
+                  ),
+                ),
+              ),
+
               // Positioned(
               //   left: 0,
               //   bottom: 0,
