@@ -377,7 +377,7 @@ class ShopExploreScreenState extends State<ShopExploreScreen>
               ),
               CustomInfoWindow(
                 controller: customInfoWindowController,
-                height: ScreenUtil().setSp(200),
+                height: ScreenUtil().setSp(135),
                 width: MediaQuery.of(context).size.width * 0.7,
                 offset: ScreenUtil().setSp(50),
               ),
@@ -386,7 +386,7 @@ class ShopExploreScreenState extends State<ShopExploreScreen>
                 // bottom: 0,
                 left: ScreenUtil().setSp(0),
                 child: Container(
-                  height: ScreenUtil().setSp(150),
+                  height: ScreenUtil().setSp(160),
                   child: SfSlider.vertical(
                     activeColor: darklogoColor.withOpacity(0.5),
                     inactiveColor: logoColor.withOpacity(0.25),
@@ -431,16 +431,23 @@ class ShopExploreScreenState extends State<ShopExploreScreen>
                   ),
                 ),
               ),
-              OurElevatedButton(
-                title: Get.find<PolyLineController>()
-                    .polylineList
-                    .value
-                    .length
-                    .toString(),
-                function: () {
-                  print(Get.find<PolyLineController>().polylineList);
-                },
+              Positioned(
+                child: Get.find<PolyLineController>().polylineList.value.isEmpty
+                    ? Container()
+                    : Text(
+                        "data",
+                      ),
               ),
+              // OurElevatedButton(
+              //   title: Get.find<PolyLineController>()
+              //       .polylineList
+              //       .value
+              //       .length
+              //       .toString(),
+              //   function: () {
+              //     print(Get.find<PolyLineController>().polylineList);
+              //   },
+              // ),
               // Center(
               //   child: Padding(
               //     padding: EdgeInsets.only(

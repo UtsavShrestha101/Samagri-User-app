@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_info_window/custom_info_window.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -35,12 +36,20 @@ class _OurCustomInFoState extends State<OurCustomInFo> {
       height: ScreenUtil().setSp(1000),
       decoration: BoxDecoration(
         color: Colors.white,
+        borderRadius: BorderRadius.circular(
+          ScreenUtil().setSp(17.5),
+        ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            flex: 3,
+      child: FlipCard(
+        fill: Fill
+            .fillBack, // Fill the back side of the card to make in the same size as the front.
+        direction: FlipDirection.HORIZONTAL, // default
+        front: Expanded(
+          flex: 3,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(
+              ScreenUtil().setSp(17.5),
+            ),
             child: Image.asset(
               "assets/images/banners/banner_1.jpg",
               width: double.infinity,
@@ -49,122 +58,155 @@ class _OurCustomInFoState extends State<OurCustomInFo> {
               fit: BoxFit.cover,
             ),
           ),
-          OurSizedBox(),
-          Container(
-            margin: EdgeInsets.symmetric(
-              horizontal: ScreenUtil().setSp(2.5),
-            ),
-            child: Text(
-              widget.element.data()["uid"],
-              style: TextStyle(
-                fontSize: ScreenUtil().setSp(17.5),
-                color: logoColor,
-                fontWeight: FontWeight.w400,
-                overflow: TextOverflow.ellipsis,
+        ),
+        back: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: ScreenUtil().setSp(65),
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(
+                    ScreenUtil().setSp(17.5),
+                  ),
+                  topLeft: Radius.circular(
+                    ScreenUtil().setSp(17.5),
+                  ),
+                ),
+                child: Image.asset(
+                  "assets/images/banners/banner_1.jpg",
+                  width: double.infinity,
+                  // width: MediaQuery.of(context).size.width * 0.65,
+                  height: ScreenUtil().setSp(100),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          Divider(
-            color: darklogoColor,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: InkWell(
-                  onTap: () async {
-                    var uid = Uuid().v4();
-                    List<Polyline> ourlist = [];
-                    PolylineResult result;
-                    Get.find<PolyLineController>().initialize();
-                    Get.find<PolyLineController>().polylineList.clear();
-                    print("Search My direction HEHEHAHAH");
-                    PolylinePoints polylinePoints = PolylinePoints();
+            // OurSizedBox(),
+            SizedBox(
+              height: ScreenUtil().setSp(2),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                top: ScreenUtil().setSp(2.5),
+                right: ScreenUtil().setSp(5),
+                left: ScreenUtil().setSp(5),
+              ),
+              child: Text(
+                widget.element.data()["uid"],
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(15),
+                  color: logoColor,
+                  fontWeight: FontWeight.w400,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+            // Divider(
+            //   color: darklogoColor,
+            // ),
+            Container(
+              // height: ScreenUtil().setSp(25),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () async {
+                        var uid = Uuid().v4();
+                        List<Polyline> ourlist = [];
+                        PolylineResult result;
+                        Get.find<PolyLineController>().initialize();
+                        Get.find<PolyLineController>().polylineList.clear();
+                        print("Search My direction HEHEHAHAH");
+                        PolylinePoints polylinePoints = PolylinePoints();
 
-                    result = await polylinePoints.getRouteBetweenCoordinates(
-                      "AIzaSyBlMkiLJ-G7YNmFabacXbMwfI2dectJSfs",
-                      PointLatLng(
-                        Get.find<LatLongController>().lat.value,
-                        Get.find<LatLongController>().long.value,
+                        result =
+                            await polylinePoints.getRouteBetweenCoordinates(
+                          "AIzaSyBlMkiLJ-G7YNmFabacXbMwfI2dectJSfs",
+                          PointLatLng(
+                            Get.find<LatLongController>().lat.value,
+                            Get.find<LatLongController>().long.value,
+                          ),
+                          PointLatLng(
+                            widget.element.data()["latitude"],
+                            widget.element.data()["longitude"],
+                          ),
+                        );
+                        result.points.forEach((point) {
+                          // print(element);
+                          polylineCoordinates.add(
+                            LatLng(
+                              point.latitude,
+                              point.longitude,
+                            ),
+                          );
+                          PolylineId id = PolylineId(
+                            "$uid $index",
+                          );
+                          Polyline polyline = Polyline(
+                            polylineId: id,
+                            color: darklogoColor.withOpacity(0.75),
+                            points: polylineCoordinates,
+                            width: 5,
+                          );
+                          ourlist.add(polyline);
+                        });
+                        Get.find<PolyLineController>().addPolyline(ourlist);
+                        widget.controller.hideInfoWindow!();
+                        print(result.points);
+                        index++;
+                        setState(() {});
+                      },
+                      child: Icon(
+                        Icons.directions,
+                        size: ScreenUtil().setSp(25),
+                        color: logoColor,
                       ),
-                      PointLatLng(
-                        widget.element.data()["latitude"],
-                        widget.element.data()["longitude"],
+                    ),
+                  ),
+                  SizedBox(
+                    width: ScreenUtil().setSp(5),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        print("HELLO WORLD");
+                        print(Get.find<PolyLineController>().polylineList);
+                      },
+                      child: Icon(
+                        Icons.person,
+                        size: ScreenUtil().setSp(25),
+                        color: logoColor,
                       ),
-                    );
-                    result.points.forEach((point) {
-                      // print(element);
-                      polylineCoordinates.add(
-                        LatLng(
-                          point.latitude,
-                          point.longitude,
-                        ),
-                      );
-                      PolylineId id = PolylineId(
-                        "$uid $index",
-                      );
-                      Polyline polyline = Polyline(
-                        polylineId: id,
-                        color: darklogoColor.withOpacity(0.4),
-                        points: polylineCoordinates,
-                        width: 5,
-                      );
-                      ourlist.add(polyline);
-                    });
-                    Get.find<PolyLineController>().addPolyline(ourlist);
-                    widget.controller.hideInfoWindow!();
-                    print(result.points);
-                    index++;
-                    setState(() {
-                      
-                    });
-                  },
-                  child: Icon(
-                    Icons.directions,
-                    size: ScreenUtil().setSp(25),
-                    color: logoColor,
+                    ),
                   ),
-                ),
+                ],
               ),
-              SizedBox(
-                width: ScreenUtil().setSp(5),
-              ),
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    print(Get.find<PolyLineController>().polylineList);
-                  },
-                  child: Icon(
-                    Icons.person,
-                    size: ScreenUtil().setSp(25),
-                    color: logoColor,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          OurSizedBox(),
-          Container(
-            margin: EdgeInsets.only(
-              left: ScreenUtil().setSp(3.5),
-              bottom: ScreenUtil().setSp(5),
-              right: ScreenUtil().setSp(3.5),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  "${widget.distance.round().toString()} meters away.",
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(15),
-                    color: logoColor,
-                    fontWeight: FontWeight.w500,
-                    overflow: TextOverflow.ellipsis,
+            // OurSizedBox(),
+            Container(
+              margin: EdgeInsets.only(
+                left: ScreenUtil().setSp(3.5),
+                top: ScreenUtil().setSp(2),
+                right: ScreenUtil().setSp(3.5),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    "${widget.distance.round().toString()} meters away.",
+                    style: TextStyle(
+                      fontSize: ScreenUtil().setSp(15),
+                      color: logoColor,
+                      fontWeight: FontWeight.w500,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
