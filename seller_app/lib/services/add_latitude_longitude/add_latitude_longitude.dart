@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_info_window/custom_info_window.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:myapp/controller/polyline_controller.dart';
+
+import 'package:myapp/widget/our_custio_info_window.dart';
 import 'package:myapp/widget/our_flutter_toast.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:ui' as ui;
@@ -45,10 +47,14 @@ class AddLatLongFirebase {
         .asUint8List();
   }
 
-  Future<List<Marker>?> getAllLocation(
-      CustomInfoWindowController controller) async {
+  Future<List<Marker>?> getAllLocation(CustomInfoWindowController controller,
+      GoogleMapController gController) async {
     print("Inside Get All Location");
     List<Marker> markers = [];
+    List<LatLng> polylineCoordinates = [];
+    int index = 0;
+
+    Get.find<PolyLineController>().initialize();
     try {
       final Uint8List markerIcon =
           await getBytesFromAsset('assets/images/logo.png', 100);
@@ -57,7 +63,6 @@ class AddLatLongFirebase {
       aaa.docs.forEach((element) {
         print("Utsav");
 
-        element.data();
         markers.add(
           Marker(
               markerId: MarkerId(element.data()["uid"]),
@@ -66,70 +71,18 @@ class AddLatLongFirebase {
                 element.data()["longitude"],
               ),
               icon: BitmapDescriptor.fromBytes(markerIcon),
-              onTap: () {
+              onTap: () async {
+                var distance = await Geolocator.distanceBetween(
+                  Get.find<LatLongController>().lat.value,
+                  Get.find<LatLongController>().long.value,
+                  element.data()["latitude"],
+                  element.data()["longitude"],
+                );
                 controller.addInfoWindow!(
-                  Container(
-                    // width: MediaQuery.of(context).size.width * 0.65,
-                    // width: 400,
-                    height: ScreenUtil().setSp(1000),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Image.asset(
-                            "assets/images/banners/banner_1.jpg",
-                            width: double.infinity,
-                            // width: MediaQuery.of(context).size.width * 0.65,
-                            height: ScreenUtil().setSp(100),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        OurSizedBox(),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: ScreenUtil().setSp(2.5),
-                          ),
-                          child: Text(
-                            element.data()["uid"],
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(17.5),
-                              color: logoColor,
-                              fontWeight: FontWeight.w400,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                        Divider(
-                          color: darklogoColor,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Icon(
-                                Icons.directions,
-                                size: ScreenUtil().setSp(25),
-                                color: logoColor,
-                              ),
-                            ),
-                            SizedBox(
-                              width: ScreenUtil().setSp(5),
-                            ),
-                            Expanded(
-                              child: Icon(
-                                Icons.person,
-                                size: ScreenUtil().setSp(25),
-                                color: logoColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        OurSizedBox(),
-                      ],
-                    ),
+                  OurCustomInFo(
+                    distance: distance,
+                    element: element,
+                    controller: controller,
                   ),
                   LatLng(
                     element.data()["latitude"],

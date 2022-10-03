@@ -9,6 +9,7 @@ import 'dart:ui' as ui;
 import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:myapp/controller/explore_shop_controller.dart';
+import 'package:myapp/controller/polyline_controller.dart';
 import 'package:myapp/models/get_address_model.dart';
 import 'package:myapp/models/lat_long_controller.dart';
 import 'package:myapp/services/add_latitude_longitude/add_latitude_longitude.dart';
@@ -91,6 +92,7 @@ class ShopExploreScreenState extends State<ShopExploreScreen>
   @override
   void initState() {
     super.initState();
+    Get.find<PolyLineController>().initialize();
     Get.find<ExploreShopController>().initialize();
     // Get.find<LoginController>().toggle(true);
     _latLng = LatLng(Get.find<LatLongController>().lat.value,
@@ -129,65 +131,79 @@ class ShopExploreScreenState extends State<ShopExploreScreen>
   }
 
   getmarkers() async {
-    List<Marker>? locationData =
-        await AddLatLongFirebase().getAllLocation(customInfoWindowController);
-    setState(() {
-      markers = locationData!.toSet();
-      markers.add(
-        Marker(
-            markerId: MarkerId(
-              "Current location",
-            ),
-            position: LatLng(Get.find<LatLongController>().lat.value,
-                Get.find<LatLongController>().long.value),
-            // infoWindow: InfoWindow(
-            //   title: "Current Location",
-            // ),
-            onTap: () {
-              customInfoWindowController.addInfoWindow!(
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.65,
-                  // width: 400,
-                  height: ScreenUtil().setSp(1000),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Image.asset(
-                          "assets/images/banners/banner_1.jpg",
-                          width: MediaQuery.of(context).size.width * 0.65,
-                          height: ScreenUtil().setSp(100),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      OurSizedBox(),
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: ScreenUtil().setSp(2.5),
-                        ),
-                        child: Text(
-                          "Utsav Shrestha Utsav Shrestha Utsav Shrestha Utsav Shrestha",
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(17.5),
-                            color: logoColor,
-                            fontWeight: FontWeight.w400,
-                            overflow: TextOverflow.ellipsis,
+    _controller.future.then((value) async {
+      List<Marker>? locationData = await AddLatLongFirebase()
+          .getAllLocation(customInfoWindowController, value);
+
+      setState(() {
+        markers = locationData!.toSet();
+        markers.add(
+          Marker(
+              markerId: MarkerId(
+                "Current location",
+              ),
+              position: LatLng(Get.find<LatLongController>().lat.value,
+                  Get.find<LatLongController>().long.value),
+              // infoWindow: InfoWindow(
+              //   title: "Current Location",
+              // ),
+              onTap: () {
+                customInfoWindowController.addInfoWindow!(
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.65,
+                    // width: 400,
+                    height: ScreenUtil().setSp(1000),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Image.asset(
+                            "assets/images/banners/banner_1.jpg",
+                            width: MediaQuery.of(context).size.width * 0.65,
+                            height: ScreenUtil().setSp(100),
+                            fit: BoxFit.cover,
                           ),
                         ),
-                      ),
-                      OurSizedBox(),
-                    ],
+                        OurSizedBox(),
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: ScreenUtil().setSp(2.5),
+                          ),
+                          child: Text(
+                            "Utsav Shrestha Utsav Shrestha Utsav Shrestha Utsav Shrestha",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(17.5),
+                              color: logoColor,
+                              fontWeight: FontWeight.w400,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                        OurSizedBox(),
+                        OurElevatedButton(
+                          title: "title",
+                          function: () {
+                            print("Cleared");
+                            Get.find<PolyLineController>().initialize();
+                            Get.find<PolyLineController>()
+                                .polylineList
+                                .value
+                                .clear();
+                          },
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                LatLng(Get.find<LatLongController>().lat.value,
-                    Get.find<LatLongController>().long.value),
-              );
-            }),
-      );
+                  LatLng(Get.find<LatLongController>().lat.value,
+                      Get.find<LatLongController>().long.value),
+                );
+              }),
+        );
+      });
     });
   }
 
@@ -319,50 +335,50 @@ class ShopExploreScreenState extends State<ShopExploreScreen>
           ),
           body: Stack(
             children: [
-              Obx(
-                () => GoogleMap(
-                  // mapType: MapType.normal,
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(Get.find<LatLongController>().lat.value,
-                        Get.find<LatLongController>().long.value),
-                    zoom: Get.find<ExploreShopController>()
-                        .zoomLevel
-                        .value
-                        .toDouble(),
-                  ),
-                  markers: markers,
-                  zoomControlsEnabled: false,
-                  myLocationButtonEnabled: true,
-                  rotateGesturesEnabled: true,
-                  scrollGesturesEnabled: true,
-                  tiltGesturesEnabled: true,
-                  zoomGesturesEnabled: false,
-                  myLocationEnabled: true,
-                  onCameraMoveStarted: () {
-                    setState(() {
-                      loading = true;
-                    });
-                  },
-                  onTap: (position) {
-                    customInfoWindowController.hideInfoWindow!();
-                  },
-                  onCameraMove: (p) {
-                    _latLng = LatLng(p.target.latitude, p.target.longitude);
-                    // print(_latLng);
-                    // print("Camera changed");
-                    customInfoWindowController.onCameraMove!();
-                  },
-                  onCameraIdle: () async {},
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                    customInfoWindowController.googleMapController = controller;
-                  },
+              GoogleMap(
+                // mapType: MapType.normal,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(Get.find<LatLongController>().lat.value,
+                      Get.find<LatLongController>().long.value),
+                  zoom: Get.find<ExploreShopController>()
+                      .zoomLevel
+                      .value
+                      .toDouble(),
                 ),
+                markers: markers,
+                polylines: Get.find<PolyLineController>().polylineList.value,
+                zoomControlsEnabled: false,
+                myLocationButtonEnabled: true,
+                rotateGesturesEnabled: true,
+                scrollGesturesEnabled: true,
+                tiltGesturesEnabled: true,
+                zoomGesturesEnabled: false,
+                myLocationEnabled: true,
+                onCameraMoveStarted: () {
+                  setState(() {
+                    loading = true;
+                  });
+                },
+
+                onTap: (position) {
+                  customInfoWindowController.hideInfoWindow!();
+                },
+                onCameraMove: (p) {
+                  _latLng = LatLng(p.target.latitude, p.target.longitude);
+                  // print(_latLng);
+                  // print("Camera changed");
+                  customInfoWindowController.onCameraMove!();
+                },
+                onCameraIdle: () async {},
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                  customInfoWindowController.googleMapController = controller;
+                },
               ),
               CustomInfoWindow(
                 controller: customInfoWindowController,
                 height: ScreenUtil().setSp(200),
-                width: MediaQuery.of(context).size.width * 0.65,
+                width: MediaQuery.of(context).size.width * 0.7,
                 offset: ScreenUtil().setSp(50),
               ),
               Positioned(
@@ -379,9 +395,6 @@ class ShopExploreScreenState extends State<ShopExploreScreen>
                     value: _value,
                     interval: 10,
                     stepSize: 10,
-                    // showTicks: true,
-                    // showLabels: true,
-                    // enableTooltip: true,
                     minorTicksPerInterval: 0,
                     onChanged: (dynamic value) {
                       // 13 14 15 16 17
@@ -418,7 +431,24 @@ class ShopExploreScreenState extends State<ShopExploreScreen>
                   ),
                 ),
               ),
-
+              OurElevatedButton(
+                title: Get.find<PolyLineController>()
+                    .polylineList
+                    .value
+                    .length
+                    .toString(),
+                function: () {
+                  print(Get.find<PolyLineController>().polylineList);
+                },
+              ),
+              // Center(
+              //   child: Padding(
+              //     padding: EdgeInsets.only(
+              //       bottom: ScreenUtil().setSp(40),
+              //     ),
+              //     child: widget.pinWidget,
+              //   ),
+              // ),
               // Positioned(
               //   left: 0,
               //   bottom: 0,

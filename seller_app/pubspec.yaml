@@ -90,6 +90,7 @@ dependencies:
   sticky_headers: ^0.2.0 
   scroll_to_id: ^1.5.1
   custom_info_window: ^1.0.1
+  flutter_polyline_points: ^1.0.0
  
   
   
