@@ -91,7 +91,7 @@ class UserDetailFirestore {
   addFavorite(ProductModel productModel) async {
     try {
       await FirebaseFirestore.instance
-          .collection("Products")
+          .collection("All")
           .doc(productModel.uid)
           .update({
         "favorite": FieldValue.arrayUnion(
@@ -116,6 +116,7 @@ class UserDetailFirestore {
         },
       );
     } catch (e) {
+      print(e.toString());
       OurToast().showErrorToast(e.toString());
     }
   }
@@ -123,7 +124,7 @@ class UserDetailFirestore {
   removeFavorite(ProductModel productModel) async {
     try {
       await FirebaseFirestore.instance
-          .collection("Products")
+          .collection("All")
           .doc(productModel.uid)
           .update(
         {
@@ -145,6 +146,7 @@ class UserDetailFirestore {
         OurToast().showErrorToast("Removed from favotite list");
       });
     } catch (e) {
+      print(e.toString());
       OurToast().showErrorToast(e.toString());
     }
   }

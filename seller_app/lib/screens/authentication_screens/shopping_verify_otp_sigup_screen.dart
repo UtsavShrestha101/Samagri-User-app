@@ -58,12 +58,13 @@ class _VerifyOPTSignUpScreenState extends State<VerifyOPTSignUpScreen> {
     // await SmsAutoFill().unregisterListener();
     // listenForCode();
     await SmsAutoFill().listenForCode;
-    _pinPutController.dispose();
+    // _pinPutController.dispose();
     print("OTP listen Called");
   }
 
   @override
   void dispose() {
+    _pinPutController.dispose();
     SmsAutoFill().unregisterListener();
     print("unregisterListener");
     super.dispose();

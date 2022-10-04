@@ -35,9 +35,9 @@ class _ShoppingLoginScreenState extends State<ShoppingLoginScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
-    super.dispose();
     _phone_number_controller.clear();
     _phone_number_controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -82,7 +82,7 @@ class _ShoppingLoginScreenState extends State<ShoppingLoginScreen> {
                         OurSizedBox(),
                         OurSizedBox(),
                         CustomTextField(
-                          letterlength: 10,
+                            letterlength: 10,
                             controller: _phone_number_controller,
                             validator: (value) {},
                             title: "Enter your phone no.",
@@ -101,12 +101,10 @@ class _ShoppingLoginScreenState extends State<ShoppingLoginScreen> {
                               if (_phone_number_controller.text
                                   .trim()
                                   .isEmpty) {
-                               
-
                                 OurToast()
                                     .showErrorToast("Field can't be empty");
                               } else {
-                                 var appSignatureID =
+                                var appSignatureID =
                                     await SmsAutoFill().getAppSignature;
                                 print("==========");
                                 print("==========");

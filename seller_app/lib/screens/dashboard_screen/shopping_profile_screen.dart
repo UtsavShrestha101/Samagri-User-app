@@ -12,6 +12,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:myapp/models/firebase_user_model.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_favourite_screen.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_map_screen.dart';
+import 'package:myapp/services/fetch_product/fetch_product.dart';
 import 'package:myapp/services/phone_auth/phone_auth.dart';
 import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_setting_box_tile.dart';
@@ -192,7 +193,9 @@ class _ShoppingProfileScreenState extends State<ShoppingProfileScreen> {
                         title: "Logout",
                         iconData: MdiIcons.logout,
                         function: () async {
-                          await PhoneAuth().logout();
+                          await FetchProductFirebase()
+                              .fetchproductfirebase("Grocery");
+                          // await PhoneAuth().logout();
                         },
                       ),
                     ],

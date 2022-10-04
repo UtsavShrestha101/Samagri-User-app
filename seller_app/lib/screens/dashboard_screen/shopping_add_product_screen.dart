@@ -244,7 +244,7 @@ class _ShopAddProductScreenState extends State<ShopAddProductScreen> {
                       ),
                       OurSizedBox(),
                       Text(
-                        "Travelling for:",
+                        "Category:",
                         style: TextStyle(
                           color: darklogoColor,
                           fontSize: ScreenUtil().setSp(17.5),

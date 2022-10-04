@@ -16,7 +16,7 @@ import '../../models/product_model.dart';
 import '../../widget/our_flutter_toast.dart';
 
 class ProductDetailFirestore {
-  AddProductToCart(
+  AddProduct(
     List<String> pickedImagessUrl,
     String name,
     String desc,
@@ -47,22 +47,10 @@ class ProductDetailFirestore {
         "timestamp": Timestamp.now(),
         "favorite": [],
         "searchfrom": searchList,
-      });
-      await FirebaseFirestore.instance.collection(categoryItem).doc(uid).set({
-        "uid": uid,
-        "name": name,
-        "desc": desc,
-        "price": price,
-        "rating": 0.0,
-        "url": pickedImagessUrl,
-        "addedOn": DateFormat('yyy-MM-dd').format(
-          DateTime.now(),
-        ),
-        "ratingUID": [],
-        "ratingNo": 0,
-        "timestamp": Timestamp.now(),
-        "favorite": [],
-        "searchfrom": searchList,
+        "category": [
+          "All",
+          categoryItem,
+        ],
       }).then((value) {
         Get.find<DashboardController>().changeIndexs(0);
         OurToast().showSuccessToast("Product added");

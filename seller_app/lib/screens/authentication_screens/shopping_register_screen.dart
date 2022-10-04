@@ -31,9 +31,9 @@ class _ShoppingRegisterScreenState extends State<ShoppingRegisterScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
-    super.dispose();
     _user_name_controller.dispose();
     _phone_number_controller.dispose();
+    super.dispose();
   }
 
   @override

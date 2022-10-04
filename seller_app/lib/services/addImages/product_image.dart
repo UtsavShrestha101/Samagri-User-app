@@ -48,7 +48,7 @@ class AddProduct {
             print(pickedImagess.length);
             print("Sending data");
             print(dataUrl);
-            ProductDetailFirestore().AddProductToCart(
+            ProductDetailFirestore().AddProduct(
               dataUrl,
               name,
               desc,

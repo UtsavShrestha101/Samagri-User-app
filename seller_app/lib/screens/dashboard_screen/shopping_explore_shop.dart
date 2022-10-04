@@ -139,69 +139,15 @@ class ShopExploreScreenState extends State<ShopExploreScreen>
         markers = locationData!.toSet();
         markers.add(
           Marker(
-              markerId: MarkerId(
-                "Current location",
-              ),
-              position: LatLng(Get.find<LatLongController>().lat.value,
-                  Get.find<LatLongController>().long.value),
-              // infoWindow: InfoWindow(
-              //   title: "Current Location",
-              // ),
-              onTap: () {
-                customInfoWindowController.addInfoWindow!(
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.65,
-                    // width: 400,
-                    height: ScreenUtil().setSp(1000),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Image.asset(
-                            "assets/images/banners/banner_1.jpg",
-                            width: MediaQuery.of(context).size.width * 0.65,
-                            height: ScreenUtil().setSp(100),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        OurSizedBox(),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: ScreenUtil().setSp(2.5),
-                          ),
-                          child: Text(
-                            "Utsav Shrestha Utsav Shrestha Utsav Shrestha Utsav Shrestha",
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(17.5),
-                              color: logoColor,
-                              fontWeight: FontWeight.w400,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                        OurSizedBox(),
-                        OurElevatedButton(
-                          title: "title",
-                          function: () {
-                            print("Cleared");
-                            Get.find<PolyLineController>().initialize();
-                            Get.find<PolyLineController>()
-                                .polylineList
-                                .value
-                                .clear();
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                  LatLng(Get.find<LatLongController>().lat.value,
-                      Get.find<LatLongController>().long.value),
-                );
-              }),
+            markerId: MarkerId(
+              "Current location",
+            ),
+            position: LatLng(
+              Get.find<LatLongController>().lat.value,
+              Get.find<LatLongController>().long.value,
+            ),
+            onTap: () {},
+          ),
         );
       });
     });
@@ -431,12 +377,43 @@ class ShopExploreScreenState extends State<ShopExploreScreen>
                   ),
                 ),
               ),
-              Positioned(
-                child: Get.find<PolyLineController>().polylineList.value.isEmpty
-                    ? Container()
-                    : Text(
-                        "data",
-                      ),
+              Obx(
+                () => Positioned(
+                  bottom: MediaQuery.of(context).size.height * 0.05,
+                  right: MediaQuery.of(context).size.width * 0.375,
+                  child:
+                      Get.find<PolyLineController>().polylineList.value.isEmpty
+                          ? Container()
+                          : InkWell(
+                              onTap: () {
+                                Get.find<PolyLineController>().initialize();
+                                Get.find<PolyLineController>()
+                                    .polylineList
+                                    .value
+                                    .clear();
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                    ScreenUtil().setSp(20),
+                                  ),
+                                  color: logoColor.withOpacity(0.4),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: ScreenUtil().setSp(10),
+                                  vertical: ScreenUtil().setSp(10),
+                                ),
+                                child: Text(
+                                  "Cancel path",
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(15),
+                                    color: darklogoColor.withOpacity(0.75),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                ),
               ),
               // OurElevatedButton(
               //   title: Get.find<PolyLineController>()

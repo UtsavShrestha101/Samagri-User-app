@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutx/flutx.dart';
@@ -9,7 +8,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:myapp/models/product_model.dart';
 import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_sized_box.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
 import '../screens/dashboard_screen/shopping_product_screen.dart';
 import '../services/firestore_service/userprofile_detail.dart';
 import '../utils/generator.dart';
@@ -27,21 +25,41 @@ class ProductGridTile extends StatefulWidget {
 
 class _ProductGridTileState extends State<ProductGridTile> {
   @override
-  late ThemeData theme;
-
   Widget build(BuildContext context) {
     String key = Generator.randomString(10);
-    theme = Theme.of(context);
     return InkWell(
       onTap: () {
         Navigator.push(
             widget.rootContext,
-            MaterialPageRoute(
-                builder: (context) => ShoppingProductScreen(
-                      heroTag: key,
-                      productModel: widget.productModel,
-                      // image: widget.productModel.url,
-                    )));
+            PageRouteBuilder(
+              transitionDuration: Duration(seconds: 1),
+              reverseTransitionDuration: Duration(seconds: 1),
+              pageBuilder: ((context, animation, secondaryAnimation) {
+                final curvedAnimation = CurvedAnimation(
+                  parent: animation,
+                  curve: Interval(
+                    0.0,
+                    0.5,
+                  ),
+                );
+                return FadeTransition(
+                  opacity: curvedAnimation,
+                  child: ShoppingProductScreen(
+                    heroTag: key,
+                    productModel: widget.productModel,
+                    // image: widget.productModel.url,
+                  ),
+                );
+              }),
+            )
+            // MaterialPageRoute(
+            // builder: (context) => ShoppingProductScreen(
+            //   heroTag: key,
+            //   productModel: widget.productModel,
+            //   // image: widget.productModel.url,
+            // ),
+            // ),
+            );
       },
       child: FxContainer.bordered(
         color: Colors.transparent,
@@ -54,21 +72,24 @@ class _ProductGridTileState extends State<ProductGridTile> {
               children: <Widget>[
                 Hero(
                   tag: key,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(
-                        ScreenUtil().setSp(10),
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          ScreenUtil().setSp(10),
+                        ),
                       ),
-                    ),
-                    child: CachedNetworkImage(
-                      height: ScreenUtil().setSp(160),
-                      width: MediaQuery.of(context).size.width,
-                      fit: BoxFit.cover,
-                      imageUrl: widget.productModel.url[0],
-                      placeholder: (context, url) => Image.asset(
-                        "assets/images/placeholder.png",
+                      child: CachedNetworkImage(
+                        height: ScreenUtil().setSp(160),
                         width: MediaQuery.of(context).size.width,
-                        // width: ScreenUtil().setSp(150),
+                        fit: BoxFit.cover,
+                        imageUrl: widget.productModel.url[0],
+                        placeholder: (context, url) => Image.asset(
+                          "assets/images/placeholder.png",
+                          width: MediaQuery.of(context).size.width,
+                          // width: ScreenUtil().setSp(150),
+                        ),
                       ),
                     ),
                   ),
@@ -78,41 +99,51 @@ class _ProductGridTileState extends State<ProductGridTile> {
                   top: ScreenUtil().setSp(7.5),
                   child: widget.productModel.favorite
                           .contains(FirebaseAuth.instance.currentUser!.uid)
-                      ? InkWell(
-                          onTap: () async {
-                            await UserDetailFirestore()
-                                .removeFavorite(widget.productModel);
-                            print("Favourite Removed");
-                          },
-                          child: Icon(
-                            MdiIcons.heart,
-                            color: Colors.red,
-                            size: ScreenUtil().setSp(20),
-                          ),
-                        )
-                      : InkWell(
-                          onTap: () async {
-                            print("HELLO WORLD");
-                            // await HapticFeedback.vibrate();
-                            // await HapticFeedback.heavyImpact();
-                            // await HapticFeedback.lightImpact();
-                            // await HapticFeedback.selectionClick();
-                            await UserDetailFirestore()
-                                .addFavorite(widget.productModel);
-                            print("Favourite Added");
-                            // Check if the device can vibrate
-                            // bool canVibrate = await Vibrate.canVibrate;
+                      ? Hero(
+                          tag: "Liked-$key",
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: InkWell(
+                              onTap: () async {
+                                await UserDetailFirestore()
+                                    .removeFavorite(widget.productModel);
+                                print("Favourite Removed");
+                              },
+                              child: Icon(
+                                MdiIcons.heart,
+                                color: Colors.red,
+                                size: ScreenUtil().setSp(20),
+                              ),
+                            ),
+                          ))
+                      : Hero(
+                          tag: "NotLiked-$key",
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: InkWell(
+                              onTap: () async {
+                                print("HELLO WORLD");
+                                // await HapticFeedback.vibrate();
+                                // await HapticFeedback.heavyImpact();
+                                // await HapticFeedback.lightImpact();
+                                // await HapticFeedback.selectionClick();
+                                await UserDetailFirestore()
+                                    .addFavorite(widget.productModel);
+                                print("Favourite Added");
+                                // Check if the device can vibrate
+                                // bool canVibrate = await Vibrate.canVibrate;
 
-// Vibrate
-// Vibration duration is a constant 500ms because
-// it cannot be set to a specific duration on iOS.
-                          },
-                          child: Icon(
-                            MdiIcons.heartOutline,
-                            color: Colors.white,
-                            size: ScreenUtil().setSp(20),
-                          ),
-                        ),
+                                // Vibrate
+                                // Vibration duration is a constant 500ms because
+                                // it cannot be set to a specific duration on iOS.
+                              },
+                              child: Icon(
+                                MdiIcons.heartOutline,
+                                color: Colors.white,
+                                size: ScreenUtil().setSp(20),
+                              ),
+                            ),
+                          )),
                 ),
               ],
             ),
@@ -126,62 +157,77 @@ class _ProductGridTileState extends State<ProductGridTile> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  FxText.b1(
-                    widget.productModel.name,
-                    fontWeight: 700,
-                    letterSpacing: 0,
-                    color: logoColor,
-                    fontSize: ScreenUtil().setSp(17.5),
-                    overflow: TextOverflow.ellipsis,
+                  Hero(
+                    tag: "NameTag-$key",
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: FxText.b1(
+                        widget.productModel.name,
+                        fontWeight: 700,
+                        letterSpacing: 0,
+                        color: logoColor,
+                        fontSize: ScreenUtil().setSp(17.5),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ),
                   OurSizedBox(),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: ScreenUtil().setSp(10),
-                      right: ScreenUtil().setSp(10),
-                      bottom: ScreenUtil().setSp(5),
-                    ),
-                    child: RatingStars(
-                      value: widget.productModel.rating.toDouble(),
-                      starBuilder: (index, color) => Icon(
-                        Icons.star,
-                        color: color,
-                        size: ScreenUtil().setSp(17),
+                  Hero(
+                    tag: "Rating-$key",
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: ScreenUtil().setSp(10),
+                          right: ScreenUtil().setSp(10),
+                          bottom: ScreenUtil().setSp(5),
+                        ),
+                        child: RatingStars(
+                          value: widget.productModel.rating.toDouble(),
+                          starBuilder: (index, color) => Icon(
+                            Icons.star,
+                            color: color,
+                            size: ScreenUtil().setSp(17),
+                          ),
+                          starCount: 5,
+                          starSize: ScreenUtil().setSp(15),
+                          valueLabelColor: const Color(0xff9b9b9b),
+                          valueLabelTextStyle: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: ScreenUtil().setSp(12),
+                          ),
+                          valueLabelRadius: ScreenUtil().setSp(20),
+                          maxValue: 5,
+                          starSpacing: 1,
+                          maxValueVisibility: true,
+                          valueLabelVisibility: true,
+                          animationDuration: const Duration(milliseconds: 800),
+                          valueLabelPadding: EdgeInsets.symmetric(
+                            vertical: ScreenUtil().setSp(5),
+                            horizontal: ScreenUtil().setSp(5),
+                          ),
+                          valueLabelMargin: EdgeInsets.only(
+                            right: ScreenUtil().setSp(3),
+                          ),
+                          starOffColor: Colors.white,
+                          starColor: Colors.yellow,
+                        ),
                       ),
-                      starCount: 5,
-                      starSize: ScreenUtil().setSp(15),
-                      valueLabelColor: const Color(0xff9b9b9b),
-                      valueLabelTextStyle: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        fontSize: ScreenUtil().setSp(12),
-                      ),
-                      valueLabelRadius: ScreenUtil().setSp(20),
-                      maxValue: 5,
-                      starSpacing: 1,
-                      maxValueVisibility: true,
-                      valueLabelVisibility: true,
-                      animationDuration: const Duration(milliseconds: 800),
-                      valueLabelPadding: EdgeInsets.symmetric(
-                        vertical: ScreenUtil().setSp(5),
-                        horizontal: ScreenUtil().setSp(5),
-                      ),
-                      valueLabelMargin: EdgeInsets.only(
-                        right: ScreenUtil().setSp(3),
-                      ),
-                      starOffColor: Colors.white,
-                      starColor: Colors.yellow,
                     ),
                   ),
                   // OurSizedBox(),
-                  Container(
-                    margin: EdgeInsets.only(top: 2),
-                    child: FxText.b2(
-                      "Rs. " + widget.productModel.price.toString(),
-                      fontSize: ScreenUtil().setSp(15),
-                      fontWeight: 700,
-                      letterSpacing: 0,
+                  Hero(
+                    tag: "Price-$key",
+                    child: Container(
+                      margin: EdgeInsets.only(top: 2),
+                      child: FxText.b2(
+                        "Rs. " + widget.productModel.price.toString(),
+                        fontSize: ScreenUtil().setSp(15),
+                        fontWeight: 700,
+                        letterSpacing: 0,
+                      ),
                     ),
                   ),
                   OurSizedBox(),
@@ -194,5 +240,3 @@ class _ProductGridTileState extends State<ProductGridTile> {
     );
   }
 }
-
-

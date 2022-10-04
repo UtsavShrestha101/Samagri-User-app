@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,18 +15,12 @@ import 'package:myapp/screens/dashboard_screen/shopping_search_product_screen.da
 import 'package:myapp/services/current_location/get_current_location.dart';
 import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_category_context.dart';
-import 'package:myapp/widget/our_product_grid_loading_widget.dart';
 import 'package:myapp/widget/our_shimmer_widget.dart';
 import 'package:myapp/widget/our_sized_box.dart';
-import 'package:myapp/widget/our_spinner.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../models/category_model.dart';
 import '../../models/lat_long_controller.dart';
-import '../../models/product_model.dart';
 import '../../widget/our_carousel_slider.dart';
-import '../../widget/our_product_grid_tile.dart';
-import 'package:sliver_tools/sliver_tools.dart';
-import 'package:sticky_headers/sticky_headers.dart';
 import 'package:scroll_to_id/scroll_to_id.dart';
 
 class ShoppingHomeScreen extends StatefulWidget {
@@ -70,7 +63,6 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
   void dispose() {
     // TODO: implement dispose
     animationController.dispose();
-    // logoanimationController.dispose();
     super.dispose();
   }
 
@@ -146,22 +138,6 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
       await Hive.box<String>(DatabaseHelper.nearbylocationDB)
           .put("state", completeAddress);
     }
-
-    // if (Hive.box<int>(DatabaseHelper.introHelperDB)
-    //         .get("state", defaultValue: 0) ==
-    //     0) {
-    //   print(Hive.box<int>(DatabaseHelper.introHelperDB).get("state"));
-    // await Future.delayed(Duration(seconds: 3)).then((value) {
-    //   Intro.of(context).start();
-
-    //   print("Hello Utsav");
-    // });
-    //   print("First Time");
-    //   await Hive.box<int>(DatabaseHelper.introHelperDB).put("state", 1);
-    // } else {
-    //   print(Hive.box<int>(DatabaseHelper.introHelperDB).get("state"));
-    //   print("Already done");
-    // }
   }
 
   @override
