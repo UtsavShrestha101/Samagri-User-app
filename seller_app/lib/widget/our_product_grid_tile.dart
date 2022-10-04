@@ -139,7 +139,7 @@ class _ProductGridTileState extends State<ProductGridTile> {
                               },
                               child: Icon(
                                 MdiIcons.heartOutline,
-                                color: Colors.white,
+                                color: Colors.grey.shade400,
                                 size: ScreenUtil().setSp(20),
                               ),
                             ),
