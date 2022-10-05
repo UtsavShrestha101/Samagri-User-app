@@ -13,8 +13,10 @@ class ProductModel {
   final int ratingNo;
   final List searchfrom;
   final List favorite;
+  final String shop_name;
 
   ProductModel({
+    required this.shop_name,
     required this.favorite,
     required this.searchfrom,
     required this.ratingNo,
@@ -42,6 +44,7 @@ class ProductModel {
       'ratingUID': ratingUID,
       'ratingNo': ratingNo,
       'favorite': favorite,
+      "shop_name": shop_name
     };
   }
 
@@ -59,6 +62,7 @@ class ProductModel {
       ratingNo: map['ratingNo'],
       searchfrom: map['searchfrom'] ?? [],
       favorite: map['favorite'] ?? [],
+      shop_name: map['shop_name'] ?? '',
     );
   }
 }

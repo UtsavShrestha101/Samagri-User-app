@@ -147,12 +147,15 @@ class _ProductGridTileState extends State<ProductGridTile> {
                 ),
               ],
             ),
-            OurSizedBox(),
+            // OurSizedBox(),
+            SizedBox(
+              height: ScreenUtil().setSp(2.5),
+            ),
             Container(
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(
-                top: ScreenUtil().setSp(6),
-              ),
+              // padding: EdgeInsets.only(
+              //   top: ScreenUtil().setSp(6),
+              // ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -171,7 +174,26 @@ class _ProductGridTileState extends State<ProductGridTile> {
                       ),
                     ),
                   ),
-                  OurSizedBox(),
+                  SizedBox(
+                    height: ScreenUtil().setSp(2.5),
+                  ),
+                  // Hero(
+                  //   tag: "ShopName-$key",
+                  //   child: Material(
+                  //     type: MaterialType.transparency,
+                  //     child: FxText.b1(
+                  //       widget.productModel.shop_name,
+                  //       fontWeight: 500,
+                  //       letterSpacing: 0,
+                  //       color: logoColor,
+                  //       fontSize: ScreenUtil().setSp(15),
+                  //       overflow: TextOverflow.ellipsis,
+                  //     ),
+                  //   ),
+                  // ),
+                  SizedBox(
+                    height: ScreenUtil().setSp(2.5),
+                  ),
                   Hero(
                     tag: "Rating-$key",
                     child: Material(
@@ -182,37 +204,56 @@ class _ProductGridTileState extends State<ProductGridTile> {
                           right: ScreenUtil().setSp(10),
                           bottom: ScreenUtil().setSp(5),
                         ),
-                        child: RatingStars(
-                          value: widget.productModel.rating.toDouble(),
-                          starBuilder: (index, color) => Icon(
-                            Icons.star,
-                            color: color,
-                            size: ScreenUtil().setSp(17),
-                          ),
-                          starCount: 5,
-                          starSize: ScreenUtil().setSp(15),
-                          valueLabelColor: const Color(0xff9b9b9b),
-                          valueLabelTextStyle: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                            fontSize: ScreenUtil().setSp(12),
-                          ),
-                          valueLabelRadius: ScreenUtil().setSp(20),
-                          maxValue: 5,
-                          starSpacing: 1,
-                          maxValueVisibility: true,
-                          valueLabelVisibility: true,
-                          animationDuration: const Duration(milliseconds: 800),
-                          valueLabelPadding: EdgeInsets.symmetric(
-                            vertical: ScreenUtil().setSp(5),
-                            horizontal: ScreenUtil().setSp(5),
-                          ),
-                          valueLabelMargin: EdgeInsets.only(
-                            right: ScreenUtil().setSp(3),
-                          ),
-                          starOffColor: Colors.white,
-                          starColor: Colors.yellow,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            RatingStars(
+                              value: widget.productModel.rating.toDouble(),
+                              starBuilder: (index, color) => Icon(
+                                Icons.star,
+                                color: color,
+                                size: ScreenUtil().setSp(17),
+                              ),
+                              starCount: 5,
+                              starSize: ScreenUtil().setSp(15),
+                              valueLabelColor: const Color(0xff9b9b9b),
+                              valueLabelTextStyle: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                fontSize: ScreenUtil().setSp(12),
+                              ),
+                              valueLabelRadius: ScreenUtil().setSp(20),
+                              maxValue: 5,
+                              starSpacing: 1,
+                              maxValueVisibility: true,
+                              valueLabelVisibility: true,
+                              animationDuration:
+                                  const Duration(milliseconds: 800),
+                              valueLabelPadding: EdgeInsets.symmetric(
+                                vertical: ScreenUtil().setSp(5),
+                                horizontal: ScreenUtil().setSp(5),
+                              ),
+                              valueLabelMargin: EdgeInsets.only(
+                                right: ScreenUtil().setSp(3),
+                              ),
+                              starOffColor: Colors.white,
+                              starColor: darklogoColor,
+                            ),
+                            SizedBox(
+                              width: ScreenUtil().setSp(2),
+                            ),
+                            Expanded(
+                              child: Text(
+                                "(${widget.productModel.ratingNo.toString()})",
+                                style: TextStyle(
+                                  fontSize: ScreenUtil().setSp(13),
+                                  fontWeight: FontWeight.w500,
+                                  color: darklogoColor,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -230,7 +271,6 @@ class _ProductGridTileState extends State<ProductGridTile> {
                       ),
                     ),
                   ),
-                  OurSizedBox(),
                 ],
               ),
             ),

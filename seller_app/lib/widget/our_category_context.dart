@@ -58,10 +58,11 @@ class _OurCategoryContextState extends State<OurCategoryContext> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: snapshot.data!.docs.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: ScreenUtil().setSp(5),
-                        mainAxisSpacing: ScreenUtil().setSp(5),
-                        childAspectRatio: 0.59),
+                      crossAxisCount: 2,
+                      crossAxisSpacing: ScreenUtil().setSp(5),
+                      mainAxisSpacing: ScreenUtil().setSp(5),
+                      childAspectRatio: 0.69,
+                    ),
                     itemBuilder: (context, index) {
                       ProductModel productModel =
                           ProductModel.fromMap(snapshot.data!.docs[index]);

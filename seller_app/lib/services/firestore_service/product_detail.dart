@@ -51,6 +51,7 @@ class ProductDetailFirestore {
           "All",
           categoryItem,
         ],
+        "shop_name": "Shop123"
       }).then((value) {
         Get.find<DashboardController>().changeIndexs(0);
         OurToast().showSuccessToast("Product added");
@@ -176,23 +177,28 @@ class ProductDetailFirestore {
           .set({"rating": rating}).then(
         (value) => print("Inside Add rating function done"),
       );
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   updateRatingNo(ProductModel product) async {
     try {
       await FirebaseFirestore.instance
-          .collection("Products")
+          .collection("All")
           .doc(product.uid)
           .update({
         "ratingUID":
             FieldValue.arrayUnion([FirebaseAuth.instance.currentUser!.uid]),
         "ratingNo": product.ratingNo + 1,
       }).then((value) => print("Inside UpdateRatingNo done"));
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   updateProductRating(ProductModel product) async {
+    print("inside product rating doing");
     double finalRating = 0.0;
     int totalNum = 0;
     QuerySnapshot abc = await FirebaseFirestore.instance
@@ -206,17 +212,19 @@ class ProductDetailFirestore {
     });
 
     var b = await FirebaseFirestore.instance
-        .collection("Products")
+        .collection("All")
         .doc(product.uid)
         .get();
     totalNum = b["ratingNo"];
     try {
       await FirebaseFirestore.instance
-          .collection("Products")
+          .collection("All")
           .doc(product.uid)
           .update({"rating": finalRating / totalNum}).then(
               (value) => print("Inside UpdateRatingNo done"));
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   removeItemFromCart(

@@ -330,8 +330,14 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: OurShimmerText(
-                title: "Give Rating",
+              title: Center(
+                child: Text(
+                  "Give Rating",
+                  style: TextStyle(
+                      fontSize: ScreenUtil().setSp(24.5),
+                      color: darklogoColor,
+                      fontWeight: FontWeight.w500),
+                ),
               ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -371,14 +377,11 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                       right: ScreenUtil().setSp(3),
                     ),
                     starOffColor: const Color(0xffe7e8ea),
-                    starColor: Colors.yellow,
+                    starColor: darklogoColor,
                   ),
-                ],
-              ),
-              actions: <Widget>[
-                OurElevatedButton(
-                    title: "Submit",
-                    function: () async {
+                  OurSizedBox(),
+                  InkWell(
+                    onTap: () async {
                       await ProductDetailFirestore()
                           .addRating(widget.productModel, rate);
                       if (!exists) {
@@ -388,8 +391,46 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                       await ProductDetailFirestore()
                           .updateProductRating(widget.productModel);
                       Navigator.pop(context);
-                    }),
-              ],
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: ScreenUtil().setSp(10),
+                        vertical: ScreenUtil().setSp(5),
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          ScreenUtil().setSp(
+                            15,
+                          ),
+                        ),
+                        color: logoColor,
+                      ),
+                      child: Text(
+                        "Submit",
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(17.5),
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              // actions: <Widget>[
+              //   OurElevatedButton(
+              //       title: "Submit",
+              //       function: () async {
+              // await ProductDetailFirestore()
+              //     .addRating(widget.productModel, rate);
+              // if (!exists) {
+              //   await ProductDetailFirestore()
+              //       .updateRatingNo(widget.productModel);
+              // }
+              // await ProductDetailFirestore()
+              //     .updateProductRating(widget.productModel);
+              // Navigator.pop(context);
+              //       }),
+              // ],
             );
           },
         );
@@ -586,6 +627,81 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                               child: Container(
                                 // color: Colors.red,
                                 child: Hero(
+                                  tag: "ShopName-${widget.heroTag}",
+                                  // tag: "ShopName-$key",
+                                  child: Material(
+                                    type: MaterialType.transparency,
+                                    child: Text(
+                                      widget.productModel.shop_name,
+                                      style: TextStyle(
+                                        color: darklogoColor,
+                                        fontSize: ScreenUtil().setSp(17.5),
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // Expanded(
+                            //   child: Hero(
+                            //     tag: "Ratingss-${widget.heroTag}",
+                            //     child: Material(
+                            //       type: MaterialType.transparency,
+                            //       child: Container(
+                            //         // color: Colors.green,
+                            //         child: RatingStars(
+                            //           value:
+                            //               widget.productModel.rating.toDouble(),
+                            //           starBuilder: (index, color) => Icon(
+                            //             Icons.star,
+                            //             color: color,
+                            //             size: ScreenUtil().setSp(17),
+                            //           ),
+                            //           starCount: 5,
+                            //           starSize: ScreenUtil().setSp(17.5),
+                            //           valueLabelColor: const Color(0xff9b9b9b),
+                            //           valueLabelTextStyle: TextStyle(
+                            //             color: Colors.white,
+                            //             fontWeight: FontWeight.w400,
+                            //             fontStyle: FontStyle.normal,
+                            //             fontSize: ScreenUtil().setSp(13.5),
+                            //           ),
+                            //           valueLabelRadius: ScreenUtil().setSp(20),
+                            //           maxValue: 5,
+                            //           starSpacing: 1,
+                            //           maxValueVisibility: true,
+                            //           valueLabelVisibility: true,
+                            //           animationDuration:
+                            //               const Duration(milliseconds: 800),
+                            //           valueLabelPadding: EdgeInsets.symmetric(
+                            //             vertical: ScreenUtil().setSp(7.5),
+                            //             horizontal: ScreenUtil().setSp(7.5),
+                            //           ),
+                            //           valueLabelMargin: EdgeInsets.only(
+                            //             right: ScreenUtil().setSp(3),
+                            //           ),
+                            //           starOffColor: Colors.white,
+                            //           starColor: darklogoColor,
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                      ),
+                      OurSizedBox(),
+                      FadeTransition(
+                        opacity: fadeAnimation,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                // color: Colors.red,
+                                child: Hero(
                                   tag: "Price-${widget.heroTag}",
                                   child: Material(
                                     type: MaterialType.transparency,
@@ -606,42 +722,156 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                                 tag: "Rating-${widget.heroTag}",
                                 child: Material(
                                   type: MaterialType.transparency,
-                                  child: Container(
-                                    // color: Colors.green,
-                                    child: RatingStars(
-                                      value:
-                                          widget.productModel.rating.toDouble(),
-                                      starBuilder: (index, color) => Icon(
-                                        Icons.star,
-                                        color: color,
-                                        size: ScreenUtil().setSp(17),
-                                      ),
-                                      starCount: 5,
-                                      starSize: ScreenUtil().setSp(17.5),
-                                      valueLabelColor: const Color(0xff9b9b9b),
-                                      valueLabelTextStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w400,
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: ScreenUtil().setSp(13.5),
-                                      ),
-                                      valueLabelRadius: ScreenUtil().setSp(20),
-                                      maxValue: 5,
-                                      starSpacing: 1,
-                                      maxValueVisibility: true,
-                                      valueLabelVisibility: true,
-                                      animationDuration:
-                                          const Duration(milliseconds: 800),
-                                      valueLabelPadding: EdgeInsets.symmetric(
-                                        vertical: ScreenUtil().setSp(7.5),
-                                        horizontal: ScreenUtil().setSp(7.5),
-                                      ),
-                                      valueLabelMargin: EdgeInsets.only(
-                                        right: ScreenUtil().setSp(3),
-                                      ),
-                                      starOffColor: Colors.white,
-                                      starColor: darklogoColor,
-                                    ),
+                                  child: StreamBuilder(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("All")
+                                        .where("uid",
+                                            isEqualTo: widget.productModel.uid)
+                                        .snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot snapshot) {
+                                      if (snapshot.hasData) {
+                                        ProductModel productModel1 =
+                                            ProductModel.fromMap(
+                                                snapshot.data!.docs[0]);
+                                        return InkWell(
+                                          onTap: () async {
+                                            if (productModel1.ratingUID
+                                                .contains(FirebaseAuth.instance
+                                                    .currentUser!.uid)) {
+                                              var a = await FirebaseFirestore
+                                                  .instance
+                                                  .collection("Rating")
+                                                  .doc(productModel1.uid)
+                                                  .collection("Ratings")
+                                                  .doc(FirebaseAuth.instance
+                                                      .currentUser!.uid)
+                                                  .get();
+                                              print(
+                                                  "Here is the rating details");
+                                              print(a);
+                                              var rate = a.data()!["rating"];
+                                              _showMyDialog(rate, true);
+                                            } else {
+                                              _showMyDialog(0.0, false);
+                                            }
+                                          },
+                                          child: Row(
+                                            children: [
+                                              RatingStars(
+                                                value: productModel1.rating
+                                                    .toDouble(),
+                                                starBuilder: (index, color) =>
+                                                    Icon(
+                                                  Icons.star,
+                                                  color: color,
+                                                  size: ScreenUtil().setSp(17),
+                                                ),
+                                                starCount: 5,
+                                                starSize:
+                                                    ScreenUtil().setSp(17.5),
+                                                valueLabelColor:
+                                                    const Color(0xff9b9b9b),
+                                                valueLabelTextStyle: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontSize:
+                                                      ScreenUtil().setSp(13.5),
+                                                ),
+                                                valueLabelRadius:
+                                                    ScreenUtil().setSp(20),
+                                                maxValue: 5,
+                                                starSpacing: 1,
+                                                maxValueVisibility: true,
+                                                valueLabelVisibility: true,
+                                                animationDuration:
+                                                    const Duration(
+                                                        milliseconds: 800),
+                                                valueLabelPadding:
+                                                    EdgeInsets.symmetric(
+                                                  vertical:
+                                                      ScreenUtil().setSp(7.5),
+                                                  horizontal:
+                                                      ScreenUtil().setSp(7.5),
+                                                ),
+                                                valueLabelMargin:
+                                                    EdgeInsets.only(
+                                                  right: ScreenUtil().setSp(3),
+                                                ),
+                                                starOffColor: Colors.white,
+                                                starColor: darklogoColor,
+                                              ),
+                                              Text(
+                                                "(${productModel1.ratingNo.toString()})",
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(13),
+                                                  fontWeight: FontWeight.w500,
+                                                  color: darklogoColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      } else {
+                                        return Row(
+                                          children: [
+                                            RatingStars(
+                                              value: widget.productModel.rating
+                                                  .toDouble(),
+                                              starBuilder: (index, color) =>
+                                                  Icon(
+                                                Icons.star,
+                                                color: color,
+                                                size: ScreenUtil().setSp(17),
+                                              ),
+                                              starCount: 5,
+                                              starSize:
+                                                  ScreenUtil().setSp(17.5),
+                                              valueLabelColor:
+                                                  const Color(0xff9b9b9b),
+                                              valueLabelTextStyle: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w400,
+                                                fontStyle: FontStyle.normal,
+                                                fontSize:
+                                                    ScreenUtil().setSp(13.5),
+                                              ),
+                                              valueLabelRadius:
+                                                  ScreenUtil().setSp(20),
+                                              maxValue: 5,
+                                              starSpacing: 1,
+                                              maxValueVisibility: true,
+                                              valueLabelVisibility: true,
+                                              animationDuration: const Duration(
+                                                  milliseconds: 800),
+                                              valueLabelPadding:
+                                                  EdgeInsets.symmetric(
+                                                vertical:
+                                                    ScreenUtil().setSp(7.5),
+                                                horizontal:
+                                                    ScreenUtil().setSp(7.5),
+                                              ),
+                                              valueLabelMargin: EdgeInsets.only(
+                                                right: ScreenUtil().setSp(3),
+                                              ),
+                                              starOffColor: Colors.white,
+                                              starColor: darklogoColor,
+                                            ),
+                                            Text(
+                                              "(${widget.productModel.ratingNo.toString()})",
+                                              style: TextStyle(
+                                                fontSize:
+                                                    ScreenUtil().setSp(13),
+                                                fontWeight: FontWeight.w500,
+                                                color: darklogoColor,
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      }
+                                    },
                                   ),
                                 ),
                               ),
@@ -940,25 +1170,25 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                       //                     ),
                       //                     OurSizedBox(),
                       //                     GestureDetector(
-                      //                       onTap: () async {
-                      //                         if (productModel.ratingUID.contains(
-                      //                             FirebaseAuth
-                      //                                 .instance.currentUser!.uid)) {
-                      //                           var a = await FirebaseFirestore
-                      //                               .instance
-                      //                               .collection("Rating")
-                      //                               .doc(productModel.uid)
-                      //                               .collection("Ratings")
-                      //                               .doc(FirebaseAuth
-                      //                                   .instance.currentUser!.uid)
-                      //                               .get();
+                      // onTap: () async {
+                      //   if (productModel.ratingUID.contains(
+                      //       FirebaseAuth
+                      //           .instance.currentUser!.uid)) {
+                      //     var a = await FirebaseFirestore
+                      //         .instance
+                      //         .collection("Rating")
+                      //         .doc(productModel.uid)
+                      //         .collection("Ratings")
+                      //         .doc(FirebaseAuth
+                      //             .instance.currentUser!.uid)
+                      //         .get();
 
-                      //                           var rate = a.data()!["rating"];
-                      //                           _showMyDialog(rate, true);
-                      //                         } else {
-                      //                           _showMyDialog(0.0, false);
-                      //                         }
-                      //                       },
+                      //     var rate = a.data()!["rating"];
+                      //     _showMyDialog(rate, true);
+                      //   } else {
+                      //     _showMyDialog(0.0, false);
+                      //   }
+                      // },
                       //                       child: RatingStars(
                       //                         value: productModel.rating.toDouble(),
                       //                         starBuilder: (index, color) => Icon(
