@@ -159,8 +159,16 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const OurShimmerText(
-                  title: "Reviews",
+                Text(
+                  "Reviews",
+                  style: TextStyle(
+                    color: darklogoColor,
+                    fontSize: ScreenUtil().setSp(25),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Divider(
+                  color: darklogoColor,
                 ),
                 const OurSizedBox(),
                 Expanded(
@@ -201,17 +209,18 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                                     children: [
                                       Row(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            CrossAxisAlignment.end,
                                         children: [
                                           Expanded(
-                                            flex: 3,
+                                            flex: 2,
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  reviewModel.senderName,
+                                                  reviewModel.review,
                                                   style: TextStyle(
+                                                    color: logoColor,
                                                     fontSize: ScreenUtil()
                                                         .setSp(17.5),
                                                     fontWeight: FontWeight.w600,
@@ -219,10 +228,10 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                                                 ),
                                                 const OurSizedBox(),
                                                 Text(
-                                                  reviewModel.review,
+                                                  reviewModel.senderName,
                                                   style: TextStyle(
-                                                    fontSize:
-                                                        ScreenUtil().setSp(15),
+                                                    fontSize: ScreenUtil()
+                                                        .setSp(12.5),
                                                     fontWeight: FontWeight.w400,
                                                   ),
                                                 ),
@@ -230,22 +239,24 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                                             ),
                                           ),
                                           Expanded(
+                                            flex: 1,
                                             child: Text(
                                               timeago.format(
                                                 reviewModel.timestamp.toDate(),
                                               ),
                                               style: TextStyle(
+                                                color: logoColor,
                                                 fontSize:
-                                                    ScreenUtil().setSp(12.5),
-                                                fontWeight: FontWeight.w400,
+                                                    ScreenUtil().setSp(13.5),
+                                                fontWeight: FontWeight.w500,
                                               ),
                                             ),
                                           ),
                                         ],
                                       ),
-                                      const OurSizedBox(),
-                                      const Divider(),
-                                      const OurSizedBox(),
+                                      Divider(
+                                        color: darklogoColor,
+                                      ),
                                     ],
                                   ),
                                 );
@@ -416,21 +427,6 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                   )
                 ],
               ),
-              // actions: <Widget>[
-              //   OurElevatedButton(
-              //       title: "Submit",
-              //       function: () async {
-              // await ProductDetailFirestore()
-              //     .addRating(widget.productModel, rate);
-              // if (!exists) {
-              //   await ProductDetailFirestore()
-              //       .updateRatingNo(widget.productModel);
-              // }
-              // await ProductDetailFirestore()
-              //     .updateProductRating(widget.productModel);
-              // Navigator.pop(context);
-              //       }),
-              // ],
             );
           },
         );
@@ -624,71 +620,59 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              child: Container(
-                                // color: Colors.red,
-                                child: Hero(
-                                  tag: "ShopName-${widget.heroTag}",
-                                  // tag: "ShopName-$key",
+                              flex: 2,
+                              child: Hero(
+                                tag: "ShopName-${widget.heroTag}",
+                                // tag: "ShopName-$key",
+                                child: Material(
+                                  type: MaterialType.transparency,
+                                  child: Text(
+                                    widget.productModel.shop_name,
+                                    style: TextStyle(
+                                      color: darklogoColor,
+                                      fontSize: ScreenUtil().setSp(17.5),
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  GiveRatingSheet(context);
+                                  print("Give review");
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: ScreenUtil().setSp(5),
+                                    vertical: ScreenUtil().setSp(5),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: darklogoColor,
+                                    borderRadius: BorderRadius.circular(
+                                      ScreenUtil().setSp(10),
+                                    ),
+                                  ),
+                                  // color: Colors.red,
                                   child: Material(
                                     type: MaterialType.transparency,
-                                    child: Text(
-                                      widget.productModel.shop_name,
-                                      style: TextStyle(
-                                        color: darklogoColor,
-                                        fontSize: ScreenUtil().setSp(17.5),
-                                        fontWeight: FontWeight.w500,
-                                        letterSpacing: 0,
+                                    child: Center(
+                                      child: Text(
+                                        "Give review",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: ScreenUtil().setSp(17.5),
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 0,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                            // Expanded(
-                            //   child: Hero(
-                            //     tag: "Ratingss-${widget.heroTag}",
-                            //     child: Material(
-                            //       type: MaterialType.transparency,
-                            //       child: Container(
-                            //         // color: Colors.green,
-                            //         child: RatingStars(
-                            //           value:
-                            //               widget.productModel.rating.toDouble(),
-                            //           starBuilder: (index, color) => Icon(
-                            //             Icons.star,
-                            //             color: color,
-                            //             size: ScreenUtil().setSp(17),
-                            //           ),
-                            //           starCount: 5,
-                            //           starSize: ScreenUtil().setSp(17.5),
-                            //           valueLabelColor: const Color(0xff9b9b9b),
-                            //           valueLabelTextStyle: TextStyle(
-                            //             color: Colors.white,
-                            //             fontWeight: FontWeight.w400,
-                            //             fontStyle: FontStyle.normal,
-                            //             fontSize: ScreenUtil().setSp(13.5),
-                            //           ),
-                            //           valueLabelRadius: ScreenUtil().setSp(20),
-                            //           maxValue: 5,
-                            //           starSpacing: 1,
-                            //           maxValueVisibility: true,
-                            //           valueLabelVisibility: true,
-                            //           animationDuration:
-                            //               const Duration(milliseconds: 800),
-                            //           valueLabelPadding: EdgeInsets.symmetric(
-                            //             vertical: ScreenUtil().setSp(7.5),
-                            //             horizontal: ScreenUtil().setSp(7.5),
-                            //           ),
-                            //           valueLabelMargin: EdgeInsets.only(
-                            //             right: ScreenUtil().setSp(3),
-                            //           ),
-                            //           starOffColor: Colors.white,
-                            //           starColor: darklogoColor,
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),

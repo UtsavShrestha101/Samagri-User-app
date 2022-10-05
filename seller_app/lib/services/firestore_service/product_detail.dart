@@ -149,7 +149,7 @@ class ProductDetailFirestore {
     String uid = const Uuid().v4();
     try {
       await FirebaseFirestore.instance
-          .collection("Products")
+          .collection("All")
           .doc(productId)
           .collection("Reviews")
           .doc(uid)
