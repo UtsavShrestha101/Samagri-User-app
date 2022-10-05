@@ -100,7 +100,7 @@ class ProductDetailFirestore {
         }).then(
           (value) => NotificationService().simpleBigPictureNotification(
             "Item removed from cart",
-            cartProductModel.url,
+            cartProductModel.url[0],
           ),
         );
         OurToast().showSuccessToast("Product removed from cart");

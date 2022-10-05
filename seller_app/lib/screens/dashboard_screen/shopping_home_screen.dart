@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_intro/flutter_intro.dart';
@@ -11,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:myapp/controller/category_tag_controller.dart';
 import 'package:myapp/db/db_helper.dart';
+import 'package:myapp/models/recommendation_history_model.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_search_product_screen.dart';
 import 'package:myapp/services/current_location/get_current_location.dart';
 import 'package:myapp/utils/color.dart';
@@ -22,6 +24,8 @@ import '../../models/category_model.dart';
 import '../../models/lat_long_controller.dart';
 import '../../widget/our_carousel_slider.dart';
 import 'package:scroll_to_id/scroll_to_id.dart';
+
+import '../../widget/our_recommendation_widget.dart';
 
 class ShoppingHomeScreen extends StatefulWidget {
   const ShoppingHomeScreen({Key? key}) : super(key: key);
@@ -779,6 +783,11 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
                     category: "Beauty",
                   ),
                 ),
+
+                ScrollContent(
+                  id: "Aadbd as",
+                  child: OurRecommendationWidget(productUIDhide: "UtsavHAHAHA",),
+                ),
               ],
             ),
           ],
@@ -787,78 +796,3 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
     );
   }
 }
-
-
-
-// ListView.builder(
-//                             scrollDirection: Axis.horizontal,
-//                             shrinkWrap: true,
-//                             itemCount: items.length + 1,
-//                             itemBuilder: (context, indexxxx) {
-//                               return AnimationConfiguration.staggeredList(
-//                                 position: indexxxx,
-//                                 duration: Duration(milliseconds: 1200),
-//                                 child: SlideAnimation(
-//                                   horizontalOffset:
-//                                       MediaQuery.of(context).size.width,
-//                                   child: FadeInAnimation(
-//                                     child: Container(
-//                                       margin: EdgeInsets.symmetric(
-//                                         horizontal: ScreenUtil().setSp(2),
-//                                         vertical: ScreenUtil().setSp(2),
-//                                       ),
-//                                       child: Obx(
-//                                         () => ChoiceChip(
-//                                           selectedColor:
-//                                               logoColor.withOpacity(0.4),
-//                                           label: indexxxx == 0
-//                                               ? Text(
-//                                                   "All",
-//                                                   style: TextStyle(
-//                                                     fontSize:
-//                                                         ScreenUtil().setSp(15),
-//                                                   ),
-//                                                 )
-//                                               : Text(
-//                                                   items[indexxxx - 1],
-//                                                   style: TextStyle(
-//                                                     fontSize:
-//                                                         ScreenUtil().setSp(15),
-//                                                   ),
-//                                                 ),
-//                                           selected: indexxxx ==
-//                                               Get.find<CategoryTagController>()
-//                                                   .tag
-//                                                   .value,
-//                                           onSelected: (bool selected) {
-//                                             if (indexxxx == 0) {
-//                                               Get.find<CategoryTagController>()
-//                                                   .changeTag(0, "All");
-//                                               scrollToId.animateTo(
-//                                                 "All",
-//                                                 duration:
-//                                                     Duration(milliseconds: 500),
-//                                                 curve: Curves.ease,
-//                                               );
-//                                             } else {
-//                                               Get.find<CategoryTagController>()
-//                                                   .changeTag(indexxxx,
-//                                                       items[indexxxx - 1]);
-//                                               scrollToId.animateTo(
-//                                                 items[indexxxx - 1],
-//                                                 duration:
-//                                                     Duration(milliseconds: 500),
-//                                                 curve: Curves.ease,
-//                                               );
-//                                             }
-
-                                            
-//                                           },
-//                                         ),
-//                                       ),
-//                                     ),
-//                                   ),
-//                                 ),
-//                               );
-//                             },
-//                           ),

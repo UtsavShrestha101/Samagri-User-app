@@ -49,15 +49,13 @@ class _ShopAddProductScreenState extends State<ShopAddProductScreen> {
   }
 
   List<File> images = [];
+
   void selectImages() async {
     var res = await pickImages();
     setState(() {
       images = res;
     });
   }
-
-//  VEGETABLE&FRUITS
-//  BEAUTY
 
   final item = [
     "Grocery",
@@ -73,7 +71,9 @@ class _ShopAddProductScreenState extends State<ShopAddProductScreen> {
     "Vegetable and fruits",
     "Beauty",
   ];
+
   String? categoryItem;
+
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
         value: item,
         child: Center(

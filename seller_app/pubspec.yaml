@@ -93,6 +93,7 @@ dependencies:
   flip_card: ^0.6.0
   like_button: ^2.0.5
   readmore: ^2.2.0
+  # flutter_feather_icons: ^2.0.0+1
  
   
   

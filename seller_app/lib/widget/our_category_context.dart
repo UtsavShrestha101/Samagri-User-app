@@ -61,7 +61,7 @@ class _OurCategoryContextState extends State<OurCategoryContext> {
                       crossAxisCount: 2,
                       crossAxisSpacing: ScreenUtil().setSp(5),
                       mainAxisSpacing: ScreenUtil().setSp(5),
-                      childAspectRatio: 0.69,
+                      childAspectRatio: 0.7,
                     ),
                     itemBuilder: (context, index) {
                       ProductModel productModel =

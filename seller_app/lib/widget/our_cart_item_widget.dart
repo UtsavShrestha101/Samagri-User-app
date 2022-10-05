@@ -37,7 +37,7 @@ class _OurCartItemWidgetState extends State<OurCartItemWidget> {
             child: CachedNetworkImage(
               height: ScreenUtil().setSp(90),
               fit: BoxFit.fill,
-              imageUrl: widget.cartProductModel.url,
+              imageUrl: widget.cartProductModel.url[0],
               placeholder: (context, url) => Image.asset(
                 "assets/images/placeholder.png",
                 height: ScreenUtil().setSp(90),

@@ -6,7 +6,7 @@ class CartProductModel {
   final String uid;
   final String name;
   final String desc;
-  final String url;
+  final List url;
   final double price;
   final Timestamp addedOn;
   final int quantity;
@@ -38,7 +38,7 @@ class CartProductModel {
       uid: map['uid'] ?? '',
       name: map['name'] ?? '',
       desc: map['desc'] ?? '',
-      url: map['url'] ?? '',
+      url: map['url'] ?? [],
       price: map['price']?.toDouble() ?? 0.0,
       addedOn: map['addedOn'],
       quantity: map['quantity']?.toInt() ?? 0,
@@ -50,7 +50,7 @@ class CartProductModel {
       uid: map['uid'] ?? '',
       name: map['name'] ?? '',
       desc: map['desc'] ?? '',
-      url: map['url'] ?? '',
+      url: map['url'] ?? [],
       price: map['price']?.toDouble() ?? 0.0,
       addedOn: map['addedOn'],
       quantity: map['quantity']?.toInt() ?? 0,

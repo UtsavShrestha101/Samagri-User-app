@@ -63,7 +63,11 @@ class _ProductGridTileState extends State<ProductGridTile> {
       },
       child: FxContainer.bordered(
         color: Colors.transparent,
-        paddingAll: ScreenUtil().setSp(5),
+        padding: EdgeInsets.only(
+          left: ScreenUtil().setSp(5),
+          right: ScreenUtil().setSp(5),
+          bottom: ScreenUtil().setSp(2.5),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
