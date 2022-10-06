@@ -1,27 +1,18 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutx/flutx.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_map_location_picker_flutter/google_map_location_picker_flutter.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_address_choosing_screen.dart';
-import 'package:myapp/screens/dashboard_screen/shopping_cart_screen.dart';
-import 'package:myapp/screens/dashboard_screen/shopping_delivery_address_screen.dart';
-import 'package:myapp/screens/dashboard_screen/shopping_map_screen.dart';
-import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_cart_item_widget.dart';
 import 'package:myapp/widget/our_elevated_button.dart';
 import 'package:myapp/widget/our_shimeer_text.dart';
 import 'package:myapp/widget/our_spinner.dart';
 import 'package:page_transition/page_transition.dart';
-
 import '../../models/cart_product_model.dart';
 import '../../models/firebase_user_model.dart';
-import '../../services/current_location/get_current_location.dart';
-import '../../services/firestore_service/product_detail.dart';
+import '../../utils/color.dart';
 import '../../widget/our_sized_box.dart';
 
 class ShoppingMyCartScreen extends StatefulWidget {
@@ -214,16 +205,66 @@ class _ShoppingMyCartScreenState extends State<ShoppingMyCartScreen> {
                         );
                       } else {
                         return Center(
-                          child: Image.asset(
-                            "assets/images/empty.png",
-                            height: ScreenUtil().setSp(200),
-                            width: ScreenUtil().setSp(200),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/images/logo.png",
+                                fit: BoxFit.contain,
+                                height: ScreenUtil().setSp(150),
+                                width: ScreenUtil().setSp(150),
+                              ),
+                              OurSizedBox(),
+                              Text(
+                                "We're sorry",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color: logoColor,
+                                  fontSize: ScreenUtil().setSp(17.5),
+                                ),
+                              ),
+                              OurSizedBox(),
+                              Text(
+                                "No item added to the cart",
+                                style: TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: ScreenUtil().setSp(15),
+                                ),
+                              ),
+                            ],
                           ),
                         );
                       }
                     }
-                    return const Center(
-                      child: OurSpinner(),
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/images/logo.png",
+                            fit: BoxFit.contain,
+                            height: ScreenUtil().setSp(150),
+                            width: ScreenUtil().setSp(150),
+                          ),
+                          OurSizedBox(),
+                          Text(
+                            "We're sorry",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: logoColor,
+                              fontSize: ScreenUtil().setSp(17.5),
+                            ),
+                          ),
+                          OurSizedBox(),
+                          Text(
+                            "No item added to the cart",
+                            style: TextStyle(
+                              color: Colors.black45,
+                              fontSize: ScreenUtil().setSp(15),
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),

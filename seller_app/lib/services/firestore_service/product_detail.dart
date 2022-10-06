@@ -133,6 +133,7 @@ class ProductDetailFirestore {
           "desc": product.desc,
           "url": product.url,
           "price": product.price,
+          "shop": product.shop_name,
           "addedOn": Timestamp.now(),
           "quantity": quantity,
         }).then((value) => NotificationService().simpleBigPictureNotification(

@@ -22,7 +22,6 @@ Future<void> main() async {
   await Hive.openBox<String>(DatabaseHelper.nearbylocationDB);
   await Hive.openBox<AddListModel>(DatabaseHelper.addtolistDB);
   await Hive.openBox<String>("product_history");
-  
 
   runApp(
     Intro(

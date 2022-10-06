@@ -8,10 +8,13 @@ class CartProductModel {
   final String desc;
   final List url;
   final double price;
+  final String shop;
+  // "shop": product.shop_name,
   final Timestamp addedOn;
   final int quantity;
 
   CartProductModel({
+    required this.shop,
     required this.uid,
     required this.name,
     required this.desc,
@@ -30,6 +33,7 @@ class CartProductModel {
       'price': price,
       'addedon': addedOn,
       'quantity': quantity,
+      'shop':shop,
     };
   }
 
@@ -38,6 +42,7 @@ class CartProductModel {
       uid: map['uid'] ?? '',
       name: map['name'] ?? '',
       desc: map['desc'] ?? '',
+      shop: map['shop'] ?? '',
       url: map['url'] ?? [],
       price: map['price']?.toDouble() ?? 0.0,
       addedOn: map['addedOn'],
@@ -45,8 +50,10 @@ class CartProductModel {
     );
   }
 
-   factory CartProductModel.toIncreaseorDecrease(Map<String,dynamic> map) {
+  factory CartProductModel.toIncreaseorDecrease(Map<String, dynamic> map) {
     return CartProductModel(
+      shop: map['shop'] ?? '',
+
       uid: map['uid'] ?? '',
       name: map['name'] ?? '',
       desc: map['desc'] ?? '',

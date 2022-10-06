@@ -32,16 +32,18 @@ class _OurCartItemWidgetState extends State<OurCartItemWidget> {
       ),
       child: Row(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-            child: CachedNetworkImage(
-              height: ScreenUtil().setSp(90),
-              fit: BoxFit.fill,
-              imageUrl: widget.cartProductModel.url[0],
-              placeholder: (context, url) => Image.asset(
-                "assets/images/placeholder.png",
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              child: CachedNetworkImage(
                 height: ScreenUtil().setSp(90),
                 fit: BoxFit.fill,
+                imageUrl: widget.cartProductModel.url[0],
+                placeholder: (context, url) => Image.asset(
+                  "assets/images/placeholder.png",
+                  height: ScreenUtil().setSp(90),
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
           ),
@@ -49,6 +51,7 @@ class _OurCartItemWidgetState extends State<OurCartItemWidget> {
             ScreenUtil().setSp(10),
           ),
           Expanded(
+            flex: 2,
             child: Container(
               height: ScreenUtil().setSp(90),
               child: Column(
@@ -61,10 +64,33 @@ class _OurCartItemWidgetState extends State<OurCartItemWidget> {
                     letterSpacing: 0,
                     fontSize: ScreenUtil().setSp(17),
                   ),
+                  SizedBox(
+                    height: ScreenUtil().setSp(2),
+                  ),
                   FxText.sh2(
                     "Rs " + widget.cartProductModel.price.toString(),
                     fontWeight: 700,
                     letterSpacing: 0,
+                  ),
+                  SizedBox(
+                    height: ScreenUtil().setSp(2),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Icon(
+                        MdiIcons.storeOutline,
+                        color: darklogoColor,
+                        size: 20,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 4),
+                        child: FxText.b2(
+                          widget.cartProductModel.shop,
+                          color: darklogoColor,
+                          fontWeight: 900,
+                        ),
+                      )
+                    ],
                   ),
                 ],
               ),
