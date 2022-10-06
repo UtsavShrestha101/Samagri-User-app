@@ -1152,6 +1152,7 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                       OurRecommendationWidget(
                         productUIDhide: widget.productModel.uid,
                       ),
+                      OurSizedBox(),
                     ],
                   ),
                 ),

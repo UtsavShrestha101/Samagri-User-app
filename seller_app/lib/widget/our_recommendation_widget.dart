@@ -51,6 +51,7 @@ class _OurRecommendationWidgetState extends State<OurRecommendationWidget> {
                 .doc(FirebaseAuth.instance.currentUser!.uid)
                 .collection("Recommendation")
                 .orderBy("timestamp", descending: true)
+                .limit(5)
                 .snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -60,8 +61,7 @@ class _OurRecommendationWidgetState extends State<OurRecommendationWidget> {
                     height: ScreenUtil().setSp(255),
                     child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        // shrinkWrap: true,
-                        // physics: NeverScrollableScrollPhysics(),
+                        
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
                           RecommendationHistoryModel

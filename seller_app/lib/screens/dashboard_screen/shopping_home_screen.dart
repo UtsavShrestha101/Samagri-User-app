@@ -22,6 +22,7 @@ import 'package:myapp/widget/our_sized_box.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../models/category_model.dart';
 import '../../models/lat_long_controller.dart';
+import '../../widget/our_all_content.dart';
 import '../../widget/our_carousel_slider.dart';
 import 'package:scroll_to_id/scroll_to_id.dart';
 
@@ -705,7 +706,7 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
 
                 ScrollContent(
                   id: "All",
-                  child: OurCategoryContext(
+                  child: OurAllContext(
                     category: "All",
                   ),
                 ),
@@ -786,7 +787,9 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
 
                 ScrollContent(
                   id: "Aadbd as",
-                  child: OurRecommendationWidget(productUIDhide: "UtsavHAHAHA",),
+                  child: OurRecommendationWidget(
+                    productUIDhide: "UtsavHAHAHA",
+                  ),
                 ),
               ],
             ),
