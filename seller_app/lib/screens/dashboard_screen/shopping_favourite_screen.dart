@@ -1,17 +1,15 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:myapp/services/firestore_service/userprofile_detail.dart';
+import 'package:myapp/widget/our_search_product_tile.dart';
 import 'package:myapp/widget/our_shimeer_text.dart';
 import 'package:myapp/widget/our_spinner.dart';
-
 import '../../models/product_model.dart';
 import '../../utils/color.dart';
-import '../../widget/our_product_item_list_tile.dart';
 import '../../widget/our_sized_box.dart';
+// import '../../widget/our_product_item_list_tile.dart';
 
 class ShoppingFavouriteScreen extends StatefulWidget {
   const ShoppingFavouriteScreen({Key? key}) : super(key: key);
@@ -73,7 +71,7 @@ class _ShoppingFavouriteScreenState extends State<ShoppingFavouriteScreen> {
                             String uid = snapshot.data!.docs[index]["uid"];
                             return StreamBuilder(
                               stream: FirebaseFirestore.instance
-                                  .collection("Products")
+                                  .collection("All")
                                   .where("uid", isEqualTo: uid)
                                   .snapshots(),
                               builder: (BuildContext context,
@@ -84,14 +82,9 @@ class _ShoppingFavouriteScreenState extends State<ShoppingFavouriteScreen> {
                                         ProductModel.fromMap(
                                             snapshot.data!.docs[0]);
                                     return Container(
-                                      margin: EdgeInsets.only(top: 20),
-                                      child: OurProductListTile(
-                                        name: productModel.name,
-                                        image: productModel.url[0],
-                                        shopName: 'Agus Bakery',
+                                      // margin: EdgeInsets.only(top: 20),
+                                      child: OurSearchProductListTile(
                                         buildContext: context,
-                                        star: productModel.rating.toDouble(),
-                                        price: productModel.price,
                                         productModel: productModel,
                                       ),
                                     );
@@ -107,16 +100,66 @@ class _ShoppingFavouriteScreenState extends State<ShoppingFavouriteScreen> {
                         );
                       } else {
                         return Center(
-                          child: Image.asset(
-                            "assets/images/empty.png",
-                            height: ScreenUtil().setSp(200),
-                            width: ScreenUtil().setSp(200),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/images/logo.png",
+                                fit: BoxFit.contain,
+                                height: ScreenUtil().setSp(150),
+                                width: ScreenUtil().setSp(150),
+                              ),
+                              OurSizedBox(),
+                              Text(
+                                "We're sorry",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color: logoColor,
+                                  fontSize: ScreenUtil().setSp(17.5),
+                                ),
+                              ),
+                              OurSizedBox(),
+                              Text(
+                                "No item added to favourite list",
+                                style: TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: ScreenUtil().setSp(15),
+                                ),
+                              ),
+                            ],
                           ),
                         );
                       }
                     } else {
                       return Center(
-                        child: OurSpinner(),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/images/logo.png",
+                              fit: BoxFit.contain,
+                              height: ScreenUtil().setSp(150),
+                              width: ScreenUtil().setSp(150),
+                            ),
+                            OurSizedBox(),
+                            Text(
+                              "We're sorry",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: logoColor,
+                                fontSize: ScreenUtil().setSp(17.5),
+                              ),
+                            ),
+                            OurSizedBox(),
+                            Text(
+                              "No item added to favourite list",
+                              style: TextStyle(
+                                color: Colors.black45,
+                                fontSize: ScreenUtil().setSp(15),
+                              ),
+                            ),
+                          ],
+                        ),
                       );
                     }
                   },

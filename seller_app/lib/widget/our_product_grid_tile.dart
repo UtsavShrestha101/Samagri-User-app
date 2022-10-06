@@ -127,19 +127,10 @@ class _ProductGridTileState extends State<ProductGridTile> {
                             child: InkWell(
                               onTap: () async {
                                 print("HELLO WORLD");
-                                // await HapticFeedback.vibrate();
-                                // await HapticFeedback.heavyImpact();
-                                // await HapticFeedback.lightImpact();
-                                // await HapticFeedback.selectionClick();
+
                                 await UserDetailFirestore()
                                     .addFavorite(widget.productModel);
                                 print("Favourite Added");
-                                // Check if the device can vibrate
-                                // bool canVibrate = await Vibrate.canVibrate;
-
-                                // Vibrate
-                                // Vibration duration is a constant 500ms because
-                                // it cannot be set to a specific duration on iOS.
                               },
                               child: Icon(
                                 MdiIcons.heartOutline,

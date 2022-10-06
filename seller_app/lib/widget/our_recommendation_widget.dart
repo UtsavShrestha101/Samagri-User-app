@@ -30,7 +30,7 @@ class _OurRecommendationWidgetState extends State<OurRecommendationWidget> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(
-        horizontal: ScreenUtil().setSp(10),
+        horizontal: ScreenUtil().setSp(7.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +61,6 @@ class _OurRecommendationWidgetState extends State<OurRecommendationWidget> {
                     height: ScreenUtil().setSp(255),
                     child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
                           RecommendationHistoryModel

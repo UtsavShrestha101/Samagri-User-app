@@ -26,6 +26,7 @@ class _ShoppingSearchProductScreenState
 
   @override
   void dispose() {
+    Get.find<SearchTextController>().clearController();
     super.dispose();
     _search_controller.clear();
   }
@@ -64,10 +65,14 @@ class _ShoppingSearchProductScreenState
                       Expanded(
                         child: Container(
                           margin: EdgeInsets.symmetric(
-                            horizontal: ScreenUtil().setSp(22.5),
+                            horizontal: ScreenUtil().setSp(15),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: ScreenUtil().setSp(15),
                           ),
                           height: ScreenUtil().setSp(40),
                           child: TextFormField(
+                            textAlign: TextAlign.center,
                             scrollPadding: EdgeInsets.only(
                               left: ScreenUtil().setSp(15),
                               bottom: MediaQuery.of(context).viewInsets.bottom,

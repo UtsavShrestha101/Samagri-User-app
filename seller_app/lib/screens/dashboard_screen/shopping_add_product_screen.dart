@@ -2,22 +2,17 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutx/flutx.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_elevated_button.dart';
 import 'package:myapp/widget/our_sized_box.dart';
 import 'package:myapp/widget/our_text_field.dart';
-
 import '../../controller/login_controller.dart';
 import '../../controller/product_names_list_controller.dart';
 import '../../services/addImages/product_image.dart';
-import '../../services/compress image/compress_image.dart';
 import '../../widget/our_spinner.dart';
 
 class ShopAddProductScreen extends StatefulWidget {
