@@ -575,17 +575,23 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                             items: widget.productModel.url
                                 .map(
                                   (e) => Builder(
-                                    builder: (context) => CachedNetworkImage(
+                                    builder: (context) => Image.network(
+                                      e,
                                       height: ScreenUtil().setSp(220),
                                       fit: BoxFit.cover,
-                                      imageUrl: e,
-                                      placeholder: (context, url) =>
-                                          Image.asset(
-                                        "assets/images/placeholder.png",
-                                        height: ScreenUtil().setSp(220),
-                                        fit: BoxFit.cover,
-                                      ),
                                     ),
+
+                                    //  CachedNetworkImage(
+                                    //   height: ScreenUtil().setSp(220),
+                                    //   fit: BoxFit.cover,
+                                    //   imageUrl: e,
+                                    //   placeholder: (context, url) =>
+                                    //       Image.asset(
+                                    //     "assets/images/placeholder.png",
+                                    //     height: ScreenUtil().setSp(220),
+                                    //     fit: BoxFit.cover,
+                                    //   ),
+                                    // ),
                                   ),
                                 )
                                 .toList(),

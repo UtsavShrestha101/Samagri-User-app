@@ -10,10 +10,7 @@ import '../../controller/login_controller.dart';
 class Location {
   AddLocation(
     String Whole_Address,
-    String administrative_area_level,
-    String administrative_area_level_2,
-    String locality,
-    String sublocality,
+   
     double? long,
     double? lat,
   ) async {
@@ -28,10 +25,7 @@ class Location {
           .set(
         {
           "uid": uid,
-          "administrative_area": administrative_area_level,
-          "administrative_area2": administrative_area_level_2,
-          "locality": locality,
-          "sublocality": sublocality,
+         
           "full_address": Whole_Address,
           "longitude": long,
           "latitude": lat,

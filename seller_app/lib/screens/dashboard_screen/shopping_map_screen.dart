@@ -240,75 +240,12 @@ class ShopMapScreenState extends State<ShopMapScreen> {
                             if (!loading)
                               GestureDetector(
                                 onTap: () async {
-                                  String Whole_Address = "";
-                                  String administrative_area_level = "";
-                                  String administrative_area_level_2 = "";
-                                  String locality = "";
-                                  String sublocality = "";
-                                  print(_latLng);
                                   Get.find<LoginController>().toggle(true);
-                                  try {
-                                    final endpoint =
-                                        'https://maps.googleapis.com/maps/api/geocode/json?latlng=${_latLng?.latitude},${_latLng?.longitude}'
-                                        '&key=${widget.apiKey}&language=${widget.language}';
 
-                                    final response = jsonDecode((await http.get(
-                                      Uri.parse(endpoint),
-                                    ))
-                                        .body);
-                                    getAddressModel getaddress =
-                                        getAddressModel.fromJson(response);
-                                    getaddress.results![0].addressComponents!
-                                        .forEach((element) {
-                                      try {
-                                        if (element.types!.contains(
-                                            "administrative_area_level_1")) {
-                                          administrative_area_level =
-                                              element.longName ?? "";
-                                        } else if (element.types!.contains(
-                                            "administrative_area_level_2")) {
-                                          administrative_area_level_2 =
-                                              element.longName ?? "";
-                                        } else if (element.types!
-                                            .contains("locality")) {
-                                          locality = element.longName ?? "";
-                                        } else if (element.types!
-                                            .contains("sublocality")) {
-                                          sublocality = element.longName ?? "";
-                                        } else {}
-                                      } catch (e) {
-                                        print("===========");
-                                        print("===========");
-                                        print(e);
-                                        print("===========");
-                                        print("===========");
-                                      }
-                                    });
-                                    Whole_Address =
-                                        "${getaddress.results![0].addressComponents![1].longName!}, ${getaddress.results![0].addressComponents![2].longName!}, ${getaddress.results![0].addressComponents![3].longName!}, ${getaddress.results![0].addressComponents![4].longName!}, ${getaddress.results![0].addressComponents![5].longName!}";
-                                    print(Whole_Address);
-                                    print(administrative_area_level);
-                                    print(administrative_area_level_2);
-                                    print(locality);
-                                    print(sublocality);
-                                  } catch (e) {
-                                    print("============");
-                                    print("============");
-                                    print(e);
-                                    print("============");
-                                    print("============");
-                                  }
-
-                                  await Location().AddLocation(
-                                      Whole_Address,
-                                      administrative_area_level,
-                                      administrative_area_level_2,
-                                      locality,
-                                      sublocality,
-                                      _latLng?.longitude,
-                                      _latLng?.latitude);
-                                  Navigator.pop(context);
+                                  await Location().AddLocation(_currentAddress,
+                                      _latLng?.longitude, _latLng?.latitude);
                                   Get.find<LoginController>().toggle(false);
+                                  Navigator.pop(context);
 
                                   // AddressResult addressResult = AddressResult(
                                   //     latlng: _latLng!, address: _currentAddress);

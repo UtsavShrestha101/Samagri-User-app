@@ -70,25 +70,25 @@ class _OurDeliveryAddressColumnState extends State<OurDeliveryAddressColumn> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    OurDeliveryAddressTile(
-                      title: "Administrative Area: ",
-                      value: widget.deliveryLocation.administrativeArea ?? "",
-                    ),
+                    // OurDeliveryAddressTile(
+                    //   title: "Administrative Area: ",
+                    //   value: widget.deliveryLocation.administrativeArea ?? "",
+                    // ),
+                    // OurSizedBox(),
+                    // OurDeliveryAddressTile(
+                    //   title: "Sub-Administrative Area: ",
+                    //   value: widget.deliveryLocation.administrativeArea2 ?? "",
+                    // ),
                     OurSizedBox(),
-                    OurDeliveryAddressTile(
-                      title: "Sub-Administrative Area: ",
-                      value: widget.deliveryLocation.administrativeArea2 ?? "",
-                    ),
-                    OurSizedBox(),
-                    OurDeliveryAddressTile(
-                      title: "Locality: ",
-                      value: widget.deliveryLocation.locality ?? "",
-                    ),
-                    OurSizedBox(),
-                    OurDeliveryAddressTile(
-                      title: "Sub-Locality: ",
-                      value: widget.deliveryLocation.sublocality ?? "",
-                    ),
+                    // OurDeliveryAddressTile(
+                    //   title: "Locality: ",
+                    //   value: widget.deliveryLocation.locality ?? "",
+                    // ),
+                    // OurSizedBox(),
+                    // OurDeliveryAddressTile(
+                    //   title: "Sub-Locality: ",
+                    //   value: widget.deliveryLocation.sublocality ?? "",
+                    // ),
                     OurSizedBox(),
                     OurDeliveryAddressTile(
                       title: "Delivery address: ",

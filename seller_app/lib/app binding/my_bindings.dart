@@ -7,6 +7,7 @@ import 'package:myapp/models/lat_long_controller.dart';
 
 import '../controller/address_choose_controller.dart';
 import '../controller/category_tag_controller.dart';
+import '../controller/check_out_screen_controller.dart';
 import '../controller/dashboard_controller.dart';
 import '../controller/delivery_time_controller.dart';
 import '../controller/explore_shop_controller.dart';
@@ -61,6 +62,9 @@ class MyBinding implements Bindings {
     );
     Get.lazyPut(
       () => PolyLineController(),
+    );
+    Get.lazyPut(
+      () => CheckOutScreenController(),
     );
     // ShoppingListSearchController
     // ProductListName

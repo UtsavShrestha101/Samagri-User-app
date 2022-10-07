@@ -76,8 +76,8 @@ class _ShoppingFullAppPageState extends State<ShoppingFullApp>
         //   // 23.45
         // ),
       ),
-      ShopAddProductScreen(),
-      // const ShoppingAddListScreen(),
+      // ShopAddProductScreen(),
+      const ShoppingAddListScreen(),
       const ShoppingMyCartScreen(),
       ShoppingProfileScreen()
     ];

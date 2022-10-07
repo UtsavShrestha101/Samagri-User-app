@@ -81,18 +81,26 @@ class _OurSearchProductListTileState extends State<OurSearchProductListTile> {
                     ScreenUtil().setSp(8),
                   ),
                 ),
-                child: CachedNetworkImage(
+                child: 
+                Image.network(
+                  widget.productModel.url[0],
                   height: ScreenUtil().setSp(90),
                   width: ScreenUtil().setSp(90),
                   // width: double.infinity,
                   fit: BoxFit.fill,
-                  imageUrl: widget.productModel.url[0],
-                  placeholder: (context, url) => Image.asset(
-                    "assets/images/placeholder.png",
-                    height: ScreenUtil().setSp(90),
-                    width: ScreenUtil().setSp(90),
-                  ),
                 ),
+                // CachedNetworkImage(
+                //   height: ScreenUtil().setSp(90),
+                //   width: ScreenUtil().setSp(90),
+                //   // width: double.infinity,
+                //   fit: BoxFit.fill,
+                //   imageUrl: widget.productModel.url[0],
+                //   placeholder: (context, url) => Image.asset(
+                //     "assets/images/placeholder.png",
+                //     height: ScreenUtil().setSp(90),
+                //     width: ScreenUtil().setSp(90),
+                //   ),
+                // ),
               ),
             ),
             FxSpacing.width(20),

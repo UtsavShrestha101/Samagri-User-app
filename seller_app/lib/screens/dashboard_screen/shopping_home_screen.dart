@@ -457,25 +457,34 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
                                                         ScreenUtil().setSp(2),
                                                       ),
                                                     ),
-                                                    child: CachedNetworkImage(
+                                                    child: Image.network(
+                                                      "https://firebasestorage.googleapis.com/v0/b/ride-sharing-app-1.appspot.com/o/all.jpg?alt=media&token=9465b073-1ea0-44fc-8ee2-4f624c54e9a4",
                                                       height: ScreenUtil()
                                                           .setSp(45),
                                                       width: ScreenUtil()
                                                           .setSp(45),
                                                       fit: BoxFit.fill,
-                                                      imageUrl:
-                                                          "https://firebasestorage.googleapis.com/v0/b/ride-sharing-app-1.appspot.com/o/all.jpg?alt=media&token=9465b073-1ea0-44fc-8ee2-4f624c54e9a4",
-                                                      placeholder:
-                                                          (context, url) =>
-                                                              Image.asset(
-                                                        "assets/images/placeholder.png",
-                                                        height: ScreenUtil()
-                                                            .setSp(45),
-                                                        width: ScreenUtil()
-                                                            .setSp(45),
-                                                        // width: ScreenUtil().setSp(150),
-                                                      ),
                                                     ),
+
+                                                    // CachedNetworkImage(
+                                                    //   height: ScreenUtil()
+                                                    //       .setSp(45),
+                                                    //   width: ScreenUtil()
+                                                    //       .setSp(45),
+                                                    //   fit: BoxFit.fill,
+                                                    //   imageUrl:
+                                                    //       "https://firebasestorage.googleapis.com/v0/b/ride-sharing-app-1.appspot.com/o/all.jpg?alt=media&token=9465b073-1ea0-44fc-8ee2-4f624c54e9a4",
+                                                    //   placeholder:
+                                                    //       (context, url) =>
+                                                    //           Image.asset(
+                                                    //     "assets/images/placeholder.png",
+                                                    //     height: ScreenUtil()
+                                                    //         .setSp(45),
+                                                    //     width: ScreenUtil()
+                                                    //         .setSp(45),
+                                                    //     // width: ScreenUtil().setSp(150),
+                                                    //   ),
+                                                    // ),
                                                   ),
                                                   SizedBox(
                                                     height:

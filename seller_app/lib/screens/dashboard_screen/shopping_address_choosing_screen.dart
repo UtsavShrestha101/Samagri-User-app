@@ -339,14 +339,7 @@ class _ShopAddressChoosingScreenState extends State<ShopAddressChoosingScreen> {
                         ],
                       ),
                     ),
-                    //
-                    //
-                    //
-                    //
-                    //
-                    //
-                    //v
-                    //sad fiuafsov
+                    
                     Container(
                       margin: EdgeInsets.symmetric(
                         horizontal: ScreenUtil().setSp(10),

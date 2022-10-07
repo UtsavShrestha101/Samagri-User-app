@@ -48,6 +48,14 @@ class _ShoppingAddListScreenState extends State<ShoppingAddListScreen>
     animationController.forward();
   }
 
+  @override
+  void dispose() {
+    animationController.dispose();
+    animationControllerListPage.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   int select = 0;
 
   @override

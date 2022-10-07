@@ -33,11 +33,14 @@ dependencies:
   flutx:
     path: ../flutx
 
+  esewa_flutter_sdk:
+    path: ../esewa_flutter_sdk
+
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  
   flutter_launcher_icons: ^0.9.3
   flutter_screenutil: ^5.5.2
   firebase_auth: ^3.3.19
@@ -93,8 +96,8 @@ dependencies:
   flip_card: ^0.6.0
   like_button: ^2.0.5
   readmore: ^2.2.0
-  # flutter_feather_icons: ^2.0.0+1
- 
+  khalti_flutter: ^2.1.0
+  # esewa_pnp: ^2.0.1
   
   
 
@@ -138,6 +141,7 @@ flutter:
     - assets/mapTheme/night_theme.json
     - assets/mapTheme/aubergine_theme.json
     - assets/mapTheme/normal_theme.json
+    - assets/images/order_success.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
