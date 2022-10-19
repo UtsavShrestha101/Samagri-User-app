@@ -80,6 +80,9 @@ class AddLatLongFirebase {
                 );
                 controller.addInfoWindow!(
                   OurCustomInFo(
+                    uid: element.data()["uid"],
+                    shopName: element.data()["name"],
+                    image: element.data()["image"],
                     distance: distance,
                     element: element,
                     controller: controller,

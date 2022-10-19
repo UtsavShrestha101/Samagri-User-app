@@ -6,21 +6,30 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:uuid/uuid.dart';
 import '../controller/polyline_controller.dart';
 import '../models/lat_long_controller.dart';
+import '../models/user_model.dart';
+import '../screens/dashboard_screen/shopping_shop_profile_screen.dart';
 import '../utils/color.dart';
 import 'our_sized_box.dart';
 
 class OurCustomInFo extends StatefulWidget {
   final double distance;
+  final String uid;
+  final String shopName;
+  final String image;
   final CustomInfoWindowController controller;
   final QueryDocumentSnapshot<Map<String, dynamic>> element;
   const OurCustomInFo(
       {Key? key,
       required this.distance,
       required this.element,
-      required this.controller})
+      required this.controller,
+      required this.image,
+      required this.shopName,
+      required this.uid})
       : super(key: key);
 
   @override
@@ -50,12 +59,12 @@ class _OurCustomInFoState extends State<OurCustomInFo> {
             borderRadius: BorderRadius.circular(
               ScreenUtil().setSp(17.5),
             ),
-            child: Image.asset(
-              "assets/images/banners/banner_1.jpg",
+            child: Image.network(
+              widget.image,
               width: double.infinity,
               // width: MediaQuery.of(context).size.width * 0.65,
               height: ScreenUtil().setSp(100),
-              fit: BoxFit.cover,
+              fit: BoxFit.fitHeight,
             ),
           ),
         ),
@@ -73,8 +82,8 @@ class _OurCustomInFoState extends State<OurCustomInFo> {
                     ScreenUtil().setSp(17.5),
                   ),
                 ),
-                child: Image.asset(
-                  "assets/images/banners/banner_1.jpg",
+                child: Image.network(
+                  widget.image,
                   width: double.infinity,
                   // width: MediaQuery.of(context).size.width * 0.65,
                   height: ScreenUtil().setSp(100),
@@ -93,9 +102,9 @@ class _OurCustomInFoState extends State<OurCustomInFo> {
                 left: ScreenUtil().setSp(5),
               ),
               child: Text(
-                widget.element.data()["uid"],
+                widget.shopName,
                 style: TextStyle(
-                  fontSize: ScreenUtil().setSp(15),
+                  fontSize: ScreenUtil().setSp(17.5),
                   color: logoColor,
                   fontWeight: FontWeight.w400,
                   overflow: TextOverflow.ellipsis,
@@ -169,9 +178,28 @@ class _OurCustomInFoState extends State<OurCustomInFo> {
                   ),
                   Expanded(
                     child: InkWell(
-                      onTap: () {
-                        print("HELLO WORLD");
-                        print(Get.find<PolyLineController>().polylineList);
+                      // onTap: () {
+                      //   print("HELLO WORLD");
+                      //   print(Get.find<PolyLineController>().polylineList);
+                      // },
+                      onTap: () async {
+                        DocumentSnapshot abc = await FirebaseFirestore.instance
+                            .collection("Sellers")
+                            .doc(widget.uid)
+                            .get();
+                        UserModel userModel = UserModel.fromMap(abc);
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            child: ShoppingShopProfileScreen(
+                              userModel: userModel,
+                              shopName: widget.shopName,
+                              shopOwnerUID: widget.uid,
+                            ),
+                            type: PageTransitionType.leftToRight,
+                          ),
+                        );
+                        // print("Button Pressed");
                       },
                       child: Icon(
                         Icons.person,
