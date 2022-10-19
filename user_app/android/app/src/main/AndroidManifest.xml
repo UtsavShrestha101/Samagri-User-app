@@ -3,7 +3,7 @@
         <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE"/>
    <application
-        android:label="Mero Pasal"
+        android:label="Samagri User"
         android:name="${applicationName}"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:icon="@mipmap/launcher_icon">

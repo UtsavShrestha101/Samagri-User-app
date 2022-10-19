@@ -71,7 +71,7 @@ class _ShoppingLoginScreenState extends State<ShoppingLoginScreen> {
                         ),
                         OurSizedBox(),
                         Text(
-                          "Mero Pasal",
+                          "Samagri-User",
                           style: TextStyle(
                             fontSize: ScreenUtil().setSp(27.5),
                             color: darklogoColor,

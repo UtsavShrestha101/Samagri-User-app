@@ -57,7 +57,7 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
               vertical: ScreenUtil().setSp(2.5),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
                   Get.find<CheckOutScreenController>().address.value,
@@ -331,7 +331,7 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
                   config: PaymentConfig(
                     amount: widget.totalPrice.toInt() * 100,
                     productIdentity: uid,
-                    productName: 'Samagri TrackingID -$uid',
+                    productName: 'Samagri-User TrackingID -$uid',
                   ),
                   preferences: [
                     PaymentPreference.khalti,
@@ -396,7 +396,7 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
 
                 // ESewaPayment _payment = ESewaPayment(
                 //     amount: widget.totalPrice,
-                //     productName: 'Samagri TrackingID -$uid',
+                //     productName: 'Samagri-User TrackingID -$uid',
                 //     productID: uid,
                 //     callBackURL: "http://example.com");
                 // try {

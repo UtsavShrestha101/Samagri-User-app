@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
             builder: (child, Widget) {
               return GetMaterialApp(
                 navigatorKey: navigatorKey,
-                title: "Samagri",
+                title: "Samagri-User",
                 supportedLocales: const [
                   Locale('en', 'US'),
                   Locale('ne', 'NP'),
