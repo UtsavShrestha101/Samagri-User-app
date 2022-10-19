@@ -12,12 +12,15 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:myapp/controller/quantity_controller.dart';
 import 'package:myapp/models/product_model.dart';
 import 'package:myapp/models/review_model.dart';
+import 'package:myapp/screens/dashboard_screen/shopping_shop_profile_screen.dart';
 import 'package:myapp/services/recommendation_history/recommendation_history.dart';
 import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_sized_box.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:readmore/readmore.dart';
 import '../../controller/login_controller.dart';
 import '../../models/firebase_user_model.dart';
+import '../../models/user_model.dart';
 import '../../services/firestore_service/product_detail.dart';
 import '../../services/firestore_service/userprofile_detail.dart';
 import '../../widget/our_elevated_button.dart';
@@ -644,13 +647,38 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                                 // tag: "ShopName-$key",
                                 child: Material(
                                   type: MaterialType.transparency,
-                                  child: Text(
-                                    widget.productModel.shop_name,
-                                    style: TextStyle(
-                                      color: darklogoColor,
-                                      fontSize: ScreenUtil().setSp(17.5),
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: 0,
+                                  child: InkWell(
+                                    onTap: () async {
+                                      DocumentSnapshot abc =
+                                          await FirebaseFirestore.instance
+                                              .collection("Sellers")
+                                              .doc(widget.productModel.ownerUid)
+                                              .get();
+                                      UserModel userModel =
+                                          UserModel.fromMap(abc);
+                                      Navigator.push(
+                                        context,
+                                        PageTransition(
+                                          child: ShoppingShopProfileScreen(
+                                            userModel: userModel,
+                                            shopName:
+                                                widget.productModel.shop_name,
+                                            shopOwnerUID:
+                                                widget.productModel.ownerUid,
+                                          ),
+                                          type: PageTransitionType.leftToRight,
+                                        ),
+                                      );
+                                      // print("Button Pressed");
+                                    },
+                                    child: Text(
+                                      widget.productModel.shop_name,
+                                      style: TextStyle(
+                                        color: darklogoColor,
+                                        fontSize: ScreenUtil().setSp(17.5),
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 0,
+                                      ),
                                     ),
                                   ),
                                 ),

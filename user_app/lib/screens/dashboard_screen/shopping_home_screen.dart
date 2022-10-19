@@ -449,8 +449,8 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
                                               ),
                                               margin: EdgeInsets.symmetric(
                                                 horizontal:
-                                                    ScreenUtil().setSp(5),
-                                                vertical: ScreenUtil().setSp(5),
+                                                    ScreenUtil().setSp(2),
+                                                vertical: ScreenUtil().setSp(2),
                                               ),
                                               padding: EdgeInsets.symmetric(
                                                 horizontal:
@@ -463,7 +463,7 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: ScreenUtil()
-                                                        .setSp(12.5),
+                                                        .setSp(13.5),
                                                     color: index ==
                                                             Get.find<
                                                                     CategoryTagController>()
