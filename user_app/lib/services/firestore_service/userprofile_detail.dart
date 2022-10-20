@@ -9,6 +9,8 @@ import 'package:myapp/widget/our_flutter_toast.dart';
 import '../../controller/login_controller.dart';
 import '../../db/db_helper.dart';
 import '../../models/product_model.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 // import 'package:vibration/vibration.dart';
 
 class UserDetailFirestore {
@@ -44,6 +46,8 @@ class UserDetailFirestore {
   uploadDetailSignUp(
       String username, String number, BuildContext context) async {
     try {
+      String? token = await FirebaseMessaging.instance.getToken();
+
       final QuerySnapshot resultQuery = await firestore
           .collection("Users")
           .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
@@ -58,6 +62,12 @@ class UserDetailFirestore {
             .collection("Users")
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .set({
+          "imageUrl": "",
+          "product": 0,
+          "follower": 0,
+          "following": 0,
+          "followerList": [],
+          "followingList": [],
           "uid": FirebaseAuth.instance.currentUser!.uid,
           "name": username,
           "AddedOn": DateFormat('yyy-MM-dd').format(
@@ -68,6 +78,7 @@ class UserDetailFirestore {
           "favorite": [],
           "cartItemNo": 0,
           "currentCartPrice": 0.0,
+          "token": token,
         });
         OurToast().showErrorToast("User registered successfully");
         await Hive.box<int>(DatabaseHelper.outerlayerDB).put("state", 2);

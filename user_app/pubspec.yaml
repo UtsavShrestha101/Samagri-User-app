@@ -142,6 +142,8 @@ flutter:
     - assets/mapTheme/aubergine_theme.json
     - assets/mapTheme/normal_theme.json
     - assets/images/order_success.png
+    - assets/images/profile_holder.png
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
