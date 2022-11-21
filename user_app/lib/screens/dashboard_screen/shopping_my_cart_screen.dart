@@ -31,6 +31,14 @@ class _ShoppingMyCartScreenState extends State<ShoppingMyCartScreen>
   late Animation<double> logoAnimationList;
   late Animation<double> fadeAnimation;
   late AnimationController animationController;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    animationController.dispose();
+    animationControllerListPage.dispose();
+    super.dispose();
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -59,6 +67,7 @@ class _ShoppingMyCartScreenState extends State<ShoppingMyCartScreen>
     );
     animationController.forward();
   }
+  
 
   late FirebaseUserModel firebaseUserModel;
   @override

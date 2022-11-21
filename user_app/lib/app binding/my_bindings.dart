@@ -14,6 +14,7 @@ import '../controller/explore_shop_controller.dart';
 import '../controller/polyline_controller.dart';
 import '../controller/product_names_list_controller.dart';
 import '../controller/search_text_controller.dart';
+import '../controller/send_message_controller.dart';
 import '../controller/shopping_list_search_controller.dart';
 
 class MyBinding implements Bindings {
@@ -65,6 +66,9 @@ class MyBinding implements Bindings {
     );
     Get.lazyPut(
       () => CheckOutScreenController(),
+    );
+     Get.lazyPut(
+      () => MessageSendController(),
     );
     // ShoppingListSearchController
     // ProductListName

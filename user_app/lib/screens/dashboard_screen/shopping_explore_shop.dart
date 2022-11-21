@@ -84,7 +84,7 @@ class ShopExploreScreenState extends State<ShopExploreScreen>
     animationController.dispose();
     animationControllerListPage.dispose();
 
-    customInfoWindowController.dispose();
+    // customInfoWindowController.dispose();
     super.dispose();
   }
 

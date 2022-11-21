@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
@@ -8,7 +9,10 @@ import 'package:hive/hive.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:myapp/models/product_model.dart';
 import 'package:myapp/utils/color.dart';
+import 'package:page_transition/page_transition.dart';
+import '../models/user_model.dart';
 import '../screens/dashboard_screen/shopping_product_screen.dart';
+import '../screens/dashboard_screen/shopping_shop_profile_screen.dart';
 import '../services/firestore_service/userprofile_detail.dart';
 import '../utils/generator.dart';
 
@@ -82,25 +86,27 @@ class _OurSearchProductListTileState extends State<OurSearchProductListTile> {
                   ),
                 ),
                 child: 
-                Image.network(
-                  widget.productModel.url[0],
-                  height: ScreenUtil().setSp(90),
-                  width: ScreenUtil().setSp(90),
-                  // width: double.infinity,
-                  fit: BoxFit.fill,
-                ),
-                // CachedNetworkImage(
+                
+                // Text("as")
+                // Image.network(
+                //   widget.productModel.url[0],
                 //   height: ScreenUtil().setSp(90),
                 //   width: ScreenUtil().setSp(90),
                 //   // width: double.infinity,
                 //   fit: BoxFit.fill,
-                //   imageUrl: widget.productModel.url[0],
-                //   placeholder: (context, url) => Image.asset(
-                //     "assets/images/placeholder.png",
-                //     height: ScreenUtil().setSp(90),
-                //     width: ScreenUtil().setSp(90),
-                //   ),
                 // ),
+                CachedNetworkImage(
+                  height: ScreenUtil().setSp(90),
+                  width: ScreenUtil().setSp(90),
+                  // width: double.infinity,
+                  fit: BoxFit.fill,
+                  imageUrl: widget.productModel.url[0],
+                  placeholder: (context, url) => Image.asset(
+                    "assets/images/placeholder.png",
+                    height: ScreenUtil().setSp(90),
+                    width: ScreenUtil().setSp(90),
+                  ),
+                ),
               ),
             ),
             FxSpacing.width(20),
@@ -210,59 +216,84 @@ class _OurSearchProductListTileState extends State<OurSearchProductListTile> {
                         ),
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Icon(
-                                  MdiIcons.storeOutline,
-                                  color: darklogoColor,
-                                  size: 20,
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 4),
-                                  child: FxText.b2(
-                                    widget.productModel.shop_name,
+                    InkWell(
+                       onTap: () async {
+                                      DocumentSnapshot abc =
+                                          await FirebaseFirestore.instance
+                                              .collection("Sellers")
+                                              .doc(widget.productModel.ownerUid)
+                                              .get();
+                                      UserModel userModel =
+                                          UserModel.fromMap(abc);
+                                      Navigator.push(
+                                        context,
+                                        PageTransition(
+                                          child: ShoppingShopProfileScreen(
+                                            userModel: userModel,
+                                            shopName:
+                                                widget.productModel.shop_name,
+                                            shopOwnerUID:
+                                                widget.productModel.ownerUid,
+                                          ),
+                                          type: PageTransitionType.leftToRight,
+                                        ),
+                                      );
+                                      // print("Button Pressed");
+                                    },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Icon(
+                                    MdiIcons.storeOutline,
                                     color: darklogoColor,
-                                    fontWeight: 500,
+                                    size: 20,
                                   ),
-                                )
-                              ],
-                            ),
-                            // Icon(
-                            //   MdiIcons.storeOutline,
-                            //   color: darklogoColor,
-                            //   size: 20,
-                            // ),
-                            // Container(
-                            //   margin: EdgeInsets.only(left: 4),
-                            //   child: FxText.b2(
-                            //     widget.shopName,
-                            //     color: darklogoColor,
-                            //     fontWeight: 500,
-                            //   ),
-                            // )
-                          ],
-                        ),
-                        Hero(
-                          tag: "Price-$key",
-                          child: Material(
-                            type: MaterialType.transparency,
-                            child: FxText.b2(
-                              "Rs " + widget.productModel.price.toString(),
-                              style: TextStyle(
-                                fontSize: ScreenUtil().setSp(15),
-                                fontWeight: FontWeight.w400,
+                                  Container(
+                                    margin: EdgeInsets.only(left: 4),
+                                    child: FxText.b2(
+                                      widget.productModel.shop_name,
+                                      color: darklogoColor,
+                                      fontWeight: 500,
+                                    ),
+                                  )
+                                ],
                               ),
-                              softWrap: true,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                              // Icon(
+                              //   MdiIcons.storeOutline,
+                              //   color: darklogoColor,
+                              //   size: 20,
+                              // ),
+                              // Container(
+                              //   margin: EdgeInsets.only(left: 4),
+                              //   child: FxText.b2(
+                              //     widget.shopName,
+                              //     color: darklogoColor,
+                              //     fontWeight: 500,
+                              //   ),
+                              // )
+                            ],
                           ),
-                        )
-                      ],
+                          Hero(
+                            tag: "Price-$key",
+                            child: Material(
+                              type: MaterialType.transparency,
+                              child: FxText.b2(
+                                "Rs " + widget.productModel.price.toString(),
+                                style: TextStyle(
+                                  fontSize: ScreenUtil().setSp(15),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),

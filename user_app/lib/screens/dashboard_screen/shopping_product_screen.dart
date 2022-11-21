@@ -578,23 +578,25 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                             items: widget.productModel.url
                                 .map(
                                   (e) => Builder(
-                                    builder: (context) => Image.network(
-                                      e,
-                                      height: ScreenUtil().setSp(220),
-                                      fit: BoxFit.cover,
-                                    ),
-
-                                    //  CachedNetworkImage(
+                                    builder: (context) => 
+                                    
+                                    // Image.network(
+                                    //   e,
                                     //   height: ScreenUtil().setSp(220),
                                     //   fit: BoxFit.cover,
-                                    //   imageUrl: e,
-                                    //   placeholder: (context, url) =>
-                                    //       Image.asset(
-                                    //     "assets/images/placeholder.png",
-                                    //     height: ScreenUtil().setSp(220),
-                                    //     fit: BoxFit.cover,
-                                    //   ),
                                     // ),
+
+                                     CachedNetworkImage(
+                                      height: ScreenUtil().setSp(220),
+                                      fit: BoxFit.cover,
+                                      imageUrl: e,
+                                      placeholder: (context, url) =>
+                                          Image.asset(
+                                        "assets/images/placeholder.png",
+                                        height: ScreenUtil().setSp(220),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
                                 )
                                 .toList(),
@@ -617,17 +619,15 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                           tag: "NameTag-${widget.heroTag}",
                           child: Material(
                             type: MaterialType.transparency,
-                            child: Expanded(
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                child: Text(
-                                  widget.productModel.name,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    letterSpacing: 0,
-                                    color: logoColor,
-                                    fontSize: ScreenUtil().setSp(20),
-                                  ),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: Text(
+                                widget.productModel.name,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0,
+                                  color: logoColor,
+                                  fontSize: ScreenUtil().setSp(20),
                                 ),
                               ),
                             ),

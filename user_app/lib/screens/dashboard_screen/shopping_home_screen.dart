@@ -150,10 +150,10 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: Container(
-          width: MediaQuery.of(context).size.width * 0.75,
-          child: Drawer(),
-        ),
+        // drawer: Container(
+        //   width: MediaQuery.of(context).size.width * 0.75,
+        //   child: Drawer(),
+        // ),
         body: Stack(
           alignment: Alignment.topRight,
           children: [
@@ -185,16 +185,7 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
                         SizedBox(
                           width: ScreenUtil().setSp(12.5),
                         ),
-                        InkWell(
-                          onTap: () {
-                            _scaffoldKey.currentState!.openDrawer();
-                          },
-                          child: Icon(
-                            FeatherIcons.menu,
-                            color: logoColor,
-                            size: ScreenUtil().setSp(22.5),
-                          ),
-                        ),
+                        
                         Expanded(
                           child: Center(
                             child: Row(

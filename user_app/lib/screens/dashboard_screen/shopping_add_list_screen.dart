@@ -83,132 +83,130 @@ class _ShoppingAddListScreenState extends State<ShoppingAddListScreen>
             }
           }
         },
-        child: SafeArea(
-          child: Scaffold(
-              appBar: AppBar(
-                centerTitle: true,
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+        child: Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RotationTransition(
+                    turns: logoAnimationList,
+                    child: Image.asset(
+                      "assets/images/logo.png",
+                      height: ScreenUtil().setSp(23.5),
+                      width: ScreenUtil().setSp(23.5),
+                    ),
+                  ),
+                  SizedBox(
+                    width: ScreenUtil().setSp(7.5),
+                  ),
+                  Text(
+                    "Shopping Lists",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: ScreenUtil().setSp(25),
+                      color: darklogoColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            body: Container(
+              padding: EdgeInsets.only(
+                top: ScreenUtil().setSp(10),
+                left: ScreenUtil().setSp(10),
+                right: ScreenUtil().setSp(10),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    RotationTransition(
-                      turns: logoAnimationList,
-                      child: Image.asset(
-                        "assets/images/logo.png",
-                        height: ScreenUtil().setSp(23.5),
-                        width: ScreenUtil().setSp(23.5),
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  select = 0;
+                                });
+                              },
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Present",
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(20),
+                                      color: logoColor,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  select == 0
+                                      ? SizedBox(
+                                          height: ScreenUtil().setSp(2),
+                                        )
+                                      : Container(),
+                                  select == 0
+                                      ? Container(
+                                          height: ScreenUtil().setSp(2),
+                                          width: double.infinity,
+                                          color: darklogoColor,
+                                        )
+                                      : Container(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  select = 1;
+                                });
+                              },
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "History",
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(20),
+                                      color: logoColor,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  select == 1
+                                      ? SizedBox(
+                                          height: ScreenUtil().setSp(2),
+                                        )
+                                      : Container(),
+                                  select == 1
+                                      ? Container(
+                                          height: ScreenUtil().setSp(2),
+                                          width: double.infinity,
+                                          color: darklogoColor,
+                                        )
+                                      : Container(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      width: ScreenUtil().setSp(7.5),
-                    ),
-                    Text(
-                      "Shopping Lists",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: ScreenUtil().setSp(25),
-                        color: darklogoColor,
-                      ),
-                    ),
+                    OurSizedBox(),
+                    select == 0
+                        ? PresentShoppingList()
+                        : HistoryShoppingList(),
                   ],
                 ),
               ),
-              body: Container(
-                padding: EdgeInsets.only(
-                  top: ScreenUtil().setSp(10),
-                  left: ScreenUtil().setSp(10),
-                  right: ScreenUtil().setSp(10),
-                ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    select = 0;
-                                  });
-                                },
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "Present",
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(20),
-                                        color: logoColor,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    select == 0
-                                        ? SizedBox(
-                                            height: ScreenUtil().setSp(2),
-                                          )
-                                        : Container(),
-                                    select == 0
-                                        ? Container(
-                                            height: ScreenUtil().setSp(2),
-                                            width: double.infinity,
-                                            color: darklogoColor,
-                                          )
-                                        : Container(),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    select = 1;
-                                  });
-                                },
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "History",
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(20),
-                                        color: logoColor,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    select == 1
-                                        ? SizedBox(
-                                            height: ScreenUtil().setSp(2),
-                                          )
-                                        : Container(),
-                                    select == 1
-                                        ? Container(
-                                            height: ScreenUtil().setSp(2),
-                                            width: double.infinity,
-                                            color: darklogoColor,
-                                          )
-                                        : Container(),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      OurSizedBox(),
-                      select == 0
-                          ? PresentShoppingList()
-                          : HistoryShoppingList(),
-                    ],
-                  ),
-                ),
-              )),
-        ),
+            )),
       ),
     );
   }

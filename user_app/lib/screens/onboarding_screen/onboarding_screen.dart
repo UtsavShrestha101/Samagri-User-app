@@ -48,7 +48,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     OurSizedBox(),
                     Center(
                       child: Text(
-                        'Find lots of product\nthat fits you',
+                        'Find lots of product that fits you',
                         style: TextStyle(
                           fontSize: ScreenUtil().setSp(20),
                           color: logoColor,
@@ -87,7 +87,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     OurSizedBox(),
                     Center(
                       child: Text(
-                        'Secure payment\nwith SSL ',
+                        'Secure payment ',
                         style: TextStyle(
                           fontSize: ScreenUtil().setSp(20),
                           color: logoColor,
@@ -122,7 +122,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     OurSizedBox(),
                     Center(
                       child: Text(
-                        'Fast delivery\nat a snap',
+                        'Fast delivery at a snap',
                         style: TextStyle(
                           fontSize: ScreenUtil().setSp(20),
                           color: logoColor,

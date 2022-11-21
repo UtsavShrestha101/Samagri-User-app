@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
+  final String uid;
   final String imageUrl;
   final String name;
   final String email;
@@ -13,6 +14,7 @@ class UserModel {
   final double long;
 
   UserModel({
+    required this.uid,
     required this.imageUrl,
     required this.lat,
     required this.long,
@@ -34,6 +36,7 @@ class UserModel {
     double? long,
   }) {
     return UserModel(
+      uid: uid,
       imageUrl: imageUrl ?? this.imageUrl,
       lat: lat ?? 0.0,
       long: long ?? 0.0,
@@ -60,6 +63,7 @@ class UserModel {
 
   factory UserModel.fromMap(DocumentSnapshot map) {
     return UserModel(
+      uid: map["uid"] ?? '',
       imageUrl: map["imageUrl"] ?? '',
       name: map['name'] ?? '',
       email: map['email'] ?? '',

@@ -9,8 +9,11 @@ import 'package:flutter_intro/flutter_intro.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:myapp/screens/dashboard_screen/shopping_chat_send_screen.dart';
 import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_category_context_seller.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:scroll_to_id/scroll_to_id.dart';
 
 import '../../controller/category_tag_controller.dart';
@@ -249,7 +252,28 @@ class _ShoppingShopProfileScreenState extends State<ShoppingShopProfileScreen> {
             overflow: TextOverflow.ellipsis,
           ),
         ),
+        actions: [
+          InkWell(
+            onTap: (){
+              Navigator.push(context, PageTransition(child: MessageSendScreen(
+                userModel: widget.userModel,
+              ), type: PageTransitionType.leftToRight,),);
+              // print("Chat Screen");
+              // print(widget.userModel.name);
+            },
+            child: Icon(
+              MdiIcons.chatOutline,
+                      color: darklogoColor,
+                      size: ScreenUtil().setSp(25),
+            ),
+
+          ),
+          SizedBox(
+            width: ScreenUtil().setSp(7.5),
+          ),
+        ],
       ),
+
       body: SafeArea(
         child: Container(
             margin: EdgeInsets.only(

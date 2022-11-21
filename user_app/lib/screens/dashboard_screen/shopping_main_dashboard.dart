@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_add_list_screen.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_add_product_screen.dart';
+import 'package:myapp/screens/dashboard_screen/shopping_chat_screen.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_explore_shop.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_my_cart_screen.dart';
 import 'package:myapp/services/current_location/get_current_location.dart';
@@ -77,6 +78,7 @@ class _ShoppingFullAppPageState extends State<ShoppingFullApp>
         // ),
       ),
       // ShopAddProductScreen(),
+      ShoppingChatScreen(),
       const ShoppingAddListScreen(),
       const ShoppingMyCartScreen(),
       ShoppingProfileScreen()
@@ -140,6 +142,15 @@ class _ShoppingFullAppPageState extends State<ShoppingFullApp>
                     size: ScreenUtil().setSp(22.5),
                   ),
                   label: 'Search',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    // Icons.list_alt_outlined,
+                    MdiIcons.chatOutline,
+                    color: darklogoColor,
+                    size: ScreenUtil().setSp(22.5),
+                  ),
+                  label: 'Messages',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
