@@ -1,9 +1,11 @@
 // import 'package:esewa_pnp/esewa.dart';
 // import 'package:esewa_pnp/esewa_pnp.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esewa_flutter_sdk/esewa_config.dart';
 import 'package:esewa_flutter_sdk/esewa_flutter_sdk.dart';
 import 'package:esewa_flutter_sdk/esewa_payment.dart';
 import 'package:esewa_flutter_sdk/esewa_payment_success_result.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -15,10 +17,16 @@ import 'package:flutx/widgets/button/button.dart';
 import 'package:flutx/widgets/container/container.dart';
 import 'package:get/get.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
+import 'package:myapp/models/user_model_firebase.dart';
+import 'package:myapp/services/place_order/place_order_service.dart';
 import 'package:uuid/uuid.dart';
 // import 'package:esewa_pnp/esewa_pnp.dart';
 import '../../controller/check_out_screen_controller.dart';
 import '../../controller/delivery_time_controller.dart';
+import '../../controller/login_controller.dart';
+import '../../models/cart_product_model.dart';
+import '../../models/checkout_product_model.dart';
+import '../../models/firebase_user_model.dart';
 import '../../utils/color.dart';
 import '../../widget/our_flutter_toast.dart';
 import '../../widget/our_sized_box.dart';
@@ -317,10 +325,42 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
           OurSizedBox(),
           FxButton.block(
             onPressed: () async {
+              Get.find<LoginController>().toggle(true);
               var uid = Uuid().v4();
               if (Get.find<CheckOutScreenController>().paymentIndex.value ==
                   0) {
                 print("Cash On Delivery");
+                List<Map<String, dynamic>> itemModel = [];
+                var userData = await FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .get();
+                // FirebaseUserModel firebaseUserModel =FirebaseUser11Model.fromMap(userData);
+                var collection = await FirebaseFirestore.instance
+                    .collection("Carts")
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .collection("Products")
+                    .get();
+                for (var doc in collection.docs) {
+                  var abc = doc.data();
+                  CartProductModel cartProductModel =
+                      CartProductModel.toIncreaseorDecrease(doc.data());
+
+                  itemModel.add(
+                    CheckOutProductModel(
+                      name: cartProductModel.name,
+                      quantity: cartProductModel.quantity,
+                      price: cartProductModel.price,
+                      uid: cartProductModel.uid,
+                      isPacked: false,
+                    ).toMap(),
+                  );
+                }
+                PlaceOrderService().submitOrder(
+                  itemModel,
+                  widget.totalPrice,
+                  "Cash on Delivery",
+                );
                 Get.find<CheckOutScreenController>().changeIndex(2);
               } else if (Get.find<CheckOutScreenController>()
                       .paymentIndex
@@ -341,8 +381,41 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
                     PaymentPreference.sct,
                     PaymentPreference.mobileBanking,
                   ],
-                  onSuccess: (su) {
+                  onSuccess: (su) async {
+                    print("Cash On Delivery");
+                    List<Map<String, dynamic>> itemModel = [];
+                    var userData = await FirebaseFirestore.instance
+                        .collection("Users")
+                        .doc(FirebaseAuth.instance.currentUser!.uid)
+                        .get();
+                    // FirebaseUserModel firebaseUserModel =FirebaseUser11Model.fromMap(userData);
+                    var collection = await FirebaseFirestore.instance
+                        .collection("Carts")
+                        .doc(FirebaseAuth.instance.currentUser!.uid)
+                        .collection("Products")
+                        .get();
+                    for (var doc in collection.docs) {
+                      var abc = doc.data();
+                      CartProductModel cartProductModel =
+                          CartProductModel.toIncreaseorDecrease(doc.data());
+
+                      itemModel.add(
+                        CheckOutProductModel(
+                          name: cartProductModel.name,
+                          quantity: cartProductModel.quantity,
+                          price: cartProductModel.price,
+                          uid: cartProductModel.uid,
+                          isPacked: false,
+                        ).toMap(),
+                      );
+                    }
+                    PlaceOrderService().submitOrder(
+                      itemModel,
+                      widget.totalPrice,
+                      "Khalti",
+                    );
                     OurToast().showErrorToast("Payment Successful");
+
                     Get.find<CheckOutScreenController>().changeIndex(2);
                   },
                   onFailure: (fa) {
@@ -368,9 +441,43 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
                       productPrice: widget.totalPrice.toString(),
                       callbackUrl: "www.test-url.com",
                     ),
-                    onPaymentSuccess: (EsewaPaymentSuccessResult data) {
+                    onPaymentSuccess: (EsewaPaymentSuccessResult data) async {
                       debugPrint(":::SUCCESS::: => $data");
+                      print("Cash On Delivery");
+                      List<Map<String, dynamic>> itemModel = [];
+                      var userData = await FirebaseFirestore.instance
+                          .collection("Users")
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .get();
+                      // FirebaseUserModel firebaseUserModel =FirebaseUser11Model.fromMap(userData);
+                      var collection = await FirebaseFirestore.instance
+                          .collection("Carts")
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .collection("Products")
+                          .get();
+                      for (var doc in collection.docs) {
+                        var abc = doc.data();
+                        CartProductModel cartProductModel =
+                            CartProductModel.toIncreaseorDecrease(doc.data());
+
+                        itemModel.add(
+                          CheckOutProductModel(
+                            name: cartProductModel.name,
+                            quantity: cartProductModel.quantity,
+                            price: cartProductModel.price,
+                            uid: cartProductModel.uid,
+                            isPacked: false,
+                          ).toMap(),
+                        );
+                      }
+                      PlaceOrderService().submitOrder(
+                        itemModel,
+                        widget.totalPrice,
+                        "E-sewa",
+                      );
+
                       OurToast().showErrorToast("Payment Successful");
+
                       Get.find<CheckOutScreenController>().changeIndex(2);
                     },
                     onPaymentFailure: (data) {

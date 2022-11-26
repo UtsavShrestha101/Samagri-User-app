@@ -66,7 +66,7 @@ class _MessageSendScreenState extends State<MessageSendScreen> {
     try {
       final ImagePicker _picker = ImagePicker();
       var result = await _picker.pickImage(source: ImageSource.gallery);
-      ;
+      
 
       if (result != null) {
         setState(() {});

@@ -136,50 +136,31 @@ class _ShoppingCheckOutScreenState extends State<ShoppingCheckOutScreen>
                     Row(
                       children: [
                         Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Get.find<CheckOutScreenController>()
-                                  .changeIndex(0);
-                            },
-                            child: Container(
-                              height: ScreenUtil().setSp(80),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: ScreenUtil().setSp(10),
-                                vertical: ScreenUtil().setSp(5),
+                          child: Container(
+                            height: ScreenUtil().setSp(80),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: ScreenUtil().setSp(10),
+                              vertical: ScreenUtil().setSp(5),
+                            ),
+                            decoration: BoxDecoration(
+                              color: Get.find<CheckOutScreenController>()
+                                          .index
+                                          .value ==
+                                      0
+                                  ? darklogoColor
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(
+                                ScreenUtil().setSp(17.5),
                               ),
-                              decoration: BoxDecoration(
-                                color: Get.find<CheckOutScreenController>()
-                                            .index
-                                            .value ==
-                                        0
-                                    ? darklogoColor
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(
-                                  ScreenUtil().setSp(17.5),
-                                ),
-                              ),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Shipping",
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(17.5),
-                                        color:
-                                            Get.find<CheckOutScreenController>()
-                                                        .index
-                                                        .value ==
-                                                    0
-                                                ? Colors.white
-                                                : darklogoColor,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    OurSizedBox(),
-                                    Icon(
-                                      Icons.local_shipping_outlined,
-                                      size: ScreenUtil().setSp(25),
+                            ),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Shipping",
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(17.5),
                                       color:
                                           Get.find<CheckOutScreenController>()
                                                       .index
@@ -187,9 +168,21 @@ class _ShoppingCheckOutScreenState extends State<ShoppingCheckOutScreen>
                                                   0
                                               ? Colors.white
                                               : darklogoColor,
+                                      fontWeight: FontWeight.w400,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  OurSizedBox(),
+                                  Icon(
+                                    Icons.local_shipping_outlined,
+                                    size: ScreenUtil().setSp(25),
+                                    color: Get.find<CheckOutScreenController>()
+                                                .index
+                                                .value ==
+                                            0
+                                        ? Colors.white
+                                        : darklogoColor,
+                                  ),
+                                ],
                               ),
                             ),
                           ),

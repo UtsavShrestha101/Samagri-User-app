@@ -38,21 +38,22 @@ class _OurCartItemWidgetState extends State<OurCartItemWidget> {
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(8)),
-              child: Image.network(
-                widget.cartProductModel.url[0],
+              child:
+                  // Image.network(
+                  //   widget.cartProductModel.url[0],
+                  //   height: ScreenUtil().setSp(90),
+                  //   fit: BoxFit.fill,
+                  // ),
+                  CachedNetworkImage(
                 height: ScreenUtil().setSp(90),
                 fit: BoxFit.fill,
+                imageUrl: widget.cartProductModel.url[0],
+                placeholder: (context, url) => Image.asset(
+                  "assets/images/placeholder.png",
+                  height: ScreenUtil().setSp(90),
+                  fit: BoxFit.fill,
+                ),
               ),
-              //  CachedNetworkImage(
-              //   height: ScreenUtil().setSp(90),
-              //   fit: BoxFit.fill,
-              //   imageUrl: widget.cartProductModel.url[0],
-              //   placeholder: (context, url) => Image.asset(
-              //     "assets/images/placeholder.png",
-              //     height: ScreenUtil().setSp(90),
-              //     fit: BoxFit.fill,
-              //   ),
-              // ),
             ),
           ),
           FxSpacing.width(

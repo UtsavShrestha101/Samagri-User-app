@@ -197,8 +197,8 @@ class _ShoppingProfileScreenState extends State<ShoppingProfileScreen> {
                         title: "Logout",
                         iconData: MdiIcons.logout,
                         function: () async {
-                          await FetchProductFirebase()
-                              .fetchproductfirebase("Grocery");
+                          // await FetchProductFirebase()
+                          //     .fetchproductfirebase("Grocery");
                           await PhoneAuth().logout();
                           // var a = await FirebaseFirestore.instance
                           //     .collection("Users")

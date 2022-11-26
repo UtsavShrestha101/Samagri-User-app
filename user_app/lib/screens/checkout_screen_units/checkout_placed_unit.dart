@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -6,10 +8,15 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutx/flutx.dart';
 import 'package:get/get.dart';
+import 'package:myapp/models/checkout_product_model.dart';
+import 'package:myapp/screens/checkout_screen_units/checkout_payment_unit.dart';
 import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_sized_box.dart';
 
+import '../../controller/check_out_screen_controller.dart';
 import '../../controller/dashboard_controller.dart';
+import '../../controller/delivery_time_controller.dart';
+import '../../models/cart_product_model.dart';
 
 class CheckOutPlacedScreen extends StatefulWidget {
   const CheckOutPlacedScreen({Key? key}) : super(key: key);
@@ -50,17 +57,18 @@ class _CheckOutPlacedScreenState extends State<CheckOutPlacedScreen> {
         OurSizedBox(),
         Center(
           child: Text(
-            'Your packet will be sent to your \naddress, thanks for order',
+            'Your packet will be sent to your\naddress, thanks for order',
             style: TextStyle(
               fontSize: ScreenUtil().setSp(15),
               color: Colors.black45,
               fontWeight: FontWeight.bold,
             ),
+            textAlign: TextAlign.justify,
           ),
         ),
         OurSizedBox(),
         InkWell(
-          onTap: () {
+          onTap: () async {
             Get.find<DashboardController>().changeIndexs(0);
             Navigator.pop(context);
           },
