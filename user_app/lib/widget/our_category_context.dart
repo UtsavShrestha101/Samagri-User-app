@@ -151,16 +151,16 @@ class _OurCategoryContextState extends State<OurCategoryContext> {
                                                 ScreenUtil().setSp(10),
                                               ),
                                             ),
-                                            child: 
-                                            // Image.network(
-                                            //   productModel.url[0],
-                                            //   height: ScreenUtil().setSp(160),
-                                            //   width: MediaQuery.of(context)
-                                            //       .size
-                                            //       .width,
-                                            //   fit: BoxFit.cover,
-                                            // ),
-                                            CachedNetworkImage(
+                                            child:
+                                                // Image.network(
+                                                //   productModel.url[0],
+                                                //   height: ScreenUtil().setSp(160),
+                                                //   width: MediaQuery.of(context)
+                                                //       .size
+                                                //       .width,
+                                                //   fit: BoxFit.cover,
+                                                // ),
+                                                CachedNetworkImage(
                                               height: ScreenUtil().setSp(160),
                                               width: MediaQuery.of(context)
                                                   .size
@@ -318,9 +318,9 @@ class _OurCategoryContextState extends State<OurCategoryContext> {
                                                     valueLabelPadding:
                                                         EdgeInsets.symmetric(
                                                       vertical:
-                                                          ScreenUtil().setSp(5),
+                                                          ScreenUtil().setSp(2),
                                                       horizontal:
-                                                          ScreenUtil().setSp(5),
+                                                          ScreenUtil().setSp(2),
                                                     ),
                                                     valueLabelMargin:
                                                         EdgeInsets.only(
@@ -330,22 +330,22 @@ class _OurCategoryContextState extends State<OurCategoryContext> {
                                                     starOffColor: Colors.white,
                                                     starColor: darklogoColor,
                                                   ),
-                                                  SizedBox(
-                                                    width:
-                                                        ScreenUtil().setSp(2),
-                                                  ),
-                                                  Expanded(
-                                                    child: Text(
-                                                      "(${productModel.ratingNo.toString()})",
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(13),
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: darklogoColor,
-                                                      ),
-                                                    ),
-                                                  ),
+                                                  // SizedBox(
+                                                  //   width:
+                                                  //       ScreenUtil().setSp(2),
+                                                  // ),
+                                                  // Expanded(
+                                                  //   child: Text(
+                                                  //     "(${productModel.ratingNo.toString()})",
+                                                  //     style: TextStyle(
+                                                  //       fontSize: ScreenUtil()
+                                                  //           .setSp(13),
+                                                  //       fontWeight:
+                                                  //           FontWeight.w500,
+                                                  //       color: darklogoColor,
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
                                                 ],
                                               ),
                                             ),

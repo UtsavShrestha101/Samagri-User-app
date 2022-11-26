@@ -60,10 +60,10 @@ class _VerifyOPTLoginScreenState extends State<VerifyOPTLoginScreen> {
 
   @override
   void dispose() {
-    _pinPutController.dispose();
-    SmsAutoFill().unregisterListener();
     print("unregisterListener");
     super.dispose();
+    _pinPutController.dispose();
+    SmsAutoFill().unregisterListener();
   }
 
   BoxDecoration get _pinPutDecoration {

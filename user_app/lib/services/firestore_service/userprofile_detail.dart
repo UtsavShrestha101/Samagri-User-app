@@ -34,7 +34,15 @@ class UserDetailFirestore {
 
       } else {
         print("=============== Already done ================");
+        String? token = await FirebaseMessaging.instance.getToken();
+
         OurToast().showErrorToast("Login Successfull");
+        await firestore
+            .collection("Users")
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update({
+          "token": token,
+        });
         await Hive.box<int>(DatabaseHelper.outerlayerDB).put("state", 2);
         Navigator.pop(context);
       }

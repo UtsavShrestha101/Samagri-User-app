@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
@@ -15,6 +16,7 @@ import 'package:myapp/screens/dashboard_screen/shopping_chat_screen.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_explore_shop.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_my_cart_screen.dart';
 import 'package:myapp/services/current_location/get_current_location.dart';
+import 'package:myapp/services/notification_service/notification_service.dart';
 import '../../controller/dashboard_controller.dart';
 import '../../models/firebase_user_model.dart';
 import '../../utils/color.dart';
@@ -46,7 +48,26 @@ class _ShoppingFullAppPageState extends State<ShoppingFullApp>
   void initState() {
     // TODO: implement initState
     super.initState();
-    // getlocation();
+    FirebaseMessaging.instance.getInitialMessage();
+
+    FirebaseMessaging.onMessage.listen((event) {
+      print("Hello");
+      print(FirebaseMessaging.onMessage.isBroadcast);
+      print("Hello");
+      print("object 2");
+      print(event.data);
+
+      // if (event.data != null) {
+      //   print("Hello world");
+      NotificationService.display(event);
+      // }
+    });
+    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      print(event.data);
+      NotificationService.display(event);
+    });
+    // storeNotificationToken();
   }
 
   Widget build(BuildContext context) {

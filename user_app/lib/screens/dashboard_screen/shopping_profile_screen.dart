@@ -10,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:myapp/models/firebase_user_model.dart';
+import 'package:myapp/models/user_model.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_favourite_screen.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_map_screen.dart';
 import 'package:myapp/services/fetch_product/fetch_product.dart';
@@ -21,6 +22,7 @@ import 'package:myapp/widget/our_sized_box.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../controller/login_controller.dart';
+import '../../models/user_model_firebase.dart';
 import '../../services/current_location/get_current_location.dart';
 import '../../widget/our_spinner.dart';
 
@@ -193,9 +195,16 @@ class _ShoppingProfileScreenState extends State<ShoppingProfileScreen> {
                         title: "Logout",
                         iconData: MdiIcons.logout,
                         function: () async {
-                          // await FetchProductFirebase()
-                          //     .fetchproductfirebase("Grocery");
+                          await FetchProductFirebase()
+                              .fetchproductfirebase("Grocery");
                            await PhoneAuth().logout();
+                          // var a = await FirebaseFirestore.instance
+                          //     .collection("Users")
+                          //     .doc(FirebaseAuth.instance.currentUser!.uid)
+                          //     .get();
+                          // FirebaseUser11Model userModel =
+                          //     FirebaseUser11Model.fromMap(a);
+                          // print(userModel.name);
                         },
                       ),
                     ],

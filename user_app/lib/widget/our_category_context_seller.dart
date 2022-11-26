@@ -20,7 +20,8 @@ import 'our_product_grid_tile.dart';
 class OurCategorySellerContext extends StatefulWidget {
   final String category;
   final String ownerUid;
-  const OurCategorySellerContext({Key? key, required this.category, required this.ownerUid})
+  const OurCategorySellerContext(
+      {Key? key, required this.category, required this.ownerUid})
       : super(key: key);
 
   @override
@@ -51,8 +52,7 @@ class _OurCategorySellerContextState extends State<OurCategorySellerContext> {
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection("All")
-                .where("ownerUid",
-                    isEqualTo: widget.ownerUid)
+                .where("ownerUid", isEqualTo: widget.ownerUid)
                 .where(
                   "category",
                   arrayContains: widget.category,
@@ -284,69 +284,61 @@ class _OurCategorySellerContextState extends State<OurCategorySellerContext> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.end,
                                                 children: [
-                                                  RatingStars(
-                                                    value: productModel.rating
-                                                        .toDouble(),
-                                                    starBuilder:
-                                                        (index, color) => Icon(
-                                                      Icons.star,
-                                                      color: color,
-                                                      size: ScreenUtil()
-                                                          .setSp(17),
-                                                    ),
-                                                    starCount: 5,
-                                                    starSize:
-                                                        ScreenUtil().setSp(15),
-                                                    valueLabelColor:
-                                                        const Color(0xff9b9b9b),
-                                                    valueLabelTextStyle:
-                                                        TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontSize: ScreenUtil()
-                                                          .setSp(12),
-                                                    ),
-                                                    valueLabelRadius:
-                                                        ScreenUtil().setSp(20),
-                                                    maxValue: 5,
-                                                    starSpacing: 1,
-                                                    maxValueVisibility: true,
-                                                    valueLabelVisibility: true,
-                                                    animationDuration:
-                                                        const Duration(
-                                                            milliseconds: 800),
-                                                    valueLabelPadding:
-                                                        EdgeInsets.symmetric(
-                                                      vertical:
-                                                          ScreenUtil().setSp(5),
-                                                      horizontal:
-                                                          ScreenUtil().setSp(5),
-                                                    ),
-                                                    valueLabelMargin:
-                                                        EdgeInsets.only(
-                                                      right:
-                                                          ScreenUtil().setSp(3),
-                                                    ),
-                                                    starOffColor: Colors.white,
-                                                    starColor: darklogoColor,
-                                                  ),
-                                                  SizedBox(
-                                                    width:
-                                                        ScreenUtil().setSp(2),
-                                                  ),
                                                   Expanded(
-                                                    child: Text(
-                                                      "(${productModel.ratingNo.toString()})",
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(13),
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: darklogoColor,
+                                                    child: RatingStars(
+                                                      value: productModel.rating
+                                                          .toDouble(),
+                                                      starBuilder:
+                                                          (index, color) =>
+                                                              Icon(
+                                                        Icons.star,
+                                                        color: color,
+                                                        size: ScreenUtil()
+                                                            .setSp(17),
                                                       ),
+                                                      starCount: 5,
+                                                      starSize: ScreenUtil()
+                                                          .setSp(15),
+                                                      valueLabelColor:
+                                                          const Color(
+                                                              0xff9b9b9b),
+                                                      valueLabelTextStyle:
+                                                          TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(12),
+                                                      ),
+                                                      valueLabelRadius:
+                                                          ScreenUtil()
+                                                              .setSp(20),
+                                                      maxValue: 5,
+                                                      starSpacing: 1,
+                                                      maxValueVisibility: true,
+                                                      valueLabelVisibility:
+                                                          true,
+                                                      animationDuration:
+                                                          const Duration(
+                                                              milliseconds:
+                                                                  800),
+                                                      valueLabelPadding:
+                                                          EdgeInsets.symmetric(
+                                                        vertical: ScreenUtil()
+                                                            .setSp(2),
+                                                        horizontal: ScreenUtil()
+                                                            .setSp(2),
+                                                      ),
+                                                      valueLabelMargin:
+                                                          EdgeInsets.only(
+                                                        right: ScreenUtil()
+                                                            .setSp(3),
+                                                      ),
+                                                      starOffColor:
+                                                          Colors.white,
+                                                      starColor: darklogoColor,
                                                     ),
                                                   ),
                                                 ],

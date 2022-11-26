@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -173,7 +174,14 @@ class PhoneAuth {
   }
 
   logout() async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      "token": "",
+    });
     await FirebaseAuth.instance.signOut();
+
     Get.find<DashboardController>().changeIndexs(0);
     await Hive.box<int>(DatabaseHelper.outerlayerDB).put("state", 1);
   }

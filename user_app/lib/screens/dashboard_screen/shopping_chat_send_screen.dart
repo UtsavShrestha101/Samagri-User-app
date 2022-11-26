@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:app_settings/app_settings.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,9 +11,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:myapp/models/user_model.dart';
+import 'package:myapp/models/user_model_firebase.dart';
 import 'package:myapp/utils/color.dart';
+import 'package:myapp/widget/our_spinner.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import '../../controller/send_message_controller.dart';
 import '../../models/message_model.dart';
 import '../../services/message_service/chat_info_detail.dart';
@@ -24,7 +24,9 @@ import '../../widget/our_text_field.dart';
 
 class MessageSendScreen extends StatefulWidget {
   final UserModel userModel;
-  const MessageSendScreen({Key? key, required this.userModel})
+  final FirebaseUser11Model firebaseUser11;
+  const MessageSendScreen(
+      {Key? key, required this.userModel, required this.firebaseUser11})
       : super(key: key);
 
   @override
@@ -69,7 +71,11 @@ class _MessageSendScreenState extends State<MessageSendScreen> {
       if (result != null) {
         setState(() {});
         file = File(result.path);
-        await ChatImageUpload().uploadImage(widget.userModel, file!);
+        await ChatImageUpload().uploadImage(
+          widget.userModel,
+          file!,
+          widget.firebaseUser11,
+        );
       } else {
         // User canceled the picker
       }
@@ -82,210 +88,213 @@ class _MessageSendScreenState extends State<MessageSendScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            leading: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Icon(
-                Icons.arrow_back,
-                color: darklogoColor,
-                size: ScreenUtil().setSp(25),
-              ),
-            ),
-            elevation: 0,
-            title: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                    ScreenUtil().setSp(30),
-                  ),
-                  child: Container(
-                      color: Colors.white,
-                      child: widget.userModel.imageUrl != ""
-                          ? CachedNetworkImage(
-                              imageUrl: widget.userModel.imageUrl,
-
-                              // Image.network(
-                              placeholder: (context, url) => Image.asset(
-                                "assets/images/profile_holder.png",
-                              ),
-                              height: ScreenUtil().setSp(40),
-                              width: ScreenUtil().setSp(40),
-                              fit: BoxFit.cover,
-                              //   )
-                            )
-                          : Container()),
-                ),
-                SizedBox(
-                  width: ScreenUtil().setSp(10),
-                ),
-                Text(
-                  widget.userModel.name,
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(17.5),
-                    color: darklogoColor,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.arrow_back,
+              color: darklogoColor,
+              size: ScreenUtil().setSp(25),
             ),
           ),
-          body: Container(
-            margin: EdgeInsets.symmetric(
-              horizontal: ScreenUtil().setSp(10),
-              vertical: ScreenUtil().setSp(10),
-            ),
-            child: Column(
-              children: [
-                Expanded(
-                  child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection("ChatRoom")
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .collection("Chat")
-                        .doc(widget.userModel.uid)
-                        .collection("Messages")
-                        .orderBy("timestamp", descending: true)
-                        .snapshots(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasData) {
-                        if (snapshot.data!.docs.length > 0) {
-                          SchedulerBinding.instance
-                              .addPostFrameCallback((timeStamp) {
-                            messageController.jumpTo(
-                                messageController.position.maxScrollExtent);
-                          });
-                          return ListView.builder(
-                              controller: messageController,
-                              // physics: NeverScrollableScrollPhysics(),
-                              // shrinkWrap: true,
-                              reverse: true,
-                              itemCount: snapshot.data!.docs.length,
-                              itemBuilder: (context, index) {
-                                MessageModel messageModel =
-                                    MessageModel.fromJson(
-                                  snapshot.data!.docs[index],
-                                );
-                                return messageModel.type == "text"
-                                    ? Row(
-                                        mainAxisAlignment:
-                                            messageModel.ownerId ==
-                                                    FirebaseAuth.instance
-                                                        .currentUser!.uid
-                                                ? MainAxisAlignment.end
-                                                : MainAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  ScreenUtil().setSp(15),
-                                              vertical: ScreenUtil().setSp(15),
-                                            ),
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.6,
-                                            margin: EdgeInsets.symmetric(
-                                              horizontal: ScreenUtil().setSp(5),
-                                              vertical: ScreenUtil().setSp(5),
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: logoColor.withOpacity(0.4),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                ScreenUtil().setSp(20),
-                                              ),
-                                            ),
-                                            child: Text(
-                                              messageModel.message,
-                                              // style: SmallText,
+          elevation: 0,
+          title: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(
+                  ScreenUtil().setSp(30),
+                ),
+                child: Container(
+                    color: Colors.white,
+                    child: widget.userModel.imageUrl != ""
+                        ? CachedNetworkImage(
+                            imageUrl: widget.userModel.imageUrl,
+
+                            // Image.network(
+                            placeholder: (context, url) => Image.asset(
+                              "assets/images/profile_holder.png",
+                            ),
+                            height: ScreenUtil().setSp(40),
+                            width: ScreenUtil().setSp(40),
+                            fit: BoxFit.cover,
+                            //   )
+                          )
+                        : Container()),
+              ),
+              SizedBox(
+                width: ScreenUtil().setSp(10),
+              ),
+              Text(
+                widget.userModel.name,
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(17.5),
+                  color: darklogoColor,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+        body: Container(
+          margin: EdgeInsets.symmetric(
+            horizontal: ScreenUtil().setSp(10),
+            vertical: ScreenUtil().setSp(10),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("ChatRoom")
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      .collection("Chat")
+                      .doc(widget.userModel.uid)
+                      .collection("Messages")
+                      .orderBy("timestamp", descending: false)
+                      .snapshots(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    SchedulerBinding.instance.addPostFrameCallback((_) {
+                      messageController
+                          .jumpTo(messageController.position.maxScrollExtent);
+                    });
+                    if (snapshot.hasData) {
+                      if (snapshot.data!.docs.length > 0) {
+                        return ListView.builder(
+                            controller: messageController,
+                            // physics: NeverScrollableScrollPhysics(),
+                            // shrinkWrap: true,
+                            // reverse: true,
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              MessageModel messageModel = MessageModel.fromJson(
+                                snapshot.data!.docs[index],
+                              );
+                              return messageModel.type == "text"
+                                  ? Row(
+                                      mainAxisAlignment: messageModel.ownerId ==
+                                              FirebaseAuth
+                                                  .instance.currentUser!.uid
+                                          ? MainAxisAlignment.end
+                                          : MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: ScreenUtil().setSp(15),
+                                            vertical: ScreenUtil().setSp(15),
+                                          ),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.6,
+                                          margin: EdgeInsets.symmetric(
+                                            horizontal: ScreenUtil().setSp(5),
+                                            vertical: ScreenUtil().setSp(5),
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: logoColor.withOpacity(0.4),
+                                            borderRadius: BorderRadius.circular(
+                                              ScreenUtil().setSp(20),
                                             ),
                                           ),
-                                        ],
-                                      )
-                                    : Row(
-                                        mainAxisAlignment:
-                                            messageModel.ownerId ==
-                                                    FirebaseAuth.instance
-                                                        .currentUser!.uid
-                                                ? MainAxisAlignment.end
-                                                : MainAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                ScreenUtil().setSp(30),
-                                              ),
+                                          child: Text(
+                                            messageModel.message,
+                                            // style: SmallText,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Row(
+                                      mainAxisAlignment: messageModel.ownerId ==
+                                              FirebaseAuth
+                                                  .instance.currentUser!.uid
+                                          ? MainAxisAlignment.end
+                                          : MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(
+                                              ScreenUtil().setSp(30),
                                             ),
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.6,
-                                            margin: EdgeInsets.symmetric(
-                                              horizontal: ScreenUtil().setSp(5),
-                                              vertical: ScreenUtil().setSp(5),
+                                          ),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.6,
+                                          margin: EdgeInsets.symmetric(
+                                            horizontal: ScreenUtil().setSp(5),
+                                            vertical: ScreenUtil().setSp(5),
+                                          ),
+                                          child: CachedNetworkImage(
+                                            width: 200,
+                                            height: 200,
+                                            placeholder: (context, url) =>
+                                                Image.asset(
+                                              "assets/images/placeholder.png",
+                                              fit: BoxFit.cover,
                                             ),
-                                            child: CachedNetworkImage(
-                                              width: 200,
-                                              height: 200,
-                                              placeholder: (context, url) =>
-                                                  Image.asset(
-                                                "assets/images/placeholder.png",
-                                                fit: BoxFit.cover,
-                                              ),
-                                              imageUrl: messageModel.message,
-                                              fit: BoxFit.fitHeight,
-                                            ),
-                                          )
-                                        ],
-                                      );
-                              });
-                        }
+                                            imageUrl: messageModel.message,
+                                            fit: BoxFit.fitHeight,
+                                          ),
+                                        )
+                                      ],
+                                    );
+                            });
+                      } else {
+                        return OurSpinner();
                       }
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Spacer(),
-                            Image.asset(
-                              "assets/images/logo.png",
-                              fit: BoxFit.contain,
-                              height: ScreenUtil().setSp(100),
-                              width: ScreenUtil().setSp(100),
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return OurSpinner();
+                    }
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Spacer(),
+                          Image.asset(
+                            "assets/images/logo.png",
+                            fit: BoxFit.contain,
+                            height: ScreenUtil().setSp(100),
+                            width: ScreenUtil().setSp(100),
+                          ),
+                          OurSizedBox(),
+                          Text(
+                            "We're sorry",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: logoColor,
+                              fontSize: ScreenUtil().setSp(17.5),
                             ),
-                            OurSizedBox(),
-                            Text(
-                              "We're sorry",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                color: logoColor,
-                                fontSize: ScreenUtil().setSp(17.5),
-                              ),
+                          ),
+                          OurSizedBox(),
+                          Text(
+                            "You have not sent any messages",
+                            style: TextStyle(
+                              color: Colors.black45,
+                              fontSize: ScreenUtil().setSp(15),
                             ),
-                            OurSizedBox(),
-                            Text(
-                              "You have not sent any messages",
-                              style: TextStyle(
-                                color: Colors.black45,
-                                fontSize: ScreenUtil().setSp(15),
-                              ),
-                            ),
-                            Spacer(),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                          ),
+                          Spacer(),
+                        ],
+                      ),
+                    );
+                  },
                 ),
-                Row(
+              ),
+              Container(
+                // margin: EdgeInsets.symmetric(
+                //   horizontal: ScreenUtil().setSp(10),
+                //   vertical: ScreenUtil().setSp(10),
+                // ),
+                child: Row(
                   children: [
                     InkWell(
                       onTap: () async {
@@ -368,6 +377,7 @@ class _MessageSendScreenState extends State<MessageSendScreen> {
                             await ChatDetailFirebase().messageDetail(
                               _messaging_controller.text.trim(),
                               widget.userModel,
+                              widget.firebaseUser11,
                             );
                             FocusScope.of(context).unfocus();
                             _messaging_controller.clear();
@@ -390,10 +400,13 @@ class _MessageSendScreenState extends State<MessageSendScreen> {
                       ),
                     ),
                   ],
-                )
-              ],
-            ),
+                ),
+              ),
+            ],
           ),
-        ));
+        ),
+        // bottomNavigationBar:
+      ),
+    );
   }
 }

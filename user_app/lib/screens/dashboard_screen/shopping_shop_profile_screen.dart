@@ -254,8 +254,14 @@ class _ShoppingShopProfileScreenState extends State<ShoppingShopProfileScreen> {
         ),
         actions: [
           InkWell(
-            onTap: (){
+            onTap: () async {
+               var a = await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      FirebaseUser11Model userModel11 = FirebaseUser11Model.fromMap(a);
               Navigator.push(context, PageTransition(child: MessageSendScreen(
+                firebaseUser11: userModel11,
                 userModel: widget.userModel,
               ), type: PageTransitionType.leftToRight,),);
               // print("Chat Screen");
