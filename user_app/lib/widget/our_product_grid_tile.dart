@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutx/flutx.dart';
+import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:myapp/models/product_model.dart';
 import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_sized_box.dart';
 import '../screens/dashboard_screen/shopping_product_screen.dart';
 import '../services/firestore_service/userprofile_detail.dart';
+import '../services/network_connection/network_connection.dart';
 import '../utils/generator.dart';
+import 'our_flutter_toast.dart';
 
 class ProductGridTile extends StatefulWidget {
   final ProductModel productModel;
@@ -120,8 +123,15 @@ class _ProductGridTileState extends State<ProductGridTile> {
                             type: MaterialType.transparency,
                             child: InkWell(
                               onTap: () async {
-                                await UserDetailFirestore()
-                                    .removeFavorite(widget.productModel);
+                                if (Get.find<CheckConnectivity>().isOnline ==
+                                    false) {
+                                  OurToast().showErrorToast(
+                                      "Oops, No internet connection");
+                                } else {
+                                  await UserDetailFirestore()
+                                      .removeFavorite(widget.productModel);
+                                }
+
                                 print("Favourite Removed");
                               },
                               child: Icon(
@@ -138,9 +148,15 @@ class _ProductGridTileState extends State<ProductGridTile> {
                             child: InkWell(
                               onTap: () async {
                                 print("HELLO WORLD");
+                                if (Get.find<CheckConnectivity>().isOnline ==
+                                    false) {
+                                  OurToast().showErrorToast(
+                                      "Oops, No internet connection");
+                                } else {
+                                  await UserDetailFirestore()
+                                      .addFavorite(widget.productModel);
+                                }
 
-                                await UserDetailFirestore()
-                                    .addFavorite(widget.productModel);
                                 print("Favourite Added");
                               },
                               child: Icon(

@@ -19,6 +19,7 @@ import 'package:myapp/services/current_location/get_current_location.dart';
 import 'package:myapp/services/notification_service/notification_service.dart';
 import '../../controller/dashboard_controller.dart';
 import '../../models/firebase_user_model.dart';
+import '../../services/network_connection/network_connection.dart';
 import '../../utils/color.dart';
 import 'shopping_home_screen.dart';
 import 'shopping_profile_screen.dart';
@@ -48,6 +49,7 @@ class _ShoppingFullAppPageState extends State<ShoppingFullApp>
   void initState() {
     // TODO: implement initState
     super.initState();
+
     FirebaseMessaging.instance.getInitialMessage();
 
     FirebaseMessaging.onMessage.listen((event) {

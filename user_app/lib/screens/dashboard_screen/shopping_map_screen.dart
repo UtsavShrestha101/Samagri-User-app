@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:myapp/models/get_address_model.dart';
@@ -11,9 +10,9 @@ import 'package:myapp/utils/color.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:async';
 import 'dart:convert';
-
 import '../../controller/login_controller.dart';
-import '../../models/address_result_model.dart';
+import '../../services/network_connection/network_connection.dart';
+import '../../widget/our_flutter_toast.dart';
 import '../../widget/our_spinner.dart';
 
 // import 'address_result.dart';
@@ -240,12 +239,20 @@ class ShopMapScreenState extends State<ShopMapScreen> {
                             if (!loading)
                               GestureDetector(
                                 onTap: () async {
-                                  Get.find<LoginController>().toggle(true);
+                                  if (Get.find<CheckConnectivity>().isOnline ==
+                                      false) {
+                                    OurToast().showErrorToast(
+                                        "Oops, No internet connection");
+                                  } else {
+                                    Get.find<LoginController>().toggle(true);
 
-                                  await Location().AddLocation(_currentAddress,
-                                      _latLng?.longitude, _latLng?.latitude);
-                                  Get.find<LoginController>().toggle(false);
-                                  Navigator.pop(context);
+                                    await Location().AddLocation(
+                                        _currentAddress,
+                                        _latLng?.longitude,
+                                        _latLng?.latitude);
+                                    Get.find<LoginController>().toggle(false);
+                                    Navigator.pop(context);
+                                  }
 
                                   // AddressResult addressResult = AddressResult(
                                   //     latlng: _latLng!, address: _currentAddress);

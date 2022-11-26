@@ -143,14 +143,16 @@ class _ShoppingProfileScreenState extends State<ShoppingProfileScreen> {
                         );
                       },
                     ),
-                    FxSpacing.width(10),
-                    OurSettingBoxTile(
-                        title: "Payment",
-                        iconData: MdiIcons.creditCardOutline,
-                        function: () {
-                          print("Payment");
-                        }),
-                    FxSpacing.width(10),
+                    FxSpacing.width(5),
+                    Expanded(
+                      child: OurSettingBoxTile(
+                          title: "In Progress",
+                          iconData: MdiIcons.progressClock,
+                          function: () {
+                            print("Payment");
+                          }),
+                    ),
+                    FxSpacing.width(5),
                     OurSettingBoxTile(
                         title: "History",
                         iconData: MdiIcons.contentPaste,
@@ -197,7 +199,7 @@ class _ShoppingProfileScreenState extends State<ShoppingProfileScreen> {
                         function: () async {
                           await FetchProductFirebase()
                               .fetchproductfirebase("Grocery");
-                           await PhoneAuth().logout();
+                          await PhoneAuth().logout();
                           // var a = await FirebaseFirestore.instance
                           //     .collection("Users")
                           //     .doc(FirebaseAuth.instance.currentUser!.uid)

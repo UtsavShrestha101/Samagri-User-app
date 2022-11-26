@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
@@ -23,6 +24,7 @@ import '../../models/firebase_user_model.dart';
 import '../../models/user_model.dart';
 import '../../services/firestore_service/product_detail.dart';
 import '../../services/firestore_service/userprofile_detail.dart';
+import '../../services/network_connection/network_connection.dart';
 import '../../widget/our_elevated_button.dart';
 import '../../widget/our_flutter_toast.dart';
 import '../../widget/our_recommendation_widget.dart';
@@ -511,11 +513,18 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                                         builder: (BuildContext context, _) {
                                           return InkWell(
                                             onTap: () async {
-                                              ButtomanimationController
-                                                  .forward();
-                                              await UserDetailFirestore()
-                                                  .removeFavorite(
-                                                      widget.productModel);
+                                              if (Get.find<CheckConnectivity>()
+                                                      .isOnline ==
+                                                  false) {
+                                                OurToast().showErrorToast(
+                                                    "Oops, No internet connection");
+                                              } else {
+                                                ButtomanimationController
+                                                    .forward();
+                                                await UserDetailFirestore()
+                                                    .removeFavorite(
+                                                        widget.productModel);
+                                              }
                                             },
                                             child: Icon(
                                               MdiIcons.heart,
@@ -535,11 +544,18 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                                         builder: (BuildContext context, _) {
                                           return InkWell(
                                             onTap: () async {
-                                              ButtomanimationController
-                                                  .reverse();
-                                              await UserDetailFirestore()
-                                                  .addFavorite(
-                                                      widget.productModel);
+                                              if (Get.find<CheckConnectivity>()
+                                                      .isOnline ==
+                                                  false) {
+                                                OurToast().showErrorToast(
+                                                    "Oops, No internet connection");
+                                              } else {
+                                                ButtomanimationController
+                                                    .reverse();
+                                                await UserDetailFirestore()
+                                                    .addFavorite(
+                                                        widget.productModel);
+                                              }
                                             },
                                             child: Icon(
                                               MdiIcons.heartOutline,
@@ -578,15 +594,15 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                             items: widget.productModel.url
                                 .map(
                                   (e) => Builder(
-                                    builder: (context) => 
-                                    
-                                    // Image.network(
-                                    //   e,
-                                    //   height: ScreenUtil().setSp(220),
-                                    //   fit: BoxFit.cover,
-                                    // ),
+                                    builder: (context) =>
 
-                                     CachedNetworkImage(
+                                        // Image.network(
+                                        //   e,
+                                        //   height: ScreenUtil().setSp(220),
+                                        //   fit: BoxFit.cover,
+                                        // ),
+
+                                        CachedNetworkImage(
                                       height: ScreenUtil().setSp(220),
                                       fit: BoxFit.cover,
                                       imageUrl: e,
@@ -1009,21 +1025,28 @@ class _ShoppingProductScreenState extends State<ShoppingProductScreen>
                                       Expanded(
                                         child: InkWell(
                                           onTap: () async {
-                                            if (firebaseUserModel.cartItems
-                                                .contains(
-                                                    widget.productModel.uid)) {
-                                              cartController.reverse();
-                                              await ProductDetailFirestore()
-                                                  .removeItemFromCart(
-                                                      firebaseUserModel,
-                                                      widget.productModel);
+                                            if (Get.find<CheckConnectivity>()
+                                                    .isOnline ==
+                                                false) {
+                                              OurToast().showErrorToast(
+                                                  "Oops, No internet connection");
                                             } else {
-                                              cartController.forward();
-                                              await ProductDetailFirestore()
-                                                  .addItemToCart(
-                                                      firebaseUserModel,
-                                                      widget.productModel,
-                                                      1);
+                                              if (firebaseUserModel.cartItems
+                                                  .contains(widget
+                                                      .productModel.uid)) {
+                                                cartController.reverse();
+                                                await ProductDetailFirestore()
+                                                    .removeItemFromCart(
+                                                        firebaseUserModel,
+                                                        widget.productModel);
+                                              } else {
+                                                cartController.forward();
+                                                await ProductDetailFirestore()
+                                                    .addItemToCart(
+                                                        firebaseUserModel,
+                                                        widget.productModel,
+                                                        1);
+                                              }
                                             }
                                           },
                                           child: Container(

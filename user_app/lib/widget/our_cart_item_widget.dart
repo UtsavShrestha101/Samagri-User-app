@@ -4,12 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:flutx/flutx.dart';
+import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:myapp/models/cart_product_model.dart';
 import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_sized_box.dart';
 
 import '../services/firestore_service/product_detail.dart';
+import '../services/network_connection/network_connection.dart';
+import 'our_flutter_toast.dart';
 
 class OurCartItemWidget extends StatefulWidget {
   final CartProductModel cartProductModel;
@@ -107,8 +110,13 @@ class _OurCartItemWidgetState extends State<OurCartItemWidget> {
               InkWell(
                 onTap: () async {
                   print("Minus buttom pressed");
-                  await ProductDetailFirestore()
-                      .deleteItemFromCart(widget.cartProductModel);
+                  if (Get.find<CheckConnectivity>().isOnline == false) {
+                    OurToast().showErrorToast("Oops, No internet connection");
+                  } else {
+                    await ProductDetailFirestore()
+                        .deleteItemFromCart(widget.cartProductModel);
+                  }
+
                   // if (widget.cartProductModel.quantity > 1) {
                   //   await ProductDetailFirestore()
                   //       .decreaseProductCount(widget.cartProductModel);
@@ -152,16 +160,15 @@ class _OurCartItemWidgetState extends State<OurCartItemWidget> {
                     onTap: () async {
                       print("Minus buttom pressed");
                       // await HapticFeedback.vibrate();
-                      if (widget.cartProductModel.quantity > 1) {
-                        await ProductDetailFirestore()
-                            .decreaseProductCount(widget.cartProductModel);
+                      if (Get.find<CheckConnectivity>().isOnline == false) {
+                        OurToast()
+                            .showErrorToast("Oops, No internet connection");
+                      } else {
+                        if (widget.cartProductModel.quantity > 1) {
+                          await ProductDetailFirestore()
+                              .decreaseProductCount(widget.cartProductModel);
+                        }
                       }
-                      // if (_count > 1) {
-                      //   setState(() {
-                      //     _count--;
-                      //     print("tapped");
-                      //   });
-                      // }
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -205,14 +212,16 @@ class _OurCartItemWidgetState extends State<OurCartItemWidget> {
                   InkWell(
                     onTap: () async {
                       print("Add button pressed");
-                      // await HapticFeedback.vibrate();
-                      // HapticFeedback.vibrate();
-                      // await HapticFeedback.vibrate();
-                      // await HapticFeedback.heavyImpact();
-                      // await HapticFeedback.lightImpact();
-                      // await HapticFeedback.selectionClick();
-                      await ProductDetailFirestore()
-                          .increaseProductCount(widget.cartProductModel);
+
+                      if (Get.find<CheckConnectivity>().isOnline == false) {
+                        OurToast()
+                            .showErrorToast("Oops, No internet connection");
+                      } else {
+                        // if (widget.cartProductModel.quantity > 1) {
+                        await ProductDetailFirestore()
+                            .increaseProductCount(widget.cartProductModel);
+                        // }
+                      }
                     },
                     child: Container(
                       decoration: BoxDecoration(

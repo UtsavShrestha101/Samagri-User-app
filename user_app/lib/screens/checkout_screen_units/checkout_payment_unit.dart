@@ -321,6 +321,7 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
               if (Get.find<CheckOutScreenController>().paymentIndex.value ==
                   0) {
                 print("Cash On Delivery");
+                Get.find<CheckOutScreenController>().changeIndex(2);
               } else if (Get.find<CheckOutScreenController>()
                       .paymentIndex
                       .value ==

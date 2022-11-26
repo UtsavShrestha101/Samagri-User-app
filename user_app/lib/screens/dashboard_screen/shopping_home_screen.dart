@@ -22,6 +22,7 @@ import 'package:myapp/widget/our_sized_box.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../models/category_model.dart';
 import '../../models/lat_long_controller.dart';
+import '../../services/network_connection/network_connection.dart';
 import '../../widget/our_all_content.dart';
 import '../../widget/our_carousel_slider.dart';
 import 'package:scroll_to_id/scroll_to_id.dart';
@@ -42,6 +43,7 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
   String category = "All";
   final scrollController = ScrollController();
   final items = [
+    "All",
     "Grocery",
     "Electronic",
     "Beverage",
@@ -80,6 +82,8 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
     // TODO: implement initState
 
     super.initState();
+    Get.find<CheckConnectivity>().initialize();
+
     showIntroData();
     Get.find<CategoryTagController>().initialize();
     animationController = AnimationController(
@@ -185,7 +189,6 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
                         SizedBox(
                           width: ScreenUtil().setSp(12.5),
                         ),
-                        
                         Expanded(
                           child: Center(
                             child: Row(

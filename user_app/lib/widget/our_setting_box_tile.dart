@@ -35,7 +35,7 @@ class OurSettingBoxTile extends StatelessWidget {
                 margin: EdgeInsets.only(top: 8),
                 child: FxText.button(
                   title,
-                  fontSize: ScreenUtil().setSp(15),
+                  fontSize: ScreenUtil().setSp(12.5),
                   fontWeight: 600,
                 ),
               )

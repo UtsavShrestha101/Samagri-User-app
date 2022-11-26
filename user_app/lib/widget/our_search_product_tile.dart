@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutx/flutx.dart';
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:myapp/models/product_model.dart';
@@ -14,7 +15,9 @@ import '../models/user_model.dart';
 import '../screens/dashboard_screen/shopping_product_screen.dart';
 import '../screens/dashboard_screen/shopping_shop_profile_screen.dart';
 import '../services/firestore_service/userprofile_detail.dart';
+import '../services/network_connection/network_connection.dart';
 import '../utils/generator.dart';
+import 'our_flutter_toast.dart';
 
 class OurSearchProductListTile extends StatefulWidget {
   final ProductModel productModel;
@@ -85,17 +88,17 @@ class _OurSearchProductListTileState extends State<OurSearchProductListTile> {
                     ScreenUtil().setSp(8),
                   ),
                 ),
-                child: 
-                
-                // Text("as")
-                // Image.network(
-                //   widget.productModel.url[0],
-                //   height: ScreenUtil().setSp(90),
-                //   width: ScreenUtil().setSp(90),
-                //   // width: double.infinity,
-                //   fit: BoxFit.fill,
-                // ),
-                CachedNetworkImage(
+                child:
+
+                    // Text("as")
+                    // Image.network(
+                    //   widget.productModel.url[0],
+                    //   height: ScreenUtil().setSp(90),
+                    //   width: ScreenUtil().setSp(90),
+                    //   // width: double.infinity,
+                    //   fit: BoxFit.fill,
+                    // ),
+                    CachedNetworkImage(
                   height: ScreenUtil().setSp(90),
                   width: ScreenUtil().setSp(90),
                   // width: double.infinity,
@@ -145,8 +148,17 @@ class _OurSearchProductListTileState extends State<OurSearchProductListTile> {
                                   type: MaterialType.transparency,
                                   child: InkWell(
                                     onTap: () async {
-                                      await UserDetailFirestore()
-                                          .removeFavorite(widget.productModel);
+                                      if (Get.find<CheckConnectivity>()
+                                              .isOnline ==
+                                          false) {
+                                        OurToast().showErrorToast(
+                                            "Oops, No internet connection");
+                                      } else {
+                                        await UserDetailFirestore()
+                                            .removeFavorite(
+                                                widget.productModel);
+                                      }
+
                                       print("Favourite Removed");
                                     },
                                     child: Icon(
@@ -163,8 +175,16 @@ class _OurSearchProductListTileState extends State<OurSearchProductListTile> {
                                   type: MaterialType.transparency,
                                   child: InkWell(
                                     onTap: () async {
-                                      await UserDetailFirestore()
-                                          .addFavorite(widget.productModel);
+                                      if (Get.find<CheckConnectivity>()
+                                              .isOnline ==
+                                          false) {
+                                        OurToast().showErrorToast(
+                                            "Oops, No internet connection");
+                                      } else {
+                                        await UserDetailFirestore()
+                                            .addFavorite(widget.productModel);
+                                      }
+
                                       print("Favourite Added");
                                     },
                                     child: Icon(
@@ -217,29 +237,25 @@ class _OurSearchProductListTileState extends State<OurSearchProductListTile> {
                       ),
                     ),
                     InkWell(
-                       onTap: () async {
-                                      DocumentSnapshot abc =
-                                          await FirebaseFirestore.instance
-                                              .collection("Sellers")
-                                              .doc(widget.productModel.ownerUid)
-                                              .get();
-                                      UserModel userModel =
-                                          UserModel.fromMap(abc);
-                                      Navigator.push(
-                                        context,
-                                        PageTransition(
-                                          child: ShoppingShopProfileScreen(
-                                            userModel: userModel,
-                                            shopName:
-                                                widget.productModel.shop_name,
-                                            shopOwnerUID:
-                                                widget.productModel.ownerUid,
-                                          ),
-                                          type: PageTransitionType.leftToRight,
-                                        ),
-                                      );
-                                      // print("Button Pressed");
-                                    },
+                      onTap: () async {
+                        DocumentSnapshot abc = await FirebaseFirestore.instance
+                            .collection("Sellers")
+                            .doc(widget.productModel.ownerUid)
+                            .get();
+                        UserModel userModel = UserModel.fromMap(abc);
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            child: ShoppingShopProfileScreen(
+                              userModel: userModel,
+                              shopName: widget.productModel.shop_name,
+                              shopOwnerUID: widget.productModel.ownerUid,
+                            ),
+                            type: PageTransitionType.leftToRight,
+                          ),
+                        );
+                        // print("Button Pressed");
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[

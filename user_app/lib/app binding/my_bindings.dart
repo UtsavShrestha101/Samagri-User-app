@@ -16,6 +16,7 @@ import '../controller/product_names_list_controller.dart';
 import '../controller/search_text_controller.dart';
 import '../controller/send_message_controller.dart';
 import '../controller/shopping_list_search_controller.dart';
+import '../services/network_connection/network_connection.dart';
 
 class MyBinding implements Bindings {
   @override
@@ -67,9 +68,13 @@ class MyBinding implements Bindings {
     Get.lazyPut(
       () => CheckOutScreenController(),
     );
-     Get.lazyPut(
+    Get.lazyPut(
       () => MessageSendController(),
     );
+    Get.lazyPut(
+      () => CheckConnectivity(),
+    );
+    // CheckConnectivity
     // ShoppingListSearchController
     // ProductListName
     // PolyLineController
