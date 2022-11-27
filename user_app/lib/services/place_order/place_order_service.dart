@@ -9,6 +9,8 @@ import 'package:uuid/uuid.dart';
 import '../../controller/check_out_screen_controller.dart';
 import '../../controller/delivery_time_controller.dart';
 import '../../controller/login_controller.dart';
+import '../../models/user_model.dart';
+import '../notification_service/notification_service.dart';
 
 class PlaceOrderService {
   submitOrder(
@@ -39,6 +41,40 @@ class PlaceOrderService {
         "orderedAt": Timestamp.now(),
         "deliveredAt": Timestamp.now(),
       };
+
+      itemModel.forEach((element) async {
+        var requestProductId = Uuid().v4();
+        await FirebaseFirestore.instance
+            .collection("RequestOrder")
+            .doc(element["ownerId"])
+            .collection("Requests")
+            .doc(requestProductId)
+            .set(
+          {
+            "requestedOn": Timestamp.now(),
+            "batchId": uid,
+            "requestUserId": FirebaseAuth.instance.currentUser!.uid,
+            "requestId": requestProductId,
+            "productId": element["productId"],
+            "price": element["price"],
+            "quantity": element["quantity"],
+            "productImage": element["uid"],
+            "ispicked": false,
+            "productName": element["name"],
+          },
+        );
+        var a = await FirebaseFirestore.instance
+            .collection("Sellers")
+            .doc(element["ownerId"])
+            .get();
+        UserModel userModel = UserModel.fromMap(a);
+        await NotificationService().sendNotification(
+            "Order request",
+            "${element["name"]} is requested",
+            "userModel.profile_pic",
+            "",
+            userModel.token);
+      });
       await FirebaseFirestore.instance
           .collection("Orders")
           .doc(uid)
@@ -52,7 +88,7 @@ class PlaceOrderService {
           "cartItemNo": 0,
           "cartItems": [],
         });
-        
+
         var collection = await FirebaseFirestore.instance
             .collection("Carts")
             .doc(FirebaseAuth.instance.currentUser!.uid)

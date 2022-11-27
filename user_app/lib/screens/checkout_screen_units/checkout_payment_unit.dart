@@ -356,6 +356,7 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
 
                     itemModel.add(
                       CheckOutProductModel(
+                        productId: cartProductModel.uid,
                         ownerId: cartProductModel.ownerId,
                         name: cartProductModel.name,
                         quantity: cartProductModel.quantity,
@@ -410,6 +411,7 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
 
                         itemModel.add(
                           CheckOutProductModel(
+                            productId: cartProductModel.uid,
                             ownerId: cartProductModel.ownerId,
                             name: cartProductModel.name,
                             quantity: cartProductModel.quantity,
@@ -472,6 +474,7 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
 
                           itemModel.add(
                             CheckOutProductModel(
+                              productId: cartProductModel.uid,
                               ownerId: cartProductModel.ownerId,
                               name: cartProductModel.name,
                               quantity: cartProductModel.quantity,

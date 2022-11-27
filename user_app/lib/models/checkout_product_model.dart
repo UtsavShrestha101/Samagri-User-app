@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 class CheckOutProductModel {
+  final String productId;
   final String ownerId;
   final String name;
   final int quantity;
@@ -10,6 +11,7 @@ class CheckOutProductModel {
   final bool isPacked;
 
   CheckOutProductModel({
+    required this.productId,
     required this.ownerId,
     required this.name,
     required this.quantity,
@@ -26,6 +28,7 @@ class CheckOutProductModel {
     bool? isPacked,
   }) {
     return CheckOutProductModel(
+      productId: productId,
       ownerId: ownerId,
       name: name ?? this.name,
       quantity: quantity ?? this.quantity,
@@ -38,6 +41,7 @@ class CheckOutProductModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
+      "productId": productId,
       'quantity': quantity,
       'price': price,
       'uid': uid,
@@ -48,6 +52,7 @@ class CheckOutProductModel {
 
   factory CheckOutProductModel.fromMap(Map<String, dynamic> map) {
     return CheckOutProductModel(
+      productId: map["productId"],
       ownerId: map['ownerId'] as String,
       name: map['name'] as String,
       quantity: map['quantity'] as int,
