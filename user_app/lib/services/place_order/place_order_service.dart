@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:myapp/widget/our_flutter_toast.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../controller/check_out_screen_controller.dart';
@@ -20,23 +21,26 @@ class PlaceOrderService {
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
       Map<String, dynamic> mapss = {
+        "ownerId": FirebaseAuth.instance.currentUser!.uid,
         "status": "In Progress",
         "userPhoneNo": userData["phone"],
         "uid": uid,
         "isDelivered": false,
         "driverUid": "",
+        "driverName": "",
         "verifyToken": Random().nextInt(900000) + 100000,
         "totalPrice": total,
         "paymentType": type,
         "deliveryTime": Get.find<DeliveryTimeController>().shippingTime.value,
         "deliveryAddress": Get.find<CheckOutScreenController>().address.value,
+        "lat": Get.find<CheckOutScreenController>().lat.value,
+        "long": Get.find<CheckOutScreenController>().long.value,
         "items": itemModel,
         "orderedAt": Timestamp.now(),
+        "deliveredAt": Timestamp.now(),
       };
       await FirebaseFirestore.instance
           .collection("Orders")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection("MyOrders")
           .doc(uid)
           .set(mapss)
           .then((value) async {
@@ -48,6 +52,7 @@ class PlaceOrderService {
           "cartItemNo": 0,
           "cartItems": [],
         });
+        
         var collection = await FirebaseFirestore.instance
             .collection("Carts")
             .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -58,7 +63,7 @@ class PlaceOrderService {
         }
       });
       Get.find<LoginController>().toggle(false);
-
+      OurToast().showSuccessToast("Order Placed");
       // print(mapss);
     } catch (e) {
       Get.find<LoginController>().toggle(false);

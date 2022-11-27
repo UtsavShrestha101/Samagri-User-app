@@ -27,6 +27,7 @@ import '../../controller/login_controller.dart';
 import '../../models/cart_product_model.dart';
 import '../../models/checkout_product_model.dart';
 import '../../models/firebase_user_model.dart';
+import '../../services/network_connection/network_connection.dart';
 import '../../utils/color.dart';
 import '../../widget/our_flutter_toast.dart';
 import '../../widget/our_sized_box.dart';
@@ -325,124 +326,71 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
           OurSizedBox(),
           FxButton.block(
             onPressed: () async {
-              Get.find<LoginController>().toggle(true);
-              var uid = Uuid().v4();
-              if (Get.find<CheckOutScreenController>().paymentIndex.value ==
-                  0) {
-                print("Cash On Delivery");
-                List<Map<String, dynamic>> itemModel = [];
-                var userData = await FirebaseFirestore.instance
-                    .collection("Users")
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .get();
-                // FirebaseUserModel firebaseUserModel =FirebaseUser11Model.fromMap(userData);
-                var collection = await FirebaseFirestore.instance
-                    .collection("Carts")
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .collection("Products")
-                    .get();
-                for (var doc in collection.docs) {
-                  var abc = doc.data();
-                  CartProductModel cartProductModel =
-                      CartProductModel.toIncreaseorDecrease(doc.data());
-
-                  itemModel.add(
-                    CheckOutProductModel(
-                      name: cartProductModel.name,
-                      quantity: cartProductModel.quantity,
-                      price: cartProductModel.price,
-                      uid: cartProductModel.uid,
-                      isPacked: false,
-                    ).toMap(),
-                  );
-                }
-                PlaceOrderService().submitOrder(
-                  itemModel,
-                  widget.totalPrice,
-                  "Cash on Delivery",
-                );
-                Get.find<CheckOutScreenController>().changeIndex(2);
-              } else if (Get.find<CheckOutScreenController>()
-                      .paymentIndex
-                      .value ==
-                  1) {
-                print(uid);
-                print("Khalti");
-                KhaltiScope.of(context).pay(
-                  config: PaymentConfig(
-                    amount: widget.totalPrice.toInt() * 100,
-                    productIdentity: uid,
-                    productName: 'Samagri-User TrackingID -$uid',
-                  ),
-                  preferences: [
-                    PaymentPreference.khalti,
-                    PaymentPreference.connectIPS,
-                    PaymentPreference.eBanking,
-                    PaymentPreference.sct,
-                    PaymentPreference.mobileBanking,
-                  ],
-                  onSuccess: (su) async {
-                    print("Cash On Delivery");
-                    List<Map<String, dynamic>> itemModel = [];
-                    var userData = await FirebaseFirestore.instance
-                        .collection("Users")
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .get();
-                    // FirebaseUserModel firebaseUserModel =FirebaseUser11Model.fromMap(userData);
-                    var collection = await FirebaseFirestore.instance
-                        .collection("Carts")
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .collection("Products")
-                        .get();
-                    for (var doc in collection.docs) {
-                      var abc = doc.data();
-                      CartProductModel cartProductModel =
-                          CartProductModel.toIncreaseorDecrease(doc.data());
-
-                      itemModel.add(
-                        CheckOutProductModel(
-                          name: cartProductModel.name,
-                          quantity: cartProductModel.quantity,
-                          price: cartProductModel.price,
-                          uid: cartProductModel.uid,
-                          isPacked: false,
-                        ).toMap(),
-                      );
-                    }
-                    PlaceOrderService().submitOrder(
-                      itemModel,
-                      widget.totalPrice,
-                      "Khalti",
-                    );
-                    OurToast().showErrorToast("Payment Successful");
-
-                    Get.find<CheckOutScreenController>().changeIndex(2);
-                  },
-                  onFailure: (fa) {
-                    OurToast().showErrorToast("Payment Failed");
-                  },
-                  onCancel: () {
-                    OurToast().showErrorToast("Payment Cancelled");
-                  },
-                );
+              print("Minus buttom pressed");
+              if (Get.find<CheckConnectivity>().isOnline == false) {
+                OurToast().showErrorToast("Oops, No internet connection");
               } else {
-                print("Inside E-sewa HUHUHHU");
-                try {
-                  EsewaFlutterSdk.initPayment(
-                    esewaConfig: EsewaConfig(
-                      environment: Environment.test,
-                      clientId:
-                          "JB0BBQ4aD0UqIThFJwAKBgAXEUkEGQUBBAwdOgABHD4DChwUAB0R",
-                      secretId: "BhwIWQQADhIYSxILExMcAgFXFhcOBwAKBgAXEQ==",
+                // await ProductDetailFirestore()
+                //     .deleteItemFromCart(widget.cartProductModel);
+
+                Get.find<LoginController>().toggle(true);
+                var uid = Uuid().v4();
+                if (Get.find<CheckOutScreenController>().paymentIndex.value ==
+                    0) {
+                  print("Cash On Delivery");
+                  List<Map<String, dynamic>> itemModel = [];
+                  var userData = await FirebaseFirestore.instance
+                      .collection("Users")
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      .get();
+                  // FirebaseUserModel firebaseUserModel =FirebaseUser11Model.fromMap(userData);
+                  var collection = await FirebaseFirestore.instance
+                      .collection("Carts")
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      .collection("Products")
+                      .get();
+                  for (var doc in collection.docs) {
+                    var abc = doc.data();
+                    CartProductModel cartProductModel =
+                        CartProductModel.toIncreaseorDecrease(doc.data());
+
+                    itemModel.add(
+                      CheckOutProductModel(
+                        ownerId: cartProductModel.ownerId,
+                        name: cartProductModel.name,
+                        quantity: cartProductModel.quantity,
+                        price: cartProductModel.price,
+                        uid: cartProductModel.url[0],
+                        isPacked: false,
+                      ).toMap(),
+                    );
+                  }
+                  PlaceOrderService().submitOrder(
+                    itemModel,
+                    widget.totalPrice,
+                    "Cash on Delivery",
+                  );
+                  Get.find<CheckOutScreenController>().changeIndex(2);
+                } else if (Get.find<CheckOutScreenController>()
+                        .paymentIndex
+                        .value ==
+                    1) {
+                  print(uid);
+                  print("Khalti");
+                  KhaltiScope.of(context).pay(
+                    config: PaymentConfig(
+                      amount: widget.totalPrice.toInt() * 100,
+                      productIdentity: uid,
+                      productName: 'Samagri-User TrackingID -$uid',
                     ),
-                    esewaPayment: EsewaPayment(
-                      productId: "1d71jd81",
-                      productName: "Product One",
-                      productPrice: widget.totalPrice.toString(),
-                      callbackUrl: "www.test-url.com",
-                    ),
-                    onPaymentSuccess: (EsewaPaymentSuccessResult data) async {
-                      debugPrint(":::SUCCESS::: => $data");
+                    preferences: [
+                      PaymentPreference.khalti,
+                      PaymentPreference.connectIPS,
+                      PaymentPreference.eBanking,
+                      PaymentPreference.sct,
+                      PaymentPreference.mobileBanking,
+                    ],
+                    onSuccess: (su) async {
                       print("Cash On Delivery");
                       List<Map<String, dynamic>> itemModel = [];
                       var userData = await FirebaseFirestore.instance
@@ -462,10 +410,11 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
 
                         itemModel.add(
                           CheckOutProductModel(
+                            ownerId: cartProductModel.ownerId,
                             name: cartProductModel.name,
                             quantity: cartProductModel.quantity,
                             price: cartProductModel.price,
-                            uid: cartProductModel.uid,
+                            uid: cartProductModel.url[0],
                             isPacked: false,
                           ).toMap(),
                         );
@@ -473,50 +422,113 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
                       PlaceOrderService().submitOrder(
                         itemModel,
                         widget.totalPrice,
-                        "E-sewa",
+                        "Khalti",
                       );
-
                       OurToast().showErrorToast("Payment Successful");
 
                       Get.find<CheckOutScreenController>().changeIndex(2);
                     },
-                    onPaymentFailure: (data) {
-                      debugPrint(":::FAILURE::: => $data");
+                    onFailure: (fa) {
                       OurToast().showErrorToast("Payment Failed");
                     },
-                    onPaymentCancellation: (data) {
-                      debugPrint(":::CANCELLATION::: => $data");
+                    onCancel: () {
                       OurToast().showErrorToast("Payment Cancelled");
                     },
                   );
-                } on Exception catch (e) {
-                  debugPrint("EXCEPTION : ${e.toString()}");
-                  OurToast().showErrorToast(e.toString());
+                } else {
+                  print("Inside E-sewa");
+                  try {
+                    EsewaFlutterSdk.initPayment(
+                      esewaConfig: EsewaConfig(
+                        environment: Environment.test,
+                        clientId:
+                            "JB0BBQ4aD0UqIThFJwAKBgAXEUkEGQUBBAwdOgABHD4DChwUAB0R",
+                        secretId: "BhwIWQQADhIYSxILExMcAgFXFhcOBwAKBgAXEQ==",
+                      ),
+                      esewaPayment: EsewaPayment(
+                        productId: "1d71jd81",
+                        productName: "Product One",
+                        productPrice: widget.totalPrice.toString(),
+                        callbackUrl: "www.test-url.com",
+                      ),
+                      onPaymentSuccess: (EsewaPaymentSuccessResult data) async {
+                        debugPrint(":::SUCCESS::: => $data");
+                        print("Cash On Delivery");
+                        List<Map<String, dynamic>> itemModel = [];
+                        var userData = await FirebaseFirestore.instance
+                            .collection("Users")
+                            .doc(FirebaseAuth.instance.currentUser!.uid)
+                            .get();
+                        // FirebaseUserModel firebaseUserModel =FirebaseUser11Model.fromMap(userData);
+                        var collection = await FirebaseFirestore.instance
+                            .collection("Carts")
+                            .doc(FirebaseAuth.instance.currentUser!.uid)
+                            .collection("Products")
+                            .get();
+                        for (var doc in collection.docs) {
+                          var abc = doc.data();
+                          CartProductModel cartProductModel =
+                              CartProductModel.toIncreaseorDecrease(doc.data());
+
+                          itemModel.add(
+                            CheckOutProductModel(
+                              ownerId: cartProductModel.ownerId,
+                              name: cartProductModel.name,
+                              quantity: cartProductModel.quantity,
+                              price: cartProductModel.price,
+                              uid: cartProductModel.url[0],
+                              isPacked: false,
+                            ).toMap(),
+                          );
+                        }
+                        PlaceOrderService().submitOrder(
+                          itemModel,
+                          widget.totalPrice,
+                          "E-sewa",
+                        );
+
+                        OurToast().showErrorToast("Payment Successful");
+
+                        Get.find<CheckOutScreenController>().changeIndex(2);
+                      },
+                      onPaymentFailure: (data) {
+                        debugPrint(":::FAILURE::: => $data");
+                        OurToast().showErrorToast("Payment Failed");
+                      },
+                      onPaymentCancellation: (data) {
+                        debugPrint(":::CANCELLATION::: => $data");
+                        OurToast().showErrorToast("Payment Cancelled");
+                      },
+                    );
+                  } on Exception catch (e) {
+                    debugPrint("EXCEPTION : ${e.toString()}");
+                    OurToast().showErrorToast(e.toString());
+                  }
+                  // ESewaConfiguration _configuration = ESewaConfiguration(
+                  //     clientID:
+                  //         "JB0BBQ4aD0UqIThFJwAKBgAXEUkEGQUBBAwdOgABHD4DChwUAB0R",
+                  //     secretKey: "BhwIWQQADhIYSxILExMcAgFXFhcOBwAKBgAXEQ==",
+                  //     environment:
+                  //         ESewaConfiguration.ENVIRONMENT_TEST //ENVIRONMENT_LIVE
+                  //     );
+                  // ESewaPnp _eSewaPnp = ESewaPnp(configuration: _configuration);
+
+                  // ESewaPayment _payment = ESewaPayment(
+                  //     amount: widget.totalPrice,
+                  //     productName: 'Samagri-User TrackingID -$uid',
+                  //     productID: uid,
+                  //     callBackURL: "http://example.com");
+                  // try {
+                  //   final _res = await _eSewaPnp.initPayment(payment: _payment);
+                  //   print(_res.date);
+                  //   print("Utsav Shrestha");
+                  //   print(_res.message);
+                  // } on ESewaPaymentException catch (e) {
+                  //   OurToast().showErrorToast(e.message!);
+                  // }
+
+                  print("Esewa");
                 }
-                // ESewaConfiguration _configuration = ESewaConfiguration(
-                //     clientID:
-                //         "JB0BBQ4aD0UqIThFJwAKBgAXEUkEGQUBBAwdOgABHD4DChwUAB0R",
-                //     secretKey: "BhwIWQQADhIYSxILExMcAgFXFhcOBwAKBgAXEQ==",
-                //     environment:
-                //         ESewaConfiguration.ENVIRONMENT_TEST //ENVIRONMENT_LIVE
-                //     );
-                // ESewaPnp _eSewaPnp = ESewaPnp(configuration: _configuration);
-
-                // ESewaPayment _payment = ESewaPayment(
-                //     amount: widget.totalPrice,
-                //     productName: 'Samagri-User TrackingID -$uid',
-                //     productID: uid,
-                //     callBackURL: "http://example.com");
-                // try {
-                //   final _res = await _eSewaPnp.initPayment(payment: _payment);
-                //   print(_res.date);
-                //   print("Utsav Shrestha");
-                //   print(_res.message);
-                // } on ESewaPaymentException catch (e) {
-                //   OurToast().showErrorToast(e.message!);
-                // }
-
-                print("Esewa");
               }
             },
             borderRadiusAll: ScreenUtil().setSp(10),

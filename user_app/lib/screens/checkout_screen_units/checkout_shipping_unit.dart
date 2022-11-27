@@ -720,11 +720,13 @@ class _CheckOutShipmentUnitState extends State<CheckOutShipmentUnit> {
                             ? logoColor.withOpacity(0.2)
                             : Colors.transparent,
                         onTap: () {
+                          print(deliveryLocation.toJson());
                           Get.find<CheckOutScreenController>()
                               .changeAddressIndex(index);
                           Get.find<CheckOutScreenController>().changeAddress(
-                            deliveryLocation.fullAddress!.trim(),
-                          );
+                              deliveryLocation.fullAddress!.trim(),
+                              deliveryLocation.latitude!,
+                              deliveryLocation.longitude!);
                           print(index);
                         },
                         border: Border.all(
@@ -832,7 +834,6 @@ class _CheckOutShipmentUnitState extends State<CheckOutShipmentUnit> {
                 color: darklogoColor,
                 fontWeight: FontWeight.w500,
               ),
-              
             ),
             Spacer(),
             InkWell(

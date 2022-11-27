@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CartProductModel {
   final String uid;
+  final String ownerId;
   final String name;
   final String desc;
   final List url;
@@ -14,6 +15,7 @@ class CartProductModel {
   final int quantity;
 
   CartProductModel({
+    required this.ownerId,
     required this.shop,
     required this.uid,
     required this.name,
@@ -33,12 +35,13 @@ class CartProductModel {
       'price': price,
       'addedon': addedOn,
       'quantity': quantity,
-      'shop':shop,
+      'shop': shop,
     };
   }
 
   factory CartProductModel.fromMap(DocumentSnapshot map) {
     return CartProductModel(
+      ownerId: map['ownerId'] ?? '',
       uid: map['uid'] ?? '',
       name: map['name'] ?? '',
       desc: map['desc'] ?? '',
@@ -53,7 +56,7 @@ class CartProductModel {
   factory CartProductModel.toIncreaseorDecrease(Map<String, dynamic> map) {
     return CartProductModel(
       shop: map['shop'] ?? '',
-
+      ownerId: map['ownerId'] ?? '',
       uid: map['uid'] ?? '',
       name: map['name'] ?? '',
       desc: map['desc'] ?? '',

@@ -128,6 +128,7 @@ class ProductDetailFirestore {
             .collection("Products")
             .doc(product.uid)
             .set({
+          "ownerId": product.ownerUid,
           "uid": product.uid,
           "name": product.name,
           "desc": product.desc,

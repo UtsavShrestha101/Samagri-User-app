@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 
 class CheckOutScreenController extends GetxController {
+  var lat = 0.0.obs;
+  var long = 0.0.obs;
   var index = 0.obs;
   var addressIndex = 1000999.obs;
   var paymentIndex = 0.obs;
@@ -8,6 +10,8 @@ class CheckOutScreenController extends GetxController {
   var time = "".obs;
 
   initialize() {
+    lat.value = 0.0;
+    long.value = 0.0;
     paymentIndex.value = 1000999;
     index.value = 0;
     addressIndex.value = 1000999;
@@ -27,7 +31,9 @@ class CheckOutScreenController extends GetxController {
     paymentIndex.value = value;
   }
 
-  changeAddress(String value) {
+  changeAddress(String value, double latValue, double longValue) {
     address.value = value;
+    lat.value = latValue;
+    long.value = longValue;
   }
 }
