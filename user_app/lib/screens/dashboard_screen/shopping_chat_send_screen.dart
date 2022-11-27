@@ -66,7 +66,6 @@ class _MessageSendScreenState extends State<MessageSendScreen> {
     try {
       final ImagePicker _picker = ImagePicker();
       var result = await _picker.pickImage(source: ImageSource.gallery);
-      
 
       if (result != null) {
         setState(() {});
@@ -248,7 +247,38 @@ class _MessageSendScreenState extends State<MessageSendScreen> {
                                     );
                             });
                       } else {
-                        return OurSpinner();
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Spacer(),
+                              Image.asset(
+                                "assets/images/logo.png",
+                                fit: BoxFit.contain,
+                                height: ScreenUtil().setSp(100),
+                                width: ScreenUtil().setSp(100),
+                              ),
+                              OurSizedBox(),
+                              Text(
+                                "We're sorry",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color: logoColor,
+                                  fontSize: ScreenUtil().setSp(17.5),
+                                ),
+                              ),
+                              OurSizedBox(),
+                              Text(
+                                "You have not sent any messages",
+                                style: TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: ScreenUtil().setSp(15),
+                                ),
+                              ),
+                              Spacer(),
+                            ],
+                          ),
+                        );
                       }
                     } else if (snapshot.connectionState ==
                         ConnectionState.waiting) {

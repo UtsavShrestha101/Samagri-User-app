@@ -357,10 +357,10 @@ class _OurRecommendationWidgetState extends State<OurRecommendationWidget> {
                                                                     .symmetric(
                                                               vertical:
                                                                   ScreenUtil()
-                                                                      .setSp(5),
+                                                                      .setSp(2),
                                                               horizontal:
                                                                   ScreenUtil()
-                                                                      .setSp(5),
+                                                                      .setSp(2),
                                                             ),
                                                             valueLabelMargin:
                                                                 EdgeInsets.only(
@@ -372,26 +372,6 @@ class _OurRecommendationWidgetState extends State<OurRecommendationWidget> {
                                                                 Colors.white,
                                                             starColor:
                                                                 darklogoColor,
-                                                          ),
-                                                          SizedBox(
-                                                            width: ScreenUtil()
-                                                                .setSp(2),
-                                                          ),
-                                                          Expanded(
-                                                            child: Text(
-                                                              "(${productModel.ratingNo.toString()})",
-                                                              style: TextStyle(
-                                                                fontSize:
-                                                                    ScreenUtil()
-                                                                        .setSp(
-                                                                            13),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                color:
-                                                                    darklogoColor,
-                                                              ),
-                                                            ),
                                                           ),
                                                         ],
                                                       ),
