@@ -6,7 +6,8 @@ import 'package:myapp/services/notification_service/notification_service.dart';
 import '../../models/user_model_firebase.dart';
 
 class ChatDetailFirebase {
-  messageDetail(String message, UserModel userModel, FirebaseUser11Model firebaseUser11Model) async {
+  messageDetail(String message, UserModel userModel,
+      FirebaseUser11Model firebaseUser11Model) async {
     print("MESSAGE DETAIL SCREEN");
     print("MESSAGE DETAIL SCREEN");
     print("MESSAGE DETAIL SCREEN");
@@ -61,16 +62,19 @@ class ChatDetailFirebase {
       // FirebaseUser11Model userModel11 = FirebaseUser11Model.fromMap(a);
       // print(userModel.name);
       await NotificationService().sendNotification(
-          "${firebaseUser11Model.name} messaged you",
-          message,
-          "userModel.profile_pic",
-          "",
-          userModel.token);
+        "${firebaseUser11Model.name} messaged you",
+        message,
+        "userModel.profile_pic",
+        "",
+        userModel.token,
+                                                                                                                                                                                                                                                                                                                                                                                                                                );
+
       print("Doneee sending message");
     } catch (e) {}
   }
 
-  imageDetail(String downloadUrl, UserModel userModel,FirebaseUser11Model userl111) async {
+  imageDetail(String downloadUrl, UserModel userModel,
+      FirebaseUser11Model userl111) async {
     try {
       print("IMAGE DETAIL");
       print(downloadUrl);

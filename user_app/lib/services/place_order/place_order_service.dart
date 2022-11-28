@@ -16,12 +16,48 @@ class PlaceOrderService {
   submitOrder(
       List<Map<String, dynamic>> itemModel, double total, String type) async {
     print("Inside submit order");
+    List<String> productIDSlist = [];
     var uid = Uuid().v4();
     try {
       var userData = await FirebaseFirestore.instance
           .collection("Users")
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
+
+      itemModel.forEach((element) async {
+        var requestProductId = Uuid().v4();
+        productIDSlist.add(requestProductId);
+        await FirebaseFirestore.instance
+            .collection("RequestOrder")
+            .doc(requestProductId)
+            .set(
+          {
+            "productOwnerId": element["ownerId"],
+            "requestedOn": Timestamp.now(),
+            "batchId": uid,
+            "requestUserId": FirebaseAuth.instance.currentUser!.uid,
+            "requestId": requestProductId,
+            "productId": element["productId"],
+            "price": element["price"],
+            "quantity": element["quantity"],
+            "productImage": element["uid"],
+            "ispicked": false,
+            "productName": element["name"],
+          },
+        );
+
+        var a = await FirebaseFirestore.instance
+            .collection("Sellers")
+            .doc(element["ownerId"])
+            .get();
+        UserModel userModel = UserModel.fromMap(a);
+        await NotificationService().sendNotification(
+            "Order request",
+            "${element["name"]} is requested",
+            "userModel.profile_pic",
+            "",
+            userModel.token);
+      });
       Map<String, dynamic> mapss = {
         "ownerId": FirebaseAuth.instance.currentUser!.uid,
         "status": "In Progress",
@@ -37,44 +73,10 @@ class PlaceOrderService {
         "deliveryAddress": Get.find<CheckOutScreenController>().address.value,
         "lat": Get.find<CheckOutScreenController>().lat.value,
         "long": Get.find<CheckOutScreenController>().long.value,
-        "items": itemModel,
+        "items": productIDSlist,
         "orderedAt": Timestamp.now(),
         "deliveredAt": Timestamp.now(),
       };
-
-      itemModel.forEach((element) async {
-        var requestProductId = Uuid().v4();
-        await FirebaseFirestore.instance
-            .collection("RequestOrder")
-            .doc(element["ownerId"])
-            .collection("Requests")
-            .doc(requestProductId)
-            .set(
-          {
-            "requestedOn": Timestamp.now(),
-            "batchId": uid,
-            "requestUserId": FirebaseAuth.instance.currentUser!.uid,
-            "requestId": requestProductId,
-            "productId": element["productId"],
-            "price": element["price"],
-            "quantity": element["quantity"],
-            "productImage": element["uid"],
-            "ispicked": false,
-            "productName": element["name"],
-          },
-        );
-        var a = await FirebaseFirestore.instance
-            .collection("Sellers")
-            .doc(element["ownerId"])
-            .get();
-        UserModel userModel = UserModel.fromMap(a);
-        await NotificationService().sendNotification(
-            "Order request",
-            "${element["name"]} is requested",
-            "userModel.profile_pic",
-            "",
-            userModel.token);
-      });
       await FirebaseFirestore.instance
           .collection("Orders")
           .doc(uid)

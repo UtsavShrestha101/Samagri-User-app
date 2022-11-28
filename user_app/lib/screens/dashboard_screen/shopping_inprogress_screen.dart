@@ -529,199 +529,443 @@ class _ShoppingInProgressScreenState extends State<ShoppingInProgressScreen>
                                         ],
                                       ),
                                       children: inProgressProductModel.items
-                                          .map(
-                                            (e) => Container(
-                                              margin: EdgeInsets.symmetric(
-                                                vertical:
-                                                    ScreenUtil().setSp(3.5),
-                                              ),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Expanded(
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  8)),
-                                                      child:
-                                                          // Image.network(
-                                                          //   widget.cartProductModel.url[0],
-                                                          //   height: ScreenUtil().setSp(90),
-                                                          //   fit: BoxFit.fill,
-                                                          // ),
-                                                          CachedNetworkImage(
-                                                        height: ScreenUtil()
-                                                            .setSp(90),
-                                                        fit: BoxFit.fill,
-                                                        imageUrl: e["uid"],
-                                                        placeholder:
-                                                            (context, url) =>
-                                                                Image.asset(
-                                                          "assets/images/placeholder.png",
-                                                          height: ScreenUtil()
-                                                              .setSp(90),
-                                                          fit: BoxFit.fill,
+                                          .map((e) => StreamBuilder(
+                                                  stream: FirebaseFirestore
+                                                      .instance
+                                                      .collection(
+                                                          "RequestOrder")
+                                                      .doc(e.toString())
+                                                      .snapshots(),
+                                                  builder: (BuildContext
+                                                          context,
+                                                      AsyncSnapshot snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState
+                                                            .waiting) {
+                                                      return const Center(
+                                                        child: OurSpinner(),
+                                                      );
+                                                    } else if (snapshot
+                                                        .hasData) {
+                                                      return Container(
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                          vertical: ScreenUtil()
+                                                              .setSp(3.5),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width:
-                                                        ScreenUtil().setSp(10),
-                                                  ),
-                                                  Expanded(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          "Product Name:",
-                                                          style: TextStyle(
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(15),
-                                                            color:
-                                                                darklogoColor,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
+                                                        child: Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Expanded(
+                                                              child: ClipRRect(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            8)),
+                                                                child:
+                                                                    // Image.network(
+                                                                    //   widget.cartProductModel.url[0],
+                                                                    //   height: ScreenUtil().setSp(90),
+                                                                    //   fit: BoxFit.fill,
+                                                                    // ),
+                                                                    CachedNetworkImage(
+                                                                  height:
+                                                                      ScreenUtil()
+                                                                          .setSp(
+                                                                              90),
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                  imageUrl: snapshot
+                                                                          .data[
+                                                                      "productImage"],
+                                                                  placeholder: (context,
+                                                                          url) =>
+                                                                      Image
+                                                                          .asset(
+                                                                    "assets/images/placeholder.png",
+                                                                    height: ScreenUtil()
+                                                                        .setSp(
+                                                                            90),
+                                                                    fit: BoxFit
+                                                                        .fill,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              width:
+                                                                  ScreenUtil()
+                                                                      .setSp(
+                                                                          10),
+                                                            ),
+                                                            Expanded(
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    "Product Name:",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          ScreenUtil()
+                                                                              .setSp(15),
+                                                                      color:
+                                                                          darklogoColor,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                  OurSizedBox(),
+                                                                  Text(
+                                                                    snapshot.data[
+                                                                        "productName"],
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          ScreenUtil()
+                                                                              .setSp(13.5),
+                                                                      color:
+                                                                          darklogoColor,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    "Quantity:",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          ScreenUtil()
+                                                                              .setSp(15),
+                                                                      color:
+                                                                          darklogoColor,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                  OurSizedBox(),
+                                                                  Text(
+                                                                    snapshot
+                                                                        .data[
+                                                                            "quantity"]
+                                                                        .toString(),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          ScreenUtil()
+                                                                              .setSp(13.5),
+                                                                      color:
+                                                                          darklogoColor,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    "Product price:",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          ScreenUtil()
+                                                                              .setSp(15),
+                                                                      color:
+                                                                          darklogoColor,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                  OurSizedBox(),
+                                                                  Text(
+                                                                    snapshot
+                                                                        .data[
+                                                                            "price"]
+                                                                        .toString(),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          ScreenUtil()
+                                                                              .setSp(13.5),
+                                                                      color:
+                                                                          darklogoColor,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    "Product status:",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          ScreenUtil()
+                                                                              .setSp(15),
+                                                                      color:
+                                                                          darklogoColor,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                  OurSizedBox(),
+                                                                  Text(
+                                                                    snapshot.data["ispicked"] ==
+                                                                            false
+                                                                        ? "Not Packed"
+                                                                        : "Packed",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          ScreenUtil()
+                                                                              .setSp(13.5),
+                                                                      color: snapshot.data["ispicked"] ==
+                                                                              false
+                                                                          ? Colors
+                                                                              .red
+                                                                          : Colors
+                                                                              .green,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                        OurSizedBox(),
-                                                        Text(
-                                                          e["name"],
-                                                          style: TextStyle(
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(
-                                                                        13.5),
-                                                            color:
-                                                                darklogoColor,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          "Quantity:",
-                                                          style: TextStyle(
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(15),
-                                                            color:
-                                                                darklogoColor,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                        OurSizedBox(),
-                                                        Text(
-                                                          e["quantity"]
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(
-                                                                        13.5),
-                                                            color:
-                                                                darklogoColor,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          "Product price:",
-                                                          style: TextStyle(
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(15),
-                                                            color:
-                                                                darklogoColor,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                        OurSizedBox(),
-                                                        Text(
-                                                          e["price"].toString(),
-                                                          style: TextStyle(
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(
-                                                                        13.5),
-                                                            color:
-                                                                darklogoColor,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          "Product status:",
-                                                          style: TextStyle(
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(15),
-                                                            color:
-                                                                darklogoColor,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                        OurSizedBox(),
-                                                        Text(
-                                                          e["isPacked"] == false
-                                                              ? "Not Packed"
-                                                              : "Packed",
-                                                          style: TextStyle(
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(
-                                                                        13.5),
-                                                            color:
-                                                                e["isPacked"] ==
-                                                                        false
-                                                                    ? Colors.red
-                                                                    : Colors
-                                                                        .green,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          )
+                                                      );
+                                                    }
+                                                    return OurSpinner();
+                                                  })
+
+                                              // Container(
+                                              //   margin: EdgeInsets.symmetric(
+                                              //     vertical:
+                                              //         ScreenUtil().setSp(3.5),
+                                              //   ),
+                                              //   child: Row(
+                                              //     crossAxisAlignment:
+                                              //         CrossAxisAlignment.start,
+                                              //     children: [
+                                              //       Expanded(
+                                              //         child: ClipRRect(
+                                              //           borderRadius:
+                                              //               BorderRadius.all(
+                                              //                   Radius.circular(
+                                              //                       8)),
+                                              //           child:
+                                              //               // Image.network(
+                                              //               //   widget.cartProductModel.url[0],
+                                              //               //   height: ScreenUtil().setSp(90),
+                                              //               //   fit: BoxFit.fill,
+                                              //               // ),
+                                              //               CachedNetworkImage(
+                                              //             height: ScreenUtil()
+                                              //                 .setSp(90),
+                                              //             fit: BoxFit.fill,
+                                              //             imageUrl: e["uid"],
+                                              //             placeholder:
+                                              //                 (context, url) =>
+                                              //                     Image.asset(
+                                              //               "assets/images/placeholder.png",
+                                              //               height: ScreenUtil()
+                                              //                   .setSp(90),
+                                              //               fit: BoxFit.fill,
+                                              //             ),
+                                              //           ),
+                                              //         ),
+                                              //       ),
+                                              //       SizedBox(
+                                              //         width:
+                                              //             ScreenUtil().setSp(10),
+                                              //       ),
+                                              //       Expanded(
+                                              //         child: Column(
+                                              //           crossAxisAlignment:
+                                              //               CrossAxisAlignment
+                                              //                   .start,
+                                              //           children: [
+                                              //             Text(
+                                              //               "Product Name:",
+                                              //               style: TextStyle(
+                                              //                 fontSize:
+                                              //                     ScreenUtil()
+                                              //                         .setSp(15),
+                                              //                 color:
+                                              //                     darklogoColor,
+                                              //                 fontWeight:
+                                              //                     FontWeight.bold,
+                                              //               ),
+                                              //             ),
+                                              //             OurSizedBox(),
+                                              //             Text(
+                                              //               e["name"],
+                                              //               style: TextStyle(
+                                              //                 fontSize:
+                                              //                     ScreenUtil()
+                                              //                         .setSp(
+                                              //                             13.5),
+                                              //                 color:
+                                              //                     darklogoColor,
+                                              //                 fontWeight:
+                                              //                     FontWeight.w400,
+                                              //               ),
+                                              //             ),
+                                              //           ],
+                                              //         ),
+                                              //       ),
+                                              //       Expanded(
+                                              //         child: Column(
+                                              //           crossAxisAlignment:
+                                              //               CrossAxisAlignment
+                                              //                   .start,
+                                              //           children: [
+                                              //             Text(
+                                              //               "Quantity:",
+                                              //               style: TextStyle(
+                                              //                 fontSize:
+                                              //                     ScreenUtil()
+                                              //                         .setSp(15),
+                                              //                 color:
+                                              //                     darklogoColor,
+                                              //                 fontWeight:
+                                              //                     FontWeight.bold,
+                                              //               ),
+                                              //             ),
+                                              //             OurSizedBox(),
+                                              //             Text(
+                                              //               e["quantity"]
+                                              //                   .toString(),
+                                              //               style: TextStyle(
+                                              //                 fontSize:
+                                              //                     ScreenUtil()
+                                              //                         .setSp(
+                                              //                             13.5),
+                                              //                 color:
+                                              //                     darklogoColor,
+                                              //                 fontWeight:
+                                              //                     FontWeight.w400,
+                                              //               ),
+                                              //             ),
+                                              //           ],
+                                              //         ),
+                                              //       ),
+                                              //       Expanded(
+                                              //         child: Column(
+                                              //           crossAxisAlignment:
+                                              //               CrossAxisAlignment
+                                              //                   .start,
+                                              //           children: [
+                                              //             Text(
+                                              //               "Product price:",
+                                              //               style: TextStyle(
+                                              //                 fontSize:
+                                              //                     ScreenUtil()
+                                              //                         .setSp(15),
+                                              //                 color:
+                                              //                     darklogoColor,
+                                              //                 fontWeight:
+                                              //                     FontWeight.bold,
+                                              //               ),
+                                              //             ),
+                                              //             OurSizedBox(),
+                                              //             Text(
+                                              //               e["price"].toString(),
+                                              //               style: TextStyle(
+                                              //                 fontSize:
+                                              //                     ScreenUtil()
+                                              //                         .setSp(
+                                              //                             13.5),
+                                              //                 color:
+                                              //                     darklogoColor,
+                                              //                 fontWeight:
+                                              //                     FontWeight.w400,
+                                              //               ),
+                                              //             ),
+                                              //           ],
+                                              //         ),
+                                              //       ),
+                                              //       Expanded(
+                                              //         child: Column(
+                                              //           crossAxisAlignment:
+                                              //               CrossAxisAlignment
+                                              //                   .start,
+                                              //           children: [
+                                              //             Text(
+                                              //               "Product status:",
+                                              //               style: TextStyle(
+                                              //                 fontSize:
+                                              //                     ScreenUtil()
+                                              //                         .setSp(15),
+                                              //                 color:
+                                              //                     darklogoColor,
+                                              //                 fontWeight:
+                                              //                     FontWeight.bold,
+                                              //               ),
+                                              //             ),
+                                              //             OurSizedBox(),
+                                              //             Text(
+                                              //               e["isPacked"] == false
+                                              //                   ? "Not Packed"
+                                              //                   : "Packed",
+                                              //               style: TextStyle(
+                                              //                 fontSize:
+                                              //                     ScreenUtil()
+                                              //                         .setSp(
+                                              //                             13.5),
+                                              //                 color:
+                                              //                     e["isPacked"] ==
+                                              //                             false
+                                              //                         ? Colors.red
+                                              //                         : Colors
+                                              //                             .green,
+                                              //                 fontWeight:
+                                              //                     FontWeight.w400,
+                                              //               ),
+                                              //             ),
+                                              //           ],
+                                              //         ),
+                                              //       ),
+                                              //     ],
+                                              //   ),
+                                              // ),
+                                              )
                                           .toList(),
                                     ),
                                   );
