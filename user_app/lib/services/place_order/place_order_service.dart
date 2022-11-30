@@ -57,6 +57,20 @@ class PlaceOrderService {
             "userModel.profile_pic",
             "",
             userModel.token);
+        var uniqueNotificationUId = Uuid().v4();
+        await FirebaseFirestore.instance
+            .collection("Notifications")
+            .doc(element["ownerId"])
+            .collection("MyNotifications")
+            .doc(uniqueNotificationUId)
+            .set({
+          "uid": uniqueNotificationUId,
+          "productName": element["name"],
+          "productImage": element["uid"],
+          "senderName": userData["name"],
+          "desc": "Item requested",
+          "addedOn": Timestamp.now(),
+        });
       });
       Map<String, dynamic> mapss = {
         "ownerId": FirebaseAuth.instance.currentUser!.uid,

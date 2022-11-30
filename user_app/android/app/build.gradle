@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.ride_sharing1"
+        applicationId "com.userApp.first123"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
@@ -66,11 +66,9 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.google.firebase:firebase-appcheck-safetynet:16.0.0-beta04'
      def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
      implementation platform('com.google.firebase:firebase-bom:29.0.4')
     implementation 'com.google.firebase:firebase-analytics'
-implementation 'com.google.android.gms:play-services-maps:18.1.0'
 }

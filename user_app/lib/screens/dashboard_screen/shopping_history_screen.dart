@@ -14,15 +14,14 @@ import '../../models/inprogress_product_model.dart';
 import '../../widget/our_elevated_button.dart';
 import '../../widget/our_spinner.dart';
 
-class ShoppingInProgressScreen extends StatefulWidget {
-  const ShoppingInProgressScreen({Key? key}) : super(key: key);
+class ShoppingHistoryScreen extends StatefulWidget {
+  const ShoppingHistoryScreen({Key? key}) : super(key: key);
 
   @override
-  State<ShoppingInProgressScreen> createState() =>
-      _ShoppingInProgressScreenState();
+  State<ShoppingHistoryScreen> createState() => _ShoppingHistoryScreenState();
 }
 
-class _ShoppingInProgressScreenState extends State<ShoppingInProgressScreen>
+class _ShoppingHistoryScreenState extends State<ShoppingHistoryScreen>
     with TickerProviderStateMixin {
   late AnimationController animationControllerListPage;
   late Animation<double> logoAnimationList;
@@ -94,7 +93,7 @@ class _ShoppingInProgressScreenState extends State<ShoppingInProgressScreen>
                       width: ScreenUtil().setSp(7.5),
                     ),
                     Text(
-                      "In-Progress",
+                      "Order History",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: ScreenUtil().setSp(25),
@@ -111,7 +110,7 @@ class _ShoppingInProgressScreenState extends State<ShoppingInProgressScreen>
                       .collection("Orders")
                       .where("ownerId",
                           isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                      .where("isDelivered", isEqualTo: false)
+                      .where("isDelivered", isEqualTo: true)
                       .orderBy(
                         "orderedAt",
                         descending: true,

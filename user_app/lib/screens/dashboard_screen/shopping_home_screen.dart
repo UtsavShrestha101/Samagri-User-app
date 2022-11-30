@@ -13,6 +13,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:myapp/controller/category_tag_controller.dart';
 import 'package:myapp/db/db_helper.dart';
 import 'package:myapp/models/recommendation_history_model.dart';
+import 'package:myapp/screens/dashboard_screen/shopping_notification_screen.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_search_product_screen.dart';
 import 'package:myapp/services/current_location/get_current_location.dart';
 import 'package:myapp/utils/color.dart';
@@ -256,7 +257,15 @@ class _ShoppingHomeScreenState extends State<ShoppingHomeScreen>
                           ),
                           builder: (context, key) => InkWell(
                             key: key,
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                  child: ShoppingNotificationScreen(),
+                                  type: PageTransitionType.leftToRight,
+                                ),
+                              );
+                            },
                             child: RotationTransition(
                               turns: bellAnimation,
                               child: Icon(

@@ -431,9 +431,13 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
                       Get.find<CheckOutScreenController>().changeIndex(2);
                     },
                     onFailure: (fa) {
+                      Get.find<LoginController>().toggle(false);
+
                       OurToast().showErrorToast("Payment Failed");
                     },
                     onCancel: () {
+                      Get.find<LoginController>().toggle(false);
+
                       OurToast().showErrorToast("Payment Cancelled");
                     },
                   );
@@ -495,10 +499,14 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
                         Get.find<CheckOutScreenController>().changeIndex(2);
                       },
                       onPaymentFailure: (data) {
+                        Get.find<LoginController>().toggle(false);
+
                         debugPrint(":::FAILURE::: => $data");
                         OurToast().showErrorToast("Payment Failed");
                       },
                       onPaymentCancellation: (data) {
+                        Get.find<LoginController>().toggle(false);
+
                         debugPrint(":::CANCELLATION::: => $data");
                         OurToast().showErrorToast("Payment Cancelled");
                       },

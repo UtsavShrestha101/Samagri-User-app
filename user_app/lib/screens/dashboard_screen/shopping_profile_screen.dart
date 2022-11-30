@@ -12,6 +12,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:myapp/models/firebase_user_model.dart';
 import 'package:myapp/models/user_model.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_favourite_screen.dart';
+import 'package:myapp/screens/dashboard_screen/shopping_history_screen.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_inprogress_screen.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_map_screen.dart';
 import 'package:myapp/services/fetch_product/fetch_product.dart';
@@ -163,6 +164,14 @@ class _ShoppingProfileScreenState extends State<ShoppingProfileScreen> {
                         title: "History",
                         iconData: MdiIcons.contentPaste,
                         function: () {
+                          // ShoppingHistoryScreen
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              child: ShoppingHistoryScreen(),
+                              type: PageTransitionType.leftToRight,
+                            ),
+                          );
                           print("History");
                         })
                   ],

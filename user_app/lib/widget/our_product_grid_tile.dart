@@ -87,28 +87,29 @@ class _ProductGridTileState extends State<ProductGridTile> {
                           ScreenUtil().setSp(10),
                         ),
                       ),
-                      child: Image.network(
-                        widget.productModel.url[0],
+                      child:
+                          // Image.network(
+                          //   widget.productModel.url[0],
+                          //   height: ScreenUtil().setSp(160),
+                          //   width: MediaQuery.of(context).size.width,
+                          //   fit: BoxFit.cover,
+                          //   // placeholder: (context, url) => Image.asset(
+                          //   //   "assets/images/placeholder.png",
+                          //   //   width: MediaQuery.of(context).size.width,
+                          //   //   // width: ScreenUtil().setSp(150),
+                          //   // ),
+                          // ),
+                          CachedNetworkImage(
                         height: ScreenUtil().setSp(160),
                         width: MediaQuery.of(context).size.width,
                         fit: BoxFit.cover,
-                        // placeholder: (context, url) => Image.asset(
-                        //   "assets/images/placeholder.png",
-                        //   width: MediaQuery.of(context).size.width,
-                        //   // width: ScreenUtil().setSp(150),
-                        // ),
+                        imageUrl: widget.productModel.url[0],
+                        placeholder: (context, url) => Image.asset(
+                          "assets/images/placeholder.png",
+                          width: MediaQuery.of(context).size.width,
+                          // width: ScreenUtil().setSp(150),
+                        ),
                       ),
-                      //  CachedNetworkImage(
-                      //   height: ScreenUtil().setSp(160),
-                      //   width: MediaQuery.of(context).size.width,
-                      //   fit: BoxFit.cover,
-                      //   imageUrl: widget.productModel.url[0],
-                      //   placeholder: (context, url) => Image.asset(
-                      //     "assets/images/placeholder.png",
-                      //     width: MediaQuery.of(context).size.width,
-                      //     // width: ScreenUtil().setSp(150),
-                      //   ),
-                      // ),
                     ),
                   ),
                 ),

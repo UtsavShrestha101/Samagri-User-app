@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ride_sharing1">
+    package="com.userApp.first123">
         <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE"/>
    <application
@@ -20,7 +20,7 @@
     <action android:name="android.intent.action.VIEW" />
     <category android:name="android.intent.category.DEFAULT" />
     <category android:name="android.intent.category.BROWSABLE" />
-    <data android:scheme="kpg" android:host="com.ride_sharing1" />
+    <data android:scheme="kpg" android:host="com.userApp.first123" />
 </intent-filter>
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
@@ -42,9 +42,5 @@
             android:value="2" />
          <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyBlMkiLJ-G7YNmFabacXbMwfI2dectJSfs"/>
-        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
-<!-- Necessary for apps that target Android 9.0 or higher -->
-<uses-library android:name="org.apache.http.legacy" android:required="false" />
-    
     </application>
 </manifest>
