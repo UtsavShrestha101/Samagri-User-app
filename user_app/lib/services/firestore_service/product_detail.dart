@@ -117,13 +117,13 @@ class ProductDetailFirestore {
           .collection("Users")
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .update({
-        "cartItems": FieldValue.arrayUnion([product.uid]),
+        "cartItems": FieldValue.arrayUnion([product.uid]), //[pr1 pr2]
         "cartItemNo": firebaseUserModel.cartItemNo + 1,
         "currentCartPrice":
             firebaseUserModel.currentCartPrice + product.price * quantity
       }).then((value) async {
         await FirebaseFirestore.instance
-            .collection("Carts")
+            .collection("Carts") // cart ->uid -> Product ->prod1uid
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .collection("Products")
             .doc(product.uid)
@@ -236,7 +236,7 @@ class ProductDetailFirestore {
           .collection("Users")
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .update({
-        "cartItems": FieldValue.arrayRemove([product.uid]),
+        "cartItems": FieldValue.arrayRemove([product.uid]),// [a,b, c] -[c] =[a,b]
         "cartItemNo": firebaseUserModel.cartItemNo - 1,
       }).then((value) async {
         var abc = await FirebaseFirestore.instance
@@ -252,6 +252,7 @@ class ProductDetailFirestore {
             .update({
           "currentCartPrice": firebaseUserModel.currentCartPrice -
               cartProductModel.price * cartProductModel.quantity,
+              //200 -10*5
         });
         try {
           await FirebaseFirestore.instance

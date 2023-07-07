@@ -7,6 +7,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:396808961242:android:132b0cbc9c828aebebf9e3",
+        "android_client_info": {
+          "package_name": "com.driver.app12"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "396808961242-k8jf0f73ha49iis0fv2eiqsnrvaf6e19.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.driver.app12",
+            "certificate_hash": "76f5c89b48f82f4822db6e675d2729a17858dda9"
+          }
+        },
+        {
+          "client_id": "396808961242-0rd751e6aib105finnp4jggjr83fdgis.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj5y6leoSyCt1eZaqaWyrsBhToOiLuGSo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "396808961242-0rd751e6aib105finnp4jggjr83fdgis.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:396808961242:android:a2033979339b402cebf9e3",
         "android_client_info": {
           "package_name": "com.ride_sharing1"
@@ -14,11 +51,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "396808961242-emettf9bl1odba1hg4d4ea93lu6gumsh.apps.googleusercontent.com",
+          "client_id": "396808961242-b85d3v3esr0chgi8p3536h5n060qq3vp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ride_sharing1",
-            "certificate_hash": "ece3810218dc8f298fdf4098568d1d797213e83a"
+            "certificate_hash": "76f5c89b48f82f4822db6e675d2729a17858dda9"
           }
         },
         {
@@ -46,16 +83,16 @@
       "client_info": {
         "mobilesdk_app_id": "1:396808961242:android:0264f18a538d1487ebf9e3",
         "android_client_info": {
-          "package_name": "com.userApp.first123"
+          "package_name": "com.samagri.sellerApp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "396808961242-8a8obs6mp1sfj2f9jv7uemr68g2f7sul.apps.googleusercontent.com",
+          "client_id": "396808961242-bf86tj4smtvdqbo5ldtdu1i357vb960v.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.userApp.first123",
-            "certificate_hash": "ece3810218dc8f298fdf4098568d1d797213e83a"
+            "package_name": "com.samagri.sellerApp",
+            "certificate_hash": "76f5c89b48f82f4822db6e675d2729a17858dda9"
           }
         },
         {
@@ -88,11 +125,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "396808961242-617tc8h4tb2l0k2mg1dnrf8q911rqo1r.apps.googleusercontent.com",
+          "client_id": "396808961242-80r4hss8jbpp9pvfs6utdt38ak0gup8c.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.userApp.first123",
-            "certificate_hash": "ece3810218dc8f298fdf4098568d1d797213e83a"
+            "certificate_hash": "76f5c89b48f82f4822db6e675d2729a17858dda9"
           }
         },
         {

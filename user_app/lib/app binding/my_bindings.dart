@@ -11,6 +11,7 @@ import '../controller/check_out_screen_controller.dart';
 import '../controller/dashboard_controller.dart';
 import '../controller/delivery_time_controller.dart';
 import '../controller/explore_shop_controller.dart';
+import '../controller/message_toggle_controller.dart';
 import '../controller/polyline_controller.dart';
 import '../controller/product_names_list_controller.dart';
 import '../controller/search_text_controller.dart';
@@ -74,6 +75,10 @@ class MyBinding implements Bindings {
     Get.lazyPut(
       () => CheckConnectivity(),
     );
+    Get.lazyPut(
+      () => MessageToggleScreenController(),
+    );
+    // MessageToggleScreenController
     // CheckConnectivity
     // ShoppingListSearchController
     // ProductListName

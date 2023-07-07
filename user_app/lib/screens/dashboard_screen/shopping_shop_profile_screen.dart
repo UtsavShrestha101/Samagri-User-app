@@ -255,31 +255,35 @@ class _ShoppingShopProfileScreenState extends State<ShoppingShopProfileScreen> {
         actions: [
           InkWell(
             onTap: () async {
-               var a = await FirebaseFirestore.instance
-          .collection("Users")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .get();
-      FirebaseUser11Model userModel11 = FirebaseUser11Model.fromMap(a);
-              Navigator.push(context, PageTransition(child: MessageSendScreen(
-                firebaseUser11: userModel11,
-                userModel: widget.userModel,
-              ), type: PageTransitionType.leftToRight,),);
+              var a = await FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .get();
+              FirebaseUser11Model userModel11 = FirebaseUser11Model.fromMap(a);
+              Navigator.push(
+                context,
+                PageTransition(
+                  child: MessageSendScreen(
+                    firebaseUser11: userModel11,
+                    userModel: widget.userModel,
+                  ),
+                  type: PageTransitionType.leftToRight,
+                ),
+              );
               // print("Chat Screen");
               // print(widget.userModel.name);
             },
             child: Icon(
               MdiIcons.chatOutline,
-                      color: darklogoColor,
-                      size: ScreenUtil().setSp(25),
+              color: darklogoColor,
+              size: ScreenUtil().setSp(25),
             ),
-
           ),
           SizedBox(
             width: ScreenUtil().setSp(7.5),
           ),
         ],
       ),
-
       body: SafeArea(
         child: Container(
             margin: EdgeInsets.only(

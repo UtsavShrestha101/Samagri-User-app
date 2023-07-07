@@ -6,6 +6,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:myapp/screens/dashboard_screen/shopping_driver_profile.dart';
 import 'package:myapp/utils/color.dart';
 import 'package:myapp/widget/our_sized_box.dart';
 import 'package:page_transition/page_transition.dart';
@@ -508,19 +509,44 @@ class _ShoppingInProgressScreenState extends State<ShoppingInProgressScreen>
                                                     )
                                                   : Expanded(
                                                       flex: 3,
-                                                      child: Text(
-                                                        inProgressProductModel
-                                                            .driverName
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(15),
-                                                          color: darklogoColor,
-                                                          fontWeight:
-                                                              FontWeight.w500,
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          print(
+                                                              inProgressProductModel
+                                                                  .driverUid);
+                                                          print(
+                                                              inProgressProductModel
+                                                                  .driverName);
+                                                          Navigator.push(
+                                                            context,
+                                                            PageTransition(
+                                                              child:
+                                                                  ShoppingDriverProfile(
+                                                                driverUID:
+                                                                    inProgressProductModel
+                                                                        .driverUid,
+                                                              ),
+                                                              type: PageTransitionType
+                                                                  .leftToRight,
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: Text(
+                                                          inProgressProductModel
+                                                              .driverName
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                            fontSize:
+                                                                ScreenUtil()
+                                                                    .setSp(15),
+                                                            color:
+                                                                darklogoColor,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.justify,
                                                         ),
-                                                        textAlign:
-                                                            TextAlign.justify,
                                                       ),
                                                     ),
                                             ],

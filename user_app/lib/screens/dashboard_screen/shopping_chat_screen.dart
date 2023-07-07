@@ -6,11 +6,19 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:lottie/lottie.dart';
+import 'package:myapp/controller/message_toggle_controller.dart';
+import 'package:myapp/models/driver_model.dart';
 import 'package:myapp/screens/dashboard_screen/shopping_chat_send_screen.dart';
+import 'package:myapp/screens/dashboard_screen/shopping_driver_chat_screen.dart';
+import 'package:myapp/widget/our_driver_chat.dart';
+import 'package:myapp/widget/our_seller_chat.dart';
 import 'package:myapp/widget/our_spinner.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../../controller/check_out_screen_controller.dart';
 import '../../models/messanger_home_model.dart';
 import '../../models/user_model.dart';
 import '../../models/user_model_firebase.dart';
@@ -58,6 +66,7 @@ class _ShoppingChatScreenState extends State<ShoppingChatScreen>
       ),
     );
     animationController.forward();
+    Get.find<MessageToggleScreenController>().initialize();
   }
 
   @override
@@ -100,246 +109,164 @@ class _ShoppingChatScreenState extends State<ShoppingChatScreen>
           ],
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.only(
-          top: ScreenUtil().setSp(10),
-          left: ScreenUtil().setSp(10),
-          right: ScreenUtil().setSp(10),
-        ),
-        child: Column(
-          children: [
-            Expanded(
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("ChatRoom")
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .collection("Chat")
-                    .orderBy("timestamp", descending: true)
-                    .snapshots(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.hasData) {
-                    if (snapshot.data!.docs.length > 0) {
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            //  return Text("data");
-
-                            MessangeHomeModel messangeHomeModel =
-                                MessangeHomeModel.fromJson(
-                                    snapshot.data!.docs[index]);
-                            // return Text(messangeHomeModel.uid);
-                            return StreamBuilder(
-                              stream: FirebaseFirestore.instance
-                                  .collection("Sellers")
-                                  .where("uid",
-                                      isEqualTo: messangeHomeModel.uid)
-                                  .snapshots(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot snapshot) {
-                                if (snapshot.hasData) {
-                                  // return Text("UTsav");
-                                  if (snapshot.data!.docs.length > 0) {
-                                    return ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: snapshot.data!.docs.length,
-                                        itemBuilder: (context, index) {
-                                          UserModel userModel =
-                                              UserModel.fromMap(
-                                                  snapshot.data!.docs[index]);
-                                          return InkWell(
-                                            onTap: () async {
-                                              var a = await FirebaseFirestore
-                                                  .instance
-                                                  .collection("Users")
-                                                  .doc(FirebaseAuth.instance
-                                                      .currentUser!.uid)
-                                                  .get();
-                                              FirebaseUser11Model userModel11 =
-                                                  FirebaseUser11Model.fromMap(
-                                                      a);
-                                              Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                  type: PageTransitionType
-                                                      .leftToRight,
-                                                  child: MessageSendScreen(
-                                                    firebaseUser11: userModel11,
-                                                    userModel: userModel,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal:
-                                                    ScreenUtil().setSp(10),
-                                                vertical:
-                                                    ScreenUtil().setSp(10),
-                                              ),
-                                              child: Row(
-                                                // crossAxisAlignment:
-                                                //     CrossAxisAlignment.start,
-                                                children: [
-                                                  userModel.imageUrl != ""
-                                                      ? CircleAvatar(
-                                                          backgroundColor:
-                                                              Colors.white,
-                                                          radius: ScreenUtil()
-                                                              .setSp(25),
-                                                          child: ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                              ScreenUtil()
-                                                                  .setSp(25),
-                                                            ),
-                                                            child:
-                                                                CachedNetworkImage(
-                                                              imageUrl:
-                                                                  userModel
-                                                                      .imageUrl,
-
-                                                              // Image.network(
-                                                              placeholder:
-                                                                  (context,
-                                                                          url) =>
-                                                                      Image
-                                                                          .asset(
-                                                                "assets/images/profile_holder.png",
-                                                                width: double
-                                                                    .infinity,
-                                                                height:
-                                                                    ScreenUtil()
-                                                                        .setSp(
-                                                                            125),
-                                                                fit: BoxFit
-                                                                    .fitWidth,
-                                                              ),
-                                                              errorWidget: (context,
-                                                                      url,
-                                                                      error) =>
-                                                                  Image.asset(
-                                                                "assets/images/profile_holder.png",
-                                                                width: double
-                                                                    .infinity,
-                                                                height:
-                                                                    ScreenUtil()
-                                                                        .setSp(
-                                                                            125),
-                                                                fit: BoxFit
-                                                                    .fitWidth,
-                                                              ),
-                                                              height:
-                                                                  ScreenUtil()
-                                                                      .setSp(
-                                                                          70),
-                                                              width:
-                                                                  ScreenUtil()
-                                                                      .setSp(
-                                                                          70),
-                                                              fit: BoxFit.cover,
-                                                              //   )
-                                                            ),
-                                                          ))
-                                                      : CircleAvatar(
-                                                          backgroundColor:
-                                                              Colors.white,
-                                                          radius: ScreenUtil()
-                                                              .setSp(20),
-                                                          child: Text(
-                                                            userModel.name[0]
-                                                                .toUpperCase(),
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  ScreenUtil()
-                                                                      .setSp(
-                                                                20,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                  SizedBox(
-                                                    width:
-                                                        ScreenUtil().setSp(20),
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        userModel.name,
-                                                        style: TextStyle(
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(15),
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w600),
-                                                      ),
-                                                      SizedBox(
-                                                        height: ScreenUtil()
-                                                            .setSp(4.5),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        });
-                                  }
-                                  return OurSpinner();
-                                }
-                                return OurSpinner();
-                              },
-                            );
-                          });
-                    }
-                  } else if (snapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return OurSpinner();
-                  }
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Spacer(),
-                        Image.asset(
-                          "assets/images/logo.png",
-                          fit: BoxFit.contain,
-                          height: ScreenUtil().setSp(100),
-                          width: ScreenUtil().setSp(100),
-                        ),
-                        OurSizedBox(),
-                        Text(
-                          "We're sorry",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: logoColor,
-                            fontSize: ScreenUtil().setSp(17.5),
-                          ),
-                        ),
-                        OurSizedBox(),
-                        Text(
-                          "You have not sent any messages",
-                          style: TextStyle(
-                            color: Colors.black45,
-                            fontSize: ScreenUtil().setSp(15),
-                          ),
-                        ),
-                        Spacer(),
-                      ],
-                    ),
-                  );
-                },
+      body: Obx(() => GestureDetector(
+            onHorizontalDragEnd: (dragDetail) {
+              if (dragDetail.velocity.pixelsPerSecond.dx < 1) {
+                if (Get.find<MessageToggleScreenController>().index.value < 1) {
+                  // print(Get.find<DashboardController>().indexs.value);
+                  print("Right swipe");
+                  Get.find<MessageToggleScreenController>().changeIndex(
+                      Get.find<MessageToggleScreenController>().index.value +
+                          1);
+                }
+              } else {
+                if (Get.find<MessageToggleScreenController>().index.value > 0) {
+                  // print(Get.find<DashboardController>().indexs.value);
+                  print("Left swipe");
+                  Get.find<MessageToggleScreenController>().changeIndex(
+                      Get.find<MessageToggleScreenController>().index.value -
+                          1);
+                }
+              }
+            },
+            child: Container(
+              padding: EdgeInsets.only(
+                top: ScreenUtil().setSp(10),
+                left: ScreenUtil().setSp(10),
+                right: ScreenUtil().setSp(10),
               ),
-            )
-          ],
-        ),
-      ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            Get.find<MessageToggleScreenController>()
+                                .changeIndex(0);
+                          },
+                          child: Container(
+                            height: ScreenUtil().setSp(80),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: ScreenUtil().setSp(10),
+                              vertical: ScreenUtil().setSp(5),
+                            ),
+                            decoration: BoxDecoration(
+                              color: Get.find<MessageToggleScreenController>()
+                                          .index
+                                          .value ==
+                                      0
+                                  ? darklogoColor
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(
+                                ScreenUtil().setSp(17.5),
+                              ),
+                            ),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Seller",
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(17.5),
+                                      color:
+                                          Get.find<MessageToggleScreenController>()
+                                                      .index
+                                                      .value ==
+                                                  0
+                                              ? Colors.white
+                                              : darklogoColor,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  OurSizedBox(),
+                                  Icon(
+                                    Icons.shop_outlined,
+                                    size: ScreenUtil().setSp(25),
+                                    color:
+                                        Get.find<MessageToggleScreenController>()
+                                                    .index
+                                                    .value ==
+                                                0
+                                            ? Colors.white
+                                            : darklogoColor,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            Get.find<MessageToggleScreenController>()
+                                .changeIndex(1);
+                          },
+                          child: Container(
+                            height: ScreenUtil().setSp(80),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: ScreenUtil().setSp(10),
+                              vertical: ScreenUtil().setSp(5),
+                            ),
+                            decoration: BoxDecoration(
+                              color: Get.find<MessageToggleScreenController>()
+                                          .index
+                                          .value ==
+                                      1
+                                  ? darklogoColor
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(
+                                ScreenUtil().setSp(17.5),
+                              ),
+                            ),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Driver",
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(17.5),
+                                      color:
+                                          Get.find<MessageToggleScreenController>()
+                                                      .index
+                                                      .value ==
+                                                  1
+                                              ? Colors.white
+                                              : darklogoColor,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  OurSizedBox(),
+                                  Icon(
+                                    Icons.drive_eta,
+                                    size: ScreenUtil().setSp(25),
+                                    color:
+                                        Get.find<MessageToggleScreenController>()
+                                                    .index
+                                                    .value ==
+                                                1
+                                            ? Colors.white
+                                            : darklogoColor,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  OurSizedBox(),
+                  Get.find<MessageToggleScreenController>().index.value == 0
+                      ? OurSellerChat()
+                      : OurDriverChat()
+                ],
+              ),
+            ),
+          )),
     );
   }
 }

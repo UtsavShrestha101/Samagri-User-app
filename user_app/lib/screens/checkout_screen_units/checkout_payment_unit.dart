@@ -348,7 +348,9 @@ class _CheckOutPaymentScreenState extends State<CheckOutPaymentScreen> {
                       .collection("Carts")
                       .doc(FirebaseAuth.instance.currentUser!.uid)
                       .collection("Products")
+
                       .get();
+                     // [prodadata,prodbdata]
                   for (var doc in collection.docs) {
                     var abc = doc.data();
                     CartProductModel cartProductModel =

@@ -120,7 +120,7 @@ class UserDetailFirestore {
         (value) async {
           await FirebaseFirestore.instance
               .collection("Users")
-              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .doc(FirebaseAuth.instance.currentUser!.uid) //user -. favourite->[productUId]
               .collection("Favorites")
               .doc(productModel.uid)
               .set(

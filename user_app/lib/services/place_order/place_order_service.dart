@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:myapp/widget/our_flutter_toast.dart';
 import 'package:uuid/uuid.dart';
-
+import 'package:http/http.dart' as http;
 import '../../controller/check_out_screen_controller.dart';
 import '../../controller/delivery_time_controller.dart';
 import '../../controller/login_controller.dart';
@@ -17,7 +17,7 @@ class PlaceOrderService {
       List<Map<String, dynamic>> itemModel, double total, String type) async {
     print("Inside submit order");
     List<String> productIDSlist = [];
-    var uid = Uuid().v4();
+    var uid11 = Uuid().v4();
     try {
       var userData = await FirebaseFirestore.instance
           .collection("Users")
@@ -34,7 +34,7 @@ class PlaceOrderService {
           {
             "productOwnerId": element["ownerId"],
             "requestedOn": Timestamp.now(),
-            "batchId": uid,
+            "batchId": uid11,
             "requestUserId": FirebaseAuth.instance.currentUser!.uid,
             "requestId": requestProductId,
             "productId": element["productId"],
@@ -58,6 +58,7 @@ class PlaceOrderService {
             "",
             userModel.token);
         var uniqueNotificationUId = Uuid().v4();
+        //notificaiton ->piuid ->motificauir -
         await FirebaseFirestore.instance
             .collection("Notifications")
             .doc(element["ownerId"])
@@ -72,15 +73,16 @@ class PlaceOrderService {
           "addedOn": Timestamp.now(),
         });
       });
+      int verifyToken = Random().nextInt(900000) + 100000;
       Map<String, dynamic> mapss = {
         "ownerId": FirebaseAuth.instance.currentUser!.uid,
         "status": "In Progress",
         "userPhoneNo": userData["phone"],
-        "uid": uid,
+        "uid": uid11,
         "isDelivered": false,
         "driverUid": "",
         "driverName": "",
-        "verifyToken": Random().nextInt(900000) + 100000,
+        "verifyToken": verifyToken,
         "totalPrice": total,
         "paymentType": type,
         "deliveryTime": Get.find<DeliveryTimeController>().shippingTime.value,
@@ -93,7 +95,7 @@ class PlaceOrderService {
       };
       await FirebaseFirestore.instance
           .collection("Orders")
-          .doc(uid)
+          .doc(uid11)
           .set(mapss)
           .then((value) async {
         await FirebaseFirestore.instance
@@ -114,6 +116,24 @@ class PlaceOrderService {
           await doc.reference.delete();
         }
       });
+      print("=========================");
+      print("=========================");
+      print("=========================");
+      print("=========================");
+      print("=========================");
+      String mainurl =
+          "https://bulk.bedbyaspokhrel.com.np/smsapi/index.php?key=4633085F44E5F1&campaign=7022&routeid=195&type=text&contacts=${userData["phone"]}&senderid=adf121bgaad&msg=Dear valuable customer (${userData["name"]}), your order has been placed.\nOrderId = ${uid11}.\nVerification OTP = ${verifyToken}\nWe appreciate your time.\nGo Mart\nPowered by: Harambe Gople Studio.\nhttps://play.google.com/store/apps/details?id=com.userApp.first123";
+      final response = await http.get(
+        Uri.parse(mainurl),
+      );
+      if (response.statusCode == 200) {
+        print("Inside code 200");
+        print(response.body);
+      } else {
+        print("Inside code ${response.statusCode}");
+        print(response.body);
+      }
+
       Get.find<LoginController>().toggle(false);
       OurToast().showSuccessToast("Order Placed");
       // print(mapss);

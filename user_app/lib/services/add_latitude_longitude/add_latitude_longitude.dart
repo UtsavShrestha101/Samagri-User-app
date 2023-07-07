@@ -21,6 +21,8 @@ class AddLatLongFirebase {
     print("Inside latitude and longitude service");
     try {
       var uid = Uuid().v4();
+
+      //Location ->currentid ->[l]
       await FirebaseFirestore.instance.collection("Locations").doc(uid).set(
         {
           "uid": uid,

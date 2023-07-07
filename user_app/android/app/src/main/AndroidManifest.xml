@@ -3,7 +3,7 @@
         <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE"/>
    <application
-        android:label="Samagri User"
+        android:label="Go Mart: User"
         android:name="${applicationName}"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:icon="@mipmap/launcher_icon">
@@ -41,6 +41,6 @@
             android:name="flutterEmbedding"
             android:value="2" />
          <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyBlMkiLJ-G7YNmFabacXbMwfI2dectJSfs"/>
+               android:value=""/>
     </application>
 </manifest>
