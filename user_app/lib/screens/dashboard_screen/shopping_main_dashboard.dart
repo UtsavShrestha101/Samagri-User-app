@@ -85,7 +85,7 @@ class _ShoppingFullAppPageState extends State<ShoppingFullApp>
         pinColor: Colors.blue,
         addressPlaceHolder: "Loading",
         addressTitle: "Address",
-        apiKey: "AIzaSyBlMkiLJ-G7YNmFabacXbMwfI2dectJSfs",
+        apiKey: "AIzaSyDnx52eVYK2uBy6dvRO8skJyTctk_4K73s",
         appBarTitle: "Select delivery address",
         confirmButtonColor: logoColor,
         confirmButtonText: "Done",
